@@ -16,7 +16,7 @@ Terms used below:
 - **Marked as sounding**: the app indicates which notes sound now, for the given time (F011).
 - **Tension**: a note outside the scale, or a chromatic/borrowed chord; the app keeps tension items distinct from the others.
 
-Counts: 253 features (F001–F275, 22 ids deleted), 20 reference tables (R1–R21, R8 deleted), 36 open questions (U01–U40, 4 ids deleted). Ids are stable; a gap in the numbering is a deleted entry.
+Counts: 254 features (F001–F276, 22 ids deleted), 20 reference tables (R1–R21, R8 deleted), 36 open questions (U01–U40, 4 ids deleted). Ids are stable; a gap in the numbering is a deleted entry.
 
 ## 2. Features
 
@@ -273,14 +273,16 @@ Counts: 253 features (F001–F275, 22 ids deleted), 20 reference tables (R1–R2
 - F273 [a11y] General: The document language is "pt"; there are no ARIA labels and no keyboard shortcuts.
 - F274 [i18n] General: All text is Portuguese (mixed PT-PT and PT-BR spellings; see U26); notes are named by both letter (C, C#…) and Portuguese solfège (Dó, Dó#…); sharps only, no flats.
 - F275 [state] General: No data is persisted: no localStorage, cookies or server; reloading resets everything.
+- F276 [core] Global: Each of the 12 pitch classes has one fixed identity colour (R1), the same in every octave. Every place that shows a note or a chord root uses that colour, so that the user learns to connect a colour with a note: the note palette, chord names, the circle of fifths, piano-roll notes, the heatmap and the live analysis. (Client decision, 2026-11-23: colour-per-note is a feature. The values of R1 are the current values; the designer may tune them, but each note keeps one distinct colour.)
 
 ## 3. Reference data
 
-### R1 Notes and Portuguese names
+### R1 Notes, Portuguese names and identity colours
 | Pitch class | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Name | C | C# | D | D# | E | F | F# | G | G# | A | A# | B |
 | PT | Dó | Dó# | Ré | Ré# | Mi | Fá | Fá# | Sol | Sol# | Lá | Lá# | Si |
+| Colour | #FF6B6B | #FF8E53 | #FFC947 | #A8E063 | #56CCF2 | #2F80ED | #9B51E0 | #EB5757 | #F2994A | #27AE60 | #1ABC9C | #8B5CF6 |
 
 ### R2 Defaults (initial state)
 | Item | Default |
