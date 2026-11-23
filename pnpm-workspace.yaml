@@ -1,3 +1,11 @@
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+  - "@parcel/watcher"
+  - "@swc/core"
+
+# sharp (and its LGPL libvips binary) is an optional dependency of Next for
+# next/image. The app does not use next/image, and Vercel optimises images on
+# its own infrastructure. Leaving it out keeps copyleft code out of production.
+ignoredOptionalDependencies:
+  - sharp

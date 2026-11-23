@@ -1,0 +1,276 @@
+{
+  "app": {
+    "name": "Paleta Musical",
+    "tagline": "Hear and explore notes, scales and chords.",
+    "skipToContent": "Skip to content",
+    "mainNav": "Modules",
+    "settings": "Settings",
+    "shortcuts": "Keyboard shortcuts",
+    "commandPalette": "Command palette"
+  },
+  "modules": {
+    "palette": {
+      "title": "Palette",
+      "description": "The 12 notes, scales and chords.",
+      "emptyTitle": "The full palette is on its way",
+      "emptyBody": "For now, play the 12 notes or use your computer keyboard.",
+      "notesLabel": "The 12 notes",
+      "keyboardHint": "Computer keyboard: <keys></keys> play one octave; <down></down> and <up></up> change the octave.",
+      "shortcutPlay": "Play a note (A W S E D F T G Y H U J K)",
+      "shortcutOctave": "Octave down / up (Z / X)"
+    },
+    "progressions": {
+      "title": "Progressions",
+      "description": "Styles, builder and timeline.",
+      "emptyTitle": "Progressions are coming soon",
+      "emptyBody": "Here you will find progressions by style, the chord builder and the shared timeline."
+    },
+    "endless": {
+      "title": "Endless",
+      "description": "A chord generator that never stops.",
+      "emptyTitle": "The endless generator is coming soon",
+      "emptyBody": "Here you will generate random chords in a style, without stopping."
+    },
+    "chords": {
+      "title": "Chords",
+      "description": "Find chords from notes.",
+      "emptyTitle": "The chord finder is coming soon",
+      "emptyBody": "Here you will pick notes and see the chords they make."
+    },
+    "harmony": {
+      "title": "Harmony",
+      "description": "The circle of fifths.",
+      "emptyTitle": "The circle of fifths is coming soon",
+      "emptyBody": "Here you will explore keys, cadences and neighbour chords."
+    },
+    "analyse": {
+      "title": "Analyse",
+      "description": "Key and chords of an audio file.",
+      "emptyTitle": "Audio analysis is coming soon",
+      "emptyBody": "Here you will load an audio file and see its likely scale and chords.",
+      "rollTitle": "Piano roll",
+      "rollEmptyTitle": "The piano roll is coming soon",
+      "rollEmptyBody": "Here you will edit the detected notes and export them as MIDI.",
+      "openRoll": "Open the piano roll",
+      "backToAnalysis": "Back to the analysis"
+    }
+  },
+  "transport": {
+    "label": "Transport",
+    "octave": "Octave",
+    "octaveDown": "Octave down",
+    "octaveUp": "Octave up",
+    "lastChord": "Last chord",
+    "noLastChord": "No chord yet",
+    "replay": "Play the last chord",
+    "addToTimeline": "Add to the timeline",
+    "addedToTimeline": "Chord added to the timeline",
+    "stopAll": "Stop all",
+    "playing": "Playing",
+    "idle": "Silent",
+    "volume": "Volume",
+    "instrument": "Instrument",
+    "play": "Play",
+    "stop": "Stop"
+  },
+  "instruments": {
+    "triangle": "Original synth"
+  },
+  "audio": {
+    "enable": "Tap anywhere to enable sound",
+    "enableButton": "Enable sound",
+    "failed": "Sound did not start.",
+    "retry": "Try again",
+    "unavailable": "This browser cannot play sound (no Web Audio).",
+    "silentSwitch": "No sound? Check the silent switch of your iPhone or iPad."
+  },
+  "storage": {
+    "memoryOnly": "This browser does not keep data (private mode?). Your work stays in this session only.",
+    "recovered": "The stored data was damaged. The app went back to its default values.",
+    "persistent": "Your work is kept in this browser.",
+    "memory": "Your work stays in this session only.",
+    "safariNote": "Safari can delete the data of a site that you have not opened for seven days. Make a backup, or install the app on your home screen."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Language, look, sound and data.",
+    "language": "Language",
+    "languages": { "pt-PT": "Português", "en": "English" },
+    "theme": "Theme",
+    "themes": { "system": "System", "light": "Light", "dark": "Dark" },
+    "noteNames": "Note names",
+    "noteNameStyles": {
+      "letter": "Letters (C D E)",
+      "solfege": "Solfège (Dó Ré Mi)",
+      "both": "Both"
+    },
+    "spelling": "Accidentals",
+    "spellings": {
+      "sharps": "Sharps (♯)",
+      "flats": "Flats (♭)",
+      "key": "By key"
+    },
+    "sound": "Sound",
+    "instrument": "Instrument",
+    "volume": "Master volume",
+    "motion": "Animations",
+    "motions": { "system": "System", "reduce": "Reduced", "full": "Full" },
+    "data": "Your data",
+    "backup": "Save a backup",
+    "backupDone": "Backup saved",
+    "restore": "Restore from a file",
+    "restoreDone": "Data restored",
+    "restoreFailed": "Could not restore: the file is not a valid backup.",
+    "restoreNewer": "Could not restore: the file comes from a newer version of the app.",
+    "reset": "Delete all data",
+    "resetTitle": "Delete all data?",
+    "resetBody": "Settings, octave, timeline and all saved work are deleted. You cannot undo this.",
+    "resetConfirm": "Delete everything",
+    "resetDone": "All data was deleted",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "global": "Everywhere",
+    "module": "In this module",
+    "none": "This module has no shortcuts yet.",
+    "commandPalette": "Open the command palette",
+    "help": "Show the shortcuts",
+    "stopAll": "Stop all",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "command": {
+    "placeholder": "Search a module, a scale or a chord…",
+    "empty": "No results.",
+    "modules": "Modules",
+    "scales": "Scales",
+    "chords": "Chords",
+    "actions": "Actions",
+    "goTo": "Go to {name}",
+    "openSettings": "Open the settings",
+    "showShortcuts": "Show the shortcuts",
+    "stopAll": "Stop all"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "body": "This part of the app had an error. The rest still works.",
+    "retry": "Try again",
+    "fileAction": "The file action failed.",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This page does not exist.",
+    "home": "Go to the Palette"
+  },
+  "capability": {
+    "missing": "This browser does not support this feature ({name}).",
+    "names": {
+      "webAudio": "Web Audio",
+      "audioWorklet": "AudioWorklet",
+      "offlineAudio": "offline audio",
+      "getUserMedia": "microphone",
+      "webWorkers": "Web Workers",
+      "indexedDB": "local storage",
+      "storagePersist": "persistent storage",
+      "shareFiles": "file sharing",
+      "finePointer": "mouse",
+      "audioSession": "audio session",
+      "webGL": "WebGL"
+    }
+  },
+  "scales": {
+    "major": "Major",
+    "naturalMinor": "Natural Minor",
+    "harmonicMinor": "Harmonic Minor",
+    "melodicMinor": "Melodic Minor",
+    "majorPentatonic": "Major Pentatonic",
+    "minorPentatonic": "Minor Pentatonic",
+    "blues": "Blues",
+    "majorBlues": "Major Blues",
+    "dorian": "Dorian",
+    "phrygian": "Phrygian",
+    "lydian": "Lydian",
+    "mixolydian": "Mixolydian",
+    "locrian": "Locrian",
+    "phrygianDominant": "Phrygian Dominant",
+    "chromatic": "Chromatic",
+    "arabic": "Arabic",
+    "japanese": "Japanese",
+    "hungarianMinor": "Hungarian Minor",
+    "bebopDominant": "Bebop Dominant"
+  },
+  "chordTypes": {
+    "major": "Major",
+    "minor": "Minor",
+    "dom7": "Dominant seventh",
+    "maj7": "Major seventh",
+    "min7": "Minor seventh",
+    "dim": "Diminished",
+    "dim7": "Diminished seventh",
+    "aug": "Augmented",
+    "sus2": "Sus2",
+    "sus4": "Sus4",
+    "add9": "Add9",
+    "mAdd9": "Minor add9",
+    "m6": "Minor sixth",
+    "dom9": "Ninth",
+    "m9": "Minor ninth",
+    "maj9": "Major ninth",
+    "dom7sus4": "Seventh sus4",
+    "halfDim": "Half-diminished",
+    "aug7": "Augmented seventh",
+    "dom7b9": "Seventh flat nine",
+    "sharp11": "Seventh flat five sharp eleven",
+    "dom13": "Thirteenth",
+    "m11": "Minor eleventh",
+    "six": "Sixth"
+  },
+  "notes": {
+    "sounding": "sounding",
+    "tension": "tension note",
+    "octaveValue": "Octave {octave}",
+    "chordNotes": "Chord notes"
+  },
+  "controls": {
+    "decrease": "Decrease {label}",
+    "increase": "Increase {label}",
+    "bpm": "BPM"
+  },
+  "dev": {
+    "title": "Design system",
+    "intro": "Reference page of the tokens and components. It is not linked in the navigation.",
+    "colours": "Colours",
+    "noteColours": "Note colours",
+    "contrast": "Contrast with the surface",
+    "light": "Light",
+    "dark": "Dark",
+    "typography": "Typography",
+    "spacing": "Spacing",
+    "radius": "Radius",
+    "elevation": "Elevation",
+    "motion": "Motion",
+    "components": "Components",
+    "music": "Music primitives",
+    "sample": "Hear, see and explore the notes.",
+    "openDialog": "Open a dialog",
+    "dialogBody": "A dialog with managed focus that closes with Esc.",
+    "showToast": "Show a notification",
+    "toast": "This is a notification.",
+    "tabOne": "First",
+    "tabTwo": "Second",
+    "tabBody": "Content of tab {n}.",
+    "popover": "Open a popover",
+    "popoverBody": "Popover content.",
+    "menu": "Open a menu",
+    "menuItem": "Option {n}",
+    "tooltip": "A tip",
+    "toggle": "Toggle",
+    "semantic": {
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Danger",
+      "tension": "Tension",
+      "accent": "Accent"
+    }
+  }
+}
