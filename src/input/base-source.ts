@@ -16,14 +16,18 @@ export abstract class BaseSource implements InputSource {
   abstract start(): void;
   abstract stop(): void;
 
-  on<E extends keyof InputEvents>(event: E, listener: InputEvents[E]): () => void {
+  on<E extends keyof InputEvents>(
+    event: E,
+    listener: InputEvents[E],
+  ): () => void {
     const set = this.#listeners[event] as Set<InputEvents[E]>;
     set.add(listener);
     return () => set.delete(listener);
   }
 
   protected emitNoteOn(note: Note, velocity = 100): void {
-    for (const l of this.#listeners.noteOn) l({ sourceId: this.id, note, velocity });
+    for (const l of this.#listeners.noteOn)
+      l({ sourceId: this.id, note, velocity });
   }
 
   protected emitNoteOff(note: Note): void {

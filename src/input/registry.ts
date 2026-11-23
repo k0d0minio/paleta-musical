@@ -1,4 +1,9 @@
-import type { InputEvents, InputSource, NoteOffEvent, NoteOnEvent } from "./types";
+import type {
+  InputEvents,
+  InputSource,
+  NoteOffEvent,
+  NoteOnEvent,
+} from "./types";
 
 export interface InputHandlers {
   noteOn?: (event: NoteOnEvent) => void;
@@ -37,7 +42,10 @@ export class InputRegistry {
     return [...this.#sources.values()].map((s) => s.source);
   }
 
-  #dispatch<E extends keyof InputEvents>(event: E, payload: Parameters<InputEvents[E]>[0]): void {
+  #dispatch<E extends keyof InputEvents>(
+    event: E,
+    payload: Parameters<InputEvents[E]>[0],
+  ): void {
     for (const h of this.#handlers) {
       const fn = h[event] as ((p: typeof payload) => void) | undefined;
       fn?.(payload);

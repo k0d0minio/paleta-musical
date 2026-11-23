@@ -6,7 +6,11 @@ import { TooltipProvider } from "@/ui/components/tooltip";
 
 function Providers({ children }: { children: ReactNode }) {
   return (
-    <NextIntlClientProvider locale="pt-PT" messages={ptPT} timeZone="Europe/Lisbon">
+    <NextIntlClientProvider
+      locale="pt-PT"
+      messages={ptPT}
+      timeZone="Europe/Lisbon"
+    >
       <TooltipProvider>{children}</TooltipProvider>
     </NextIntlClientProvider>
   );

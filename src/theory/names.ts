@@ -3,8 +3,34 @@ import { type PitchClass } from "./pitch";
 import { getScale, type ScaleId } from "./scales";
 
 /** R1: letter names with sharps (the original app only used sharps). */
-export const SHARP_LETTERS = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"] as const;
-export const FLAT_LETTERS = ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"] as const;
+export const SHARP_LETTERS = [
+  "C",
+  "C♯",
+  "D",
+  "D♯",
+  "E",
+  "F",
+  "F♯",
+  "G",
+  "G♯",
+  "A",
+  "A♯",
+  "B",
+] as const;
+export const FLAT_LETTERS = [
+  "C",
+  "D♭",
+  "D",
+  "E♭",
+  "E",
+  "F",
+  "G♭",
+  "G",
+  "A♭",
+  "A",
+  "B♭",
+  "B",
+] as const;
 
 /** R1: Portuguese solfège names. */
 const SOLFEGE_BASE: Record<string, string> = {
@@ -26,8 +52,34 @@ export interface KeyContext {
 }
 
 /** Conventional tonic spelling per pitch class (major-like and minor-like keys). */
-const MAJOR_TONICS = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
-const MINOR_TONICS = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B"];
+const MAJOR_TONICS = [
+  "C",
+  "Db",
+  "D",
+  "Eb",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "Ab",
+  "A",
+  "Bb",
+  "B",
+];
+const MINOR_TONICS = [
+  "C",
+  "C#",
+  "D",
+  "Eb",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "Bb",
+  "B",
+];
 
 function toUnicode(name: string): string {
   return name.replace(/#/g, "♯").replace(/b/g, "♭");
@@ -56,7 +108,11 @@ function spellInKey(pc: PitchClass, key: KeyContext): string {
 }
 
 /** The letter name of a pitch class with the chosen spelling. */
-export function letterName(pc: PitchClass, spelling: Spelling = "sharps", key?: KeyContext): string {
+export function letterName(
+  pc: PitchClass,
+  spelling: Spelling = "sharps",
+  key?: KeyContext,
+): string {
   if (spelling === "flats") return FLAT_LETTERS[pc];
   if (spelling === "key" && key) return spellInKey(pc, key);
   return SHARP_LETTERS[pc];
@@ -72,7 +128,11 @@ export interface NoteLabel {
   readonly solfege: string;
 }
 
-export function noteLabel(pc: PitchClass, spelling: Spelling = "sharps", key?: KeyContext): NoteLabel {
+export function noteLabel(
+  pc: PitchClass,
+  spelling: Spelling = "sharps",
+  key?: KeyContext,
+): NoteLabel {
   const letter = letterName(pc, spelling, key);
   return { letter, solfege: solfegeName(letter) };
 }

@@ -1,9 +1,22 @@
-import type { ChordRef, Note, NoteNameStyle, PitchClass, Spelling } from "@/theory";
+import type {
+  ChordRef,
+  Note,
+  NoteNameStyle,
+  PitchClass,
+  Spelling,
+} from "@/theory";
 
 export type { ChordRef, Note, PitchClass };
 
 /** The six modules. `/analyse/roll` is a view of the analyse module. */
-export const MODULE_IDS = ["palette", "progressions", "endless", "chords", "harmony", "analyse"] as const;
+export const MODULE_IDS = [
+  "palette",
+  "progressions",
+  "endless",
+  "chords",
+  "harmony",
+  "analyse",
+] as const;
 export type ModuleId = (typeof MODULE_IDS)[number];
 
 /** One chord in the shared timeline or in the builder line. */

@@ -40,13 +40,47 @@ const ALLOWED = {
   nav: ["state"],
   ui: ["theory", "audio", "state", "i18n", "platform", "input", "input-source"],
   // No "input-source": modules use the input registry, never a source.
-  module: ["module", "ui", "theory", "midi", "audio", "state", "i18n", "platform", "input", "nav"],
-  shell: ["module", "nav", "ui", "theory", "midi", "audio", "input", "input-source", "state", "platform", "i18n"],
+  module: [
+    "module",
+    "ui",
+    "theory",
+    "midi",
+    "audio",
+    "state",
+    "i18n",
+    "platform",
+    "input",
+    "nav",
+  ],
+  shell: [
+    "module",
+    "nav",
+    "ui",
+    "theory",
+    "midi",
+    "audio",
+    "input",
+    "input-source",
+    "state",
+    "platform",
+    "i18n",
+  ],
   app: ["shell", "module", "ui", "i18n", "state", "platform"],
 };
 
 const PURE = ["theory", "midi"];
-const PURE_FORBIDDEN = ["react", "react-dom", "next", "tone", "smplr", "next-intl", "zustand", "radix-ui", "motion", "idb-keyval"];
+const PURE_FORBIDDEN = [
+  "react",
+  "react-dom",
+  "next",
+  "tone",
+  "smplr",
+  "next-intl",
+  "zustand",
+  "radix-ui",
+  "motion",
+  "idb-keyval",
+];
 const el = (type) => ({ element: { type } });
 
 export default defineConfig([
@@ -57,7 +91,10 @@ export default defineConfig([
     extends: [tseslint.configs.strict],
     rules: {
       "@typescript-eslint/no-non-null-assertion": "error",
-      "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { fixStyle: "inline-type-imports" },
+      ],
     },
   },
   {
@@ -75,7 +112,8 @@ export default defineConfig([
         {
           default: "disallow",
           checkAllOrigins: true,
-          message: "{{from.element.type}} must not import this dependency (see the layer rules in eslint.config.mjs)",
+          message:
+            "{{from.element.type}} must not import this dependency (see the layer rules in eslint.config.mjs)",
           policies: [
             // Libraries and Node built-ins: allowed, except in the pure layers (below).
             { allow: { to: { module: { origin: ["external", "core"] } } } },
@@ -86,19 +124,32 @@ export default defineConfig([
             })),
             // A module imports another module only through its index.ts.
             {
-              disallow: { to: { element: { type: "module" }, file: { path: "**/src/modules/*/!(index).{ts,tsx}" } } },
+              disallow: {
+                to: {
+                  element: { type: "module" },
+                  file: { path: "**/src/modules/*/!(index).{ts,tsx}" },
+                },
+              },
               message: "Import another module only through its index.ts",
             },
             // theory and midi are pure TypeScript.
             {
               from: { element: { types: PURE } },
               disallow: { to: { module: { source: PURE_FORBIDDEN } } },
-              message: "theory and midi are pure TypeScript: no React, no DOM and no audio libraries",
+              message:
+                "theory and midi are pure TypeScript: no React, no DOM and no audio libraries",
             },
           ],
         },
       ],
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "playwright-report/**", "test-results/**"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "playwright-report/**",
+    "test-results/**",
+  ]),
 ]);

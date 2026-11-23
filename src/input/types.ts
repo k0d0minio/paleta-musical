@@ -28,5 +28,8 @@ export interface InputSource {
   readonly kind: InputKind;
   start(): void;
   stop(): void;
-  on<E extends keyof InputEvents>(event: E, listener: InputEvents[E]): () => void;
+  on<E extends keyof InputEvents>(
+    event: E,
+    listener: InputEvents[E],
+  ): () => void;
 }

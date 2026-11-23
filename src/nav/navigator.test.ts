@@ -14,7 +14,16 @@ function setup(start: ModuleId | null = "palette") {
     onEnter: vi.fn(({ from }) => calls.push(`enter:${id}<-${from}`)),
     onLeave: vi.fn(({ to }) => calls.push(`leave:${id}->${to}`)),
   });
-  const modules = (["palette", "progressions", "endless", "chords", "harmony", "analyse"] as const).map(def);
+  const modules = (
+    [
+      "palette",
+      "progressions",
+      "endless",
+      "chords",
+      "harmony",
+      "analyse",
+    ] as const
+  ).map(def);
   const push = vi.fn((href: string) => calls.push(`push:${href}`));
   const stopAll = vi.fn(() => calls.push("stopAll"));
   const navigator = createNavigator({

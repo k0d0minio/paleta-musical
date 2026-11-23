@@ -5,20 +5,49 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { audioEngine, markSounding } from "@/audio";
 import { useAppStore } from "@/state";
-import { PITCH_CLASSES, chordPitchClasses, voiceChord, type ChordRef } from "@/theory";
+import {
+  PITCH_CLASSES,
+  chordPitchClasses,
+  voiceChord,
+  type ChordRef,
+} from "@/theory";
 import { cn } from "@/ui/cn";
 import { Button } from "@/ui/components/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/components/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/components/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/ui/components/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/components/dropdown-menu";
 import { Kbd } from "@/ui/components/kbd";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/components/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/ui/components/popover";
 import { Slider } from "@/ui/components/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/components/tabs";
 import { toast } from "@/ui/components/toaster";
 import { SegmentedControl } from "@/ui/components/toggle-group";
 import { Tooltip } from "@/ui/components/tooltip";
 import { contrastRatio } from "@/ui/tokens/color";
-import { BpmField, ChordName, NoteChip, NoteName, PianoKeys, Stepper, TransportButton } from "@/ui/music";
+import {
+  BpmField,
+  ChordName,
+  NoteChip,
+  NoteName,
+  PianoKeys,
+  Stepper,
+  TransportButton,
+} from "@/ui/music";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -29,7 +58,20 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-const SEMANTIC = ["bg", "surface", "surface-2", "border", "fg", "fg-muted", "accent", "focus", "success", "warning", "danger", "tension"];
+const SEMANTIC = [
+  "bg",
+  "surface",
+  "surface-2",
+  "border",
+  "fg",
+  "fg-muted",
+  "accent",
+  "focus",
+  "success",
+  "warning",
+  "danger",
+  "tension",
+];
 
 function ThemePanel({ theme }: { theme: "light" | "dark" }) {
   const t = useTranslations("dev");
@@ -39,15 +81,30 @@ function ThemePanel({ theme }: { theme: "light" | "dark" }) {
     if (!ref.current) return;
     const style = getComputedStyle(ref.current);
     const surface = style.getPropertyValue("--surface");
-    setRatios(PITCH_CLASSES.map((pc) => contrastRatio(style.getPropertyValue(`--note-${pc}`), surface).toFixed(2)));
+    setRatios(
+      PITCH_CLASSES.map((pc) =>
+        contrastRatio(style.getPropertyValue(`--note-${pc}`), surface).toFixed(
+          2,
+        ),
+      ),
+    );
   }, []);
   return (
-    <div ref={ref} className={cn(theme, "flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 text-fg")}>
+    <div
+      ref={ref}
+      className={cn(
+        theme,
+        "flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 text-fg",
+      )}
+    >
       <h3 className="font-semibold">{t(theme)}</h3>
       <div className="flex flex-wrap gap-2">
         {SEMANTIC.map((name) => (
           <div key={name} className="flex w-24 flex-col gap-1 text-xs">
-            <span className="h-10 rounded-md border border-border" style={{ background: `var(--${name})` }} />
+            <span
+              className="h-10 rounded-md border border-border"
+              style={{ background: `var(--${name})` }}
+            />
             <code className="text-fg-muted">--{name}</code>
           </div>
         ))}
@@ -106,9 +163,21 @@ export function DesignPage() {
 
       <Section title={t("typography")}>
         <div className="flex flex-col gap-2">
-          {(["text-3xl", "text-2xl", "text-xl", "text-lg", "text-base", "text-sm", "text-xs"] as const).map((size) => (
+          {(
+            [
+              "text-3xl",
+              "text-2xl",
+              "text-xl",
+              "text-lg",
+              "text-base",
+              "text-sm",
+              "text-xs",
+            ] as const
+          ).map((size) => (
             <p key={size} className={cn(size, "flex items-baseline gap-4")}>
-              <code className="w-20 shrink-0 text-xs text-fg-subtle">{size}</code>
+              <code className="w-20 shrink-0 text-xs text-fg-subtle">
+                {size}
+              </code>
               {t("sample")}
             </p>
           ))}
@@ -121,7 +190,10 @@ export function DesignPage() {
           {[1, 2, 3, 4, 6, 8, 12, 16].map((n) => (
             <div key={n} className="flex items-center gap-3 text-xs">
               <code className="w-10 text-fg-subtle">{n * 4}px</code>
-              <span className="h-3 rounded-sm bg-fg" style={{ width: `calc(var(--spacing) * ${n})` }} />
+              <span
+                className="h-3 rounded-sm bg-fg"
+                style={{ width: `calc(var(--spacing) * ${n})` }}
+              />
             </div>
           ))}
         </div>
@@ -132,7 +204,10 @@ export function DesignPage() {
           <div className="flex flex-wrap gap-3">
             {["sm", "md", "lg", "xl", "2xl"].map((r) => (
               <div key={r} className="flex flex-col items-center gap-1 text-xs">
-                <span className="size-14 border border-border-strong bg-surface-2" style={{ borderRadius: `var(--radius-${r})` }} />
+                <span
+                  className="size-14 border border-border-strong bg-surface-2"
+                  style={{ borderRadius: `var(--radius-${r})` }}
+                />
                 <code className="text-fg-subtle">{r}</code>
               </div>
             ))}
@@ -141,7 +216,11 @@ export function DesignPage() {
         <Section title={t("elevation")}>
           <div className="flex gap-4">
             {[1, 2, 3].map((e) => (
-              <div key={e} className="grid size-16 place-items-center rounded-lg bg-surface text-xs" style={{ boxShadow: `var(--shadow-${e})` }}>
+              <div
+                key={e}
+                className="grid size-16 place-items-center rounded-lg bg-surface text-xs"
+                style={{ boxShadow: `var(--shadow-${e})` }}
+              >
                 {e}
               </div>
             ))}
@@ -150,10 +229,12 @@ export function DesignPage() {
         <Section title={t("motion")}>
           <ul className="text-xs text-fg-muted">
             <li>
-              <code>--duration-fast</code> 120ms · <code>--duration-base</code> 200ms · <code>--duration-slow</code> 320ms
+              <code>--duration-fast</code> 120ms · <code>--duration-base</code>{" "}
+              200ms · <code>--duration-slow</code> 320ms
             </li>
             <li>
-              <code>--ease-out</code> · <code>--ease-in-out</code> · <code>--ease-spring</code>
+              <code>--ease-out</code> · <code>--ease-in-out</code> ·{" "}
+              <code>--ease-spring</code>
             </li>
           </ul>
           <Button size="sm" onClick={() => markSounding([0, 4, 7], 0.7)}>
@@ -200,7 +281,9 @@ export function DesignPage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {[1, 2, 3].map((n) => (
-                <DropdownMenuItem key={n}>{t("menuItem", { n })}</DropdownMenuItem>
+                <DropdownMenuItem key={n}>
+                  {t("menuItem", { n })}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -238,15 +321,23 @@ export function DesignPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-2 text-sm">
-          {(["success", "warning", "danger", "tension"] as const).map((tone) => (
-            <span
-              key={tone}
-              className={cn("rounded-md px-3 py-1.5 font-medium", tone === "tension" && "hatch")}
-              style={{ background: `var(--${tone}-soft)`, color: `var(--${tone})` }}
-            >
-              {t(`semantic.${tone}`)}
-            </span>
-          ))}
+          {(["success", "warning", "danger", "tension"] as const).map(
+            (tone) => (
+              <span
+                key={tone}
+                className={cn(
+                  "rounded-md px-3 py-1.5 font-medium",
+                  tone === "tension" && "hatch",
+                )}
+                style={{
+                  background: `var(--${tone}-soft)`,
+                  color: `var(--${tone})`,
+                }}
+              >
+                {t(`semantic.${tone}`)}
+              </span>
+            ),
+          )}
         </div>
       </Section>
 
@@ -271,9 +362,18 @@ export function DesignPage() {
         </div>
         <PianoKeys />
         <div className="flex flex-wrap items-center gap-6">
-          <Stepper label={tc("octave")} value={step} min={2} max={6} onChange={setStep} />
+          <Stepper
+            label={tc("octave")}
+            value={step}
+            min={2}
+            max={6}
+            onChange={setStep}
+          />
           <BpmField value={bpm} onChange={setBpm} />
-          <TransportButton playing={playing} onToggle={() => setPlaying((p) => !p)} />
+          <TransportButton
+            playing={playing}
+            onToggle={() => setPlaying((p) => !p)}
+          />
         </div>
       </Section>
     </div>

@@ -19,7 +19,8 @@ export function PaletteView() {
   const t = useTranslations("modules.palette");
 
   useInputNotes({
-    noteOn: ({ note }) => audioEngine.playNote(note, { markSeconds: NOTE_MARK_SECONDS }),
+    noteOn: ({ note }) =>
+      audioEngine.playNote(note, { markSeconds: NOTE_MARK_SECONDS }),
   });
 
   return (
@@ -38,7 +39,21 @@ export function PaletteView() {
         {t.rich("keyboardHint", {
           keys: () => (
             <span className="inline-flex flex-wrap gap-0.5 align-middle">
-              {["A", "W", "S", "E", "D", "F", "T", "G", "Y", "H", "U", "J", "K"].map((k) => (
+              {[
+                "A",
+                "W",
+                "S",
+                "E",
+                "D",
+                "F",
+                "T",
+                "G",
+                "Y",
+                "H",
+                "U",
+                "J",
+                "K",
+              ].map((k) => (
                 <Kbd key={k}>{k}</Kbd>
               ))}
             </span>
@@ -48,7 +63,8 @@ export function PaletteView() {
         })}
       </p>
       <p className="rounded-xl border border-dashed border-border-strong bg-surface/60 p-4 text-sm text-fg-muted">
-        <strong className="font-semibold text-fg">{t("emptyTitle")}.</strong> {t("emptyBody")}
+        <strong className="font-semibold text-fg">{t("emptyTitle")}.</strong>{" "}
+        {t("emptyBody")}
       </p>
     </ModulePage>
   );

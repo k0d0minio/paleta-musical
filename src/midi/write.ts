@@ -2,7 +2,11 @@ import { writeMidi, type MidiEvent } from "midi-file";
 import { TICKS_PER_QUARTER, clampMidi, clampVelocity, type Song } from "./song";
 
 type WithoutDelta<T> = T extends unknown ? Omit<T, "deltaTime"> : never;
-type AbsoluteEvent = { tick: number; order: number; event: WithoutDelta<MidiEvent> };
+type AbsoluteEvent = {
+  tick: number;
+  order: number;
+  event: WithoutDelta<MidiEvent>;
+};
 
 /**
  * Writes a Standard MIDI File, format 0 (one track), 480 ticks per quarter
@@ -11,7 +15,11 @@ type AbsoluteEvent = { tick: number; order: number; event: WithoutDelta<MidiEven
 export function writeSmf(song: Song): Uint8Array {
   const [numerator, denominator] = song.timeSignature;
   const events: AbsoluteEvent[] = [
-    { tick: 0, order: 0, event: { type: "trackName", meta: true, text: song.trackName } },
+    {
+      tick: 0,
+      order: 0,
+      event: { type: "trackName", meta: true, text: song.trackName },
+    },
     {
       tick: 0,
       order: 0,
@@ -48,7 +56,12 @@ export function writeSmf(song: Song): Uint8Array {
     events.push({
       tick: start,
       order: 2,
-      event: { type: "noteOn", channel: 0, noteNumber: midi, velocity: clampVelocity(note.velocity) },
+      event: {
+        type: "noteOn",
+        channel: 0,
+        noteNumber: midi,
+        velocity: clampVelocity(note.velocity),
+      },
     });
     events.push({
       tick: end,

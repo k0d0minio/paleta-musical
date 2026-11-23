@@ -7,14 +7,20 @@ import type { PitchClass } from "@/theory";
  * pitch class only, so a mark re-renders that one note and nothing else.
  */
 const counts: number[] = new Array<number>(12).fill(0);
-const listeners: Set<() => void>[] = Array.from({ length: 12 }, () => new Set());
+const listeners: Set<() => void>[] = Array.from(
+  { length: 12 },
+  () => new Set(),
+);
 const timers = new Set<ReturnType<typeof setTimeout>>();
 
 function notify(pc: PitchClass) {
   for (const listener of listeners[pc] ?? []) listener();
 }
 
-export function markSounding(pcs: readonly PitchClass[], seconds: number): void {
+export function markSounding(
+  pcs: readonly PitchClass[],
+  seconds: number,
+): void {
   const unique = [...new Set(pcs)];
   for (const pc of unique) {
     counts[pc] = (counts[pc] ?? 0) + 1;
@@ -34,7 +40,10 @@ export function isSounding(pc: PitchClass): boolean {
   return (counts[pc] ?? 0) > 0;
 }
 
-export function subscribeSounding(pc: PitchClass, listener: () => void): () => void {
+export function subscribeSounding(
+  pc: PitchClass,
+  listener: () => void,
+): () => void {
   listeners[pc]?.add(listener);
   return () => listeners[pc]?.delete(listener);
 }

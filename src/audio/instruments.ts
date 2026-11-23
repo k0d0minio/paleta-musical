@@ -8,7 +8,13 @@ import { scheduleVoice, type Voice } from "./voice";
  */
 export interface Instrument {
   readonly id: InstrumentId;
-  play(ctx: BaseAudioContext, destination: AudioNode, frequency: number, when: number, shape: VoiceShape): Voice;
+  play(
+    ctx: BaseAudioContext,
+    destination: AudioNode,
+    frequency: number,
+    when: number,
+    shape: VoiceShape,
+  ): Voice;
 }
 
 export const INSTRUMENT_IDS = ["triangle"] as const;
@@ -23,5 +29,8 @@ export const INSTRUMENTS: Record<InstrumentId, Instrument> = {
 };
 
 export function isInstrumentId(value: unknown): value is InstrumentId {
-  return typeof value === "string" && (INSTRUMENT_IDS as readonly string[]).includes(value);
+  return (
+    typeof value === "string" &&
+    (INSTRUMENT_IDS as readonly string[]).includes(value)
+  );
 }

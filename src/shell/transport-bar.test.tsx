@@ -14,17 +14,25 @@ describe("TransportBar", () => {
   it("offers nothing for the last chord before one exists (F022)", () => {
     renderWithProviders(<TransportBar />);
     expect(screen.getByText("Ainda sem acorde")).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Tocar o último acorde" })).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Tocar o último acorde" }),
+    ).toBeNull();
   });
 
   it("shows the last chord and replays it as F023 says", () => {
-    const playChord = vi.spyOn(audioEngine, "playChord").mockImplementation(() => {});
+    const playChord = vi
+      .spyOn(audioEngine, "playChord")
+      .mockImplementation(() => {});
     // A minor, first note A: the others go within the octave above it.
-    useAppStore.getState().setLastChord([9, 0, 4], { root: 9, type: "minor", inversion: 0 });
+    useAppStore
+      .getState()
+      .setLastChord([9, 0, 4], { root: 9, type: "minor", inversion: 0 });
     useAppStore.getState().setOctave(3);
     renderWithProviders(<TransportBar />);
     expect(screen.getByTestId("last-chord").textContent).toContain("A · C · E");
-    fireEvent.click(screen.getByRole("button", { name: "Tocar o último acorde" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tocar o último acorde" }),
+    );
     expect(playChord).toHaveBeenCalledWith(
       [
         { pc: 9, octave: 3 },
@@ -36,10 +44,16 @@ describe("TransportBar", () => {
   });
 
   it("adds the last chord to the timeline", () => {
-    useAppStore.getState().setLastChord([7, 11, 2], { root: 7, type: "major", inversion: 0 });
+    useAppStore
+      .getState()
+      .setLastChord([7, 11, 2], { root: 7, type: "major", inversion: 0 });
     renderWithProviders(<TransportBar />);
-    fireEvent.click(screen.getByRole("button", { name: "Juntar à linha do tempo" }));
-    expect(useAppStore.getState().timeline.items.map((i) => i.chord.root)).toEqual([7]);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Juntar à linha do tempo" }),
+    );
+    expect(
+      useAppStore.getState().timeline.items.map((i) => i.chord.root),
+    ).toEqual([7]);
   });
 
   it("clamps the octave stepper to 2–6", () => {

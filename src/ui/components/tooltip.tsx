@@ -13,9 +13,11 @@ export function Tooltip({
   side = "top",
   className,
   ...props
-}: { content: ReactNode; children: ReactNode; side?: "top" | "right" | "bottom" | "left" } & ComponentProps<
-  typeof TooltipPrimitive.Content
->) {
+}: {
+  content: ReactNode;
+  children: ReactNode;
+  side?: "top" | "right" | "bottom" | "left";
+} & ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
     <TooltipPrimitive.Root>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>

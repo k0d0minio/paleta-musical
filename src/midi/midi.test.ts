@@ -21,7 +21,12 @@ describe("writeSmf", () => {
     expect(parsed.header.numTracks).toBe(1);
     expect(parsed.header.ticksPerBeat).toBe(480);
     const types = parsed.tracks[0]?.map((e) => e.type);
-    expect(types?.slice(0, 4)).toEqual(["trackName", "timeSignature", "setTempo", "programChange"]);
+    expect(types?.slice(0, 4)).toEqual([
+      "trackName",
+      "timeSignature",
+      "setTempo",
+      "programChange",
+    ]);
     expect(types?.at(-1)).toBe("endOfTrack");
   });
 
@@ -30,7 +35,9 @@ describe("writeSmf", () => {
     expect(back.tempoBpm).toBeCloseTo(90, 3);
     expect(back.timeSignature).toEqual([4, 4]);
     expect(back.trackName).toBe("Paleta Musical");
-    expect(back.notes.map((n) => [n.midi, n.startTick, n.durationTicks])).toEqual([
+    expect(
+      back.notes.map((n) => [n.midi, n.startTick, n.durationTicks]),
+    ).toEqual([
       [60, 0, 480],
       [64, 0, 480],
       [60, 480, 240],

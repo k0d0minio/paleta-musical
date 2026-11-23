@@ -5,7 +5,9 @@ import ptPT from "./messages/pt-PT.json";
 
 function keys(obj: unknown, prefix = ""): string[] {
   if (typeof obj !== "object" || obj === null) return [prefix];
-  return Object.entries(obj).flatMap(([k, v]) => keys(v, prefix ? `${prefix}.${k}` : k));
+  return Object.entries(obj).flatMap(([k, v]) =>
+    keys(v, prefix ? `${prefix}.${k}` : k),
+  );
 }
 
 describe("messages", () => {
@@ -20,7 +22,16 @@ describe("messages", () => {
 
   it("uses one PT-PT spelling (U26)", () => {
     const text = JSON.stringify(ptPT);
-    for (const ptBR of ["Harmônica", "Pentatônica", "Selecciona", "detectar", "Tônica", "diatônico", "ônibus", "você"]) {
+    for (const ptBR of [
+      "Harmônica",
+      "Pentatônica",
+      "Selecciona",
+      "detectar",
+      "Tônica",
+      "diatônico",
+      "ônibus",
+      "você",
+    ]) {
       expect(text).not.toContain(ptBR);
     }
     expect(text).toContain("Harmónica");

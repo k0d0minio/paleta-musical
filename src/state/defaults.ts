@@ -1,5 +1,10 @@
 import { OCTAVE_DEFAULT } from "@/theory";
-import { DEFAULT_LOCALE, type LastChord, type ProgressionItem, type Settings } from "./types";
+import {
+  DEFAULT_LOCALE,
+  type LastChord,
+  type ProgressionItem,
+  type Settings,
+} from "./types";
 
 export const DEFAULT_SETTINGS: Settings = {
   locale: DEFAULT_LOCALE,
@@ -32,9 +37,20 @@ export interface PersistedData {
 
 export function defaultData(): PersistedData {
   return {
-    global: { octave: OCTAVE_DEFAULT, lastChord: null, settings: { ...DEFAULT_SETTINGS } },
+    global: {
+      octave: OCTAVE_DEFAULT,
+      lastChord: null,
+      settings: { ...DEFAULT_SETTINGS },
+    },
     timeline: { items: [] },
     builderLine: { items: [] },
-    modules: { palette: {}, progressions: {}, endless: {}, chords: {}, harmony: {}, analyse: {} },
+    modules: {
+      palette: {},
+      progressions: {},
+      endless: {},
+      chords: {},
+      harmony: {},
+      analyse: {},
+    },
   };
 }

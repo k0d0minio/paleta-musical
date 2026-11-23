@@ -19,13 +19,33 @@ export interface StepperProps {
 }
 
 /** A − value + control. The value is announced as it changes. */
-export function Stepper({ label, value, min, max, step = 1, onChange, format, hideLabel, className }: StepperProps) {
+export function Stepper({
+  label,
+  value,
+  min,
+  max,
+  step = 1,
+  onChange,
+  format,
+  hideLabel,
+  className,
+}: StepperProps) {
   const t = useTranslations("controls");
   const id = useId();
   const set = (v: number) => onChange(Math.min(max, Math.max(min, v)));
   return (
-    <div role="group" aria-labelledby={id} className={cn("flex items-center gap-1", className)}>
-      <span id={id} className={cn("mr-1 text-xs font-medium text-fg-muted", hideLabel && "sr-only")}>
+    <div
+      role="group"
+      aria-labelledby={id}
+      className={cn("flex items-center gap-1", className)}
+    >
+      <span
+        id={id}
+        className={cn(
+          "mr-1 text-xs font-medium text-fg-muted",
+          hideLabel && "sr-only",
+        )}
+      >
         {label}
       </span>
       <button
@@ -37,7 +57,10 @@ export function Stepper({ label, value, min, max, step = 1, onChange, format, hi
       >
         <MinusIcon className="size-4" aria-hidden />
       </button>
-      <output aria-live="polite" className="min-w-8 text-center text-base font-semibold tabular">
+      <output
+        aria-live="polite"
+        className="min-w-8 text-center text-base font-semibold tabular"
+      >
         {format ? format(value) : value}
       </output>
       <button

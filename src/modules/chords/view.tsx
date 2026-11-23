@@ -9,7 +9,11 @@ export function ChordsView() {
   const t = useTranslations("modules.chords");
   return (
     <ModulePage title={t("title")} description={t("description")}>
-      <EmptyState icon={PianoIcon} title={t("emptyTitle")} body={t("emptyBody")} />
+      <EmptyState
+        icon={PianoIcon}
+        title={t("emptyTitle")}
+        body={t("emptyBody")}
+      />
     </ModulePage>
   );
 }

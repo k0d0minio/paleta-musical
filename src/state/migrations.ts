@@ -17,14 +17,20 @@ const MIGRATIONS: Record<number, Migration> = {
       global: {
         ...base.global,
         octave: data.octave ?? base.global.octave,
-        settings: { ...base.global.settings, ...(data.settings as object | undefined) },
+        settings: {
+          ...base.global.settings,
+          ...(data.settings as object | undefined),
+        },
       },
     };
   },
 };
 
 /** Runs every migration from `fromVersion` to the current version. */
-export function migrate(persisted: unknown, fromVersion: number): PersistedData {
+export function migrate(
+  persisted: unknown,
+  fromVersion: number,
+): PersistedData {
   let data = (persisted ?? {}) as Record<string, unknown>;
   for (let v = fromVersion; v < SCHEMA_VERSION; v++) {
     const step = MIGRATIONS[v];

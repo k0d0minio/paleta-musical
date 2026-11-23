@@ -28,7 +28,8 @@ export interface KeyboardSourceOptions {
   target?: Window;
 }
 
-const BLOCKING = 'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="dialog"], [role="menu"], [role="listbox"], [role="slider"]';
+const BLOCKING =
+  'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="dialog"], [role="menu"], [role="listbox"], [role="slider"]';
 
 export function isTypingTarget(target: EventTarget | null): boolean {
   return target instanceof Element && target.closest(BLOCKING) !== null;

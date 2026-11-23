@@ -16,7 +16,9 @@ export const VIEW_ROUTES: Readonly<Record<string, string>> = {
 
 export function moduleFromPath(pathname: string): ModuleId | null {
   const segment = pathname.split("/")[1] ?? "";
-  const entry = Object.entries(MODULE_ROUTES).find(([, route]) => route === `/${segment}`);
+  const entry = Object.entries(MODULE_ROUTES).find(
+    ([, route]) => route === `/${segment}`,
+  );
   return (entry?.[0] as ModuleId | undefined) ?? null;
 }
 

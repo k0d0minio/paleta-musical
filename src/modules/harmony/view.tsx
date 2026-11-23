@@ -9,7 +9,11 @@ export function HarmonyView() {
   const t = useTranslations("modules.harmony");
   return (
     <ModulePage title={t("title")} description={t("description")}>
-      <EmptyState icon={Disc3Icon} title={t("emptyTitle")} body={t("emptyBody")} />
+      <EmptyState
+        icon={Disc3Icon}
+        title={t("emptyTitle")}
+        body={t("emptyBody")}
+      />
     </ModulePage>
   );
 }

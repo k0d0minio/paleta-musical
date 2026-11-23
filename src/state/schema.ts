@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { CHORD_TYPE_IDS, OCTAVE_MAX, OCTAVE_MIN, type ChordTypeId, type PitchClass } from "@/theory";
+import {
+  CHORD_TYPE_IDS,
+  OCTAVE_MAX,
+  OCTAVE_MIN,
+  type ChordTypeId,
+  type PitchClass,
+} from "@/theory";
 import { LOCALES, MOTION_SETTINGS, THEMES } from "./types";
 
 const pitchClass = z
@@ -39,7 +45,9 @@ const moduleSlice = z.record(z.string(), z.unknown());
 export const persistedSchema = z.object({
   global: z.object({
     octave: z.number().int().min(OCTAVE_MIN).max(OCTAVE_MAX),
-    lastChord: z.object({ pcs: z.array(pitchClass).min(1), chord: chordRef.nullable() }).nullable(),
+    lastChord: z
+      .object({ pcs: z.array(pitchClass).min(1), chord: chordRef.nullable() })
+      .nullable(),
     settings: settingsSchema,
   }),
   timeline: z.object({ items: z.array(progressionItem) }),

@@ -25,7 +25,11 @@ export function TransportButton({
         className,
       )}
     >
-      {playing ? <SquareIcon className="size-4 fill-current" aria-hidden /> : <PlayIcon className="size-4 fill-current" aria-hidden />}
+      {playing ? (
+        <SquareIcon className="size-4 fill-current" aria-hidden />
+      ) : (
+        <PlayIcon className="size-4 fill-current" aria-hidden />
+      )}
     </button>
   );
 }

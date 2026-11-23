@@ -9,7 +9,11 @@ export function EndlessView() {
   const t = useTranslations("modules.endless");
   return (
     <ModulePage title={t("title")} description={t("description")}>
-      <EmptyState icon={InfinityIcon} title={t("emptyTitle")} body={t("emptyBody")} />
+      <EmptyState
+        icon={InfinityIcon}
+        title={t("emptyTitle")}
+        body={t("emptyBody")}
+      />
     </ModulePage>
   );
 }

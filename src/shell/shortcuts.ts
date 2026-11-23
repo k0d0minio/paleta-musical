@@ -8,7 +8,10 @@ export const GLOBAL_SHORTCUTS = [
 ] as const;
 
 export function isMac(): boolean {
-  return typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent);
+  return (
+    typeof navigator !== "undefined" &&
+    /Mac|iPhone|iPad/.test(navigator.userAgent)
+  );
 }
 
 export function displayKey(key: string): string {

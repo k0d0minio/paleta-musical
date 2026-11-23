@@ -32,13 +32,19 @@ function Navigation({ children }: { children: ReactNode }) {
 
 function Motion({ children }: { children: ReactNode }) {
   const { motion } = useSettings();
-  const reducedMotion = motion === "reduce" ? "always" : motion === "full" ? "never" : "user";
+  const reducedMotion =
+    motion === "reduce" ? "always" : motion === "full" ? "never" : "user";
   return <MotionConfig reducedMotion={reducedMotion}>{children}</MotionConfig>;
 }
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
       <I18nProvider>
         <Motion>
           <TooltipProvider delayDuration={400}>

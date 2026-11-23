@@ -1,13 +1,18 @@
 "use client";
 
-import { memo, type CSSProperties, type MouseEvent, type PointerEvent } from "react";
+import {
+  memo,
+  type CSSProperties,
+  type MouseEvent,
+  type PointerEvent,
+} from "react";
 import { useTranslations } from "next-intl";
 import { useSounding } from "@/audio";
 import { pointerSource } from "@/input/sources/pointer";
 import { useOctave } from "@/state";
 import type { PitchClass } from "@/theory";
 import { cn } from "../cn";
-import { NoteName, useNoteNameText } from "./note-name";
+import { NoteName } from "./note-name";
 
 export interface NoteChipProps {
   pc: PitchClass;
@@ -51,7 +56,6 @@ export const NoteChip = memo(function NoteChip({
   const sounding = useSounding(pc);
   const globalOctave = useOctave();
   const t = useTranslations("notes");
-  const nameText = useNoteNameText();
 
   const trigger = () => {
     if (playsNote) pointerSource.press({ pc, octave: octave ?? globalOctave });
@@ -67,7 +71,9 @@ export const NoteChip = memo(function NoteChip({
     if (event.detail === 0) trigger();
   };
 
-  const extra = [tension && t("tension"), sounding && t("sounding")].filter(Boolean).join(", ");
+  const extra = [tension && t("tension"), sounding && t("sounding")]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <button
@@ -77,7 +83,6 @@ export const NoteChip = memo(function NoteChip({
       data-sounding={sounding}
       data-tension={tension || undefined}
       aria-pressed={selected}
-      aria-label={extra ? `${nameText(pc)} (${extra})` : nameText(pc)}
       tabIndex={tabIndex}
       onPointerDown={onPointerDown}
       onClick={onClick}
@@ -95,7 +100,10 @@ export const NoteChip = memo(function NoteChip({
       )}
     >
       <NoteName pc={pc} stacked className="leading-tight" />
-      {tension && <span aria-hidden className="hatch absolute inset-0 -z-10 rounded-xl" />}
+      {extra && <span className="sr-only"> ({extra})</span>}
+      {tension && (
+        <span aria-hidden className="absolute inset-0 -z-10 rounded-xl hatch" />
+      )}
     </button>
   );
 });

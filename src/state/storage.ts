@@ -11,7 +11,10 @@ export interface SafeStorage extends StateStorage {
   mode(): Promise<"persistent" | "memory">;
 }
 
-export function createSafeStorage(dbName = "paleta-musical", storeName = "state"): SafeStorage {
+export function createSafeStorage(
+  dbName = "paleta-musical",
+  storeName = "state",
+): SafeStorage {
   const memory = new Map<string, string>();
   let store: UseStore | null = null;
   let modePromise: Promise<"persistent" | "memory"> | null = null;
@@ -35,7 +38,8 @@ export function createSafeStorage(dbName = "paleta-musical", storeName = "state"
   return {
     mode,
     async getItem(name) {
-      if ((await mode()) === "memory" || !store) return memory.get(name) ?? null;
+      if ((await mode()) === "memory" || !store)
+        return memory.get(name) ?? null;
       try {
         return (await get<string>(name, store)) ?? null;
       } catch {

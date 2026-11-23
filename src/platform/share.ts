@@ -4,14 +4,23 @@
  */
 export type ShareResult = "shared" | "downloaded" | "cancelled";
 
-export async function shareOrDownload(data: BlobPart, fileName: string, mimeType: string): Promise<ShareResult> {
+export async function shareOrDownload(
+  data: BlobPart,
+  fileName: string,
+  mimeType: string,
+): Promise<ShareResult> {
   const file = new File([data], fileName, { type: mimeType });
-  if (typeof navigator !== "undefined" && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
+  if (
+    typeof navigator !== "undefined" &&
+    typeof navigator.canShare === "function" &&
+    navigator.canShare({ files: [file] })
+  ) {
     try {
       await navigator.share({ files: [file], title: fileName });
       return "shared";
     } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") return "cancelled";
+      if (error instanceof DOMException && error.name === "AbortError")
+        return "cancelled";
       // Fall through to the download.
     }
   }

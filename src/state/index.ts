@@ -2,7 +2,11 @@ export * from "./types";
 export { DEFAULT_SETTINGS, defaultData, type PersistedData } from "./defaults";
 export { SCHEMA_VERSION, migrate } from "./migrations";
 export { persistedSchema, settingsSchema } from "./schema";
-export { blobStorage, createSafeStorage, requestPersistentStorage } from "./storage";
+export {
+  blobStorage,
+  createSafeStorage,
+  requestPersistentStorage,
+} from "./storage";
 export {
   STORAGE_KEY,
   createBackup,

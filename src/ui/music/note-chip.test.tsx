@@ -14,7 +14,8 @@ describe("NoteChip and the sounding bus", () => {
   it("marks only the sounding note and re-renders no other note (F011)", () => {
     vi.useFakeTimers();
     const renders = new Map<PitchClass, number>();
-    const count = (pc: PitchClass) => renders.set(pc, (renders.get(pc) ?? 0) + 1);
+    const count = (pc: PitchClass) =>
+      renders.set(pc, (renders.get(pc) ?? 0) + 1);
     renderWithProviders(
       <div>
         {PITCH_CLASSES.map((pc) => (
@@ -40,7 +41,7 @@ describe("NoteChip and the sounding bus", () => {
 
   it("always shows the note name, not only the colour", () => {
     renderWithProviders(<NoteChip pc={1} />);
-    expect(screen.getByRole("button", { name: /C♯ · Dó♯/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /C♯ Dó♯/ })).toBeTruthy();
     expect(screen.getByText("C♯")).toBeTruthy();
     expect(screen.getByText("Dó♯")).toBeTruthy();
   });

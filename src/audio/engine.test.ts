@@ -6,7 +6,9 @@ import { clearSounding, isSounding } from "./sounding";
 function makeEngine() {
   const ctx = new AudioContextMock();
   const resume = vi.spyOn(ctx, "resume");
-  const engine = new AudioEngine({ createContext: () => ctx as unknown as AudioContext });
+  const engine = new AudioEngine({
+    createContext: () => ctx as unknown as AudioContext,
+  });
   return { ctx, engine, resume };
 }
 

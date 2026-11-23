@@ -5,18 +5,30 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { audioEngine, isInstrumentId, useAudioStatus, useAudioUnlock } from "@/audio";
+import {
+  audioEngine,
+  isInstrumentId,
+  useAudioStatus,
+  useAudioUnlock,
+} from "@/audio";
 import { inputRegistry } from "@/input";
 import { KeyboardSource } from "@/input/sources/keyboard";
 import { pointerSource } from "@/input/sources/pointer";
 import { moduleFromPath, useNavigator } from "@/nav";
 import { hasCapability, isIOS } from "@/platform";
-import { hydrateStore, requestPersistentStorage, useAppStore, useSettings } from "@/state";
+import {
+  hydrateStore,
+  requestPersistentStorage,
+  useAppStore,
+  useSettings,
+} from "@/state";
 import { toast } from "@/ui/components/toaster";
 import { useShellUi } from "./ui-store";
 
 function dialogOpen(): boolean {
-  return document.querySelector('[role="dialog"], [role="alertdialog"]') !== null;
+  return (
+    document.querySelector('[role="dialog"], [role="alertdialog"]') !== null
+  );
 }
 
 /** The side effects of the app: hydration, audio, input sources, theme, motion, route sync and global shortcuts. */
@@ -56,7 +68,8 @@ export function AppRuntime() {
   // Settings → engine, theme and motion.
   useEffect(() => audioEngine.setVolume(settings.volume), [settings.volume]);
   useEffect(() => {
-    if (isInstrumentId(settings.instrument)) audioEngine.setInstrument(settings.instrument);
+    if (isInstrumentId(settings.instrument))
+      audioEngine.setInstrument(settings.instrument);
   }, [settings.instrument]);
   useEffect(() => {
     if (hydrated) setTheme(settings.theme);
@@ -72,7 +85,12 @@ export function AppRuntime() {
 
   // iOS without the audio-session API: a one-time hint about the silent switch.
   useEffect(() => {
-    if (status.state === "running" && !iosHintShown.current && isIOS() && !hasCapability("audioSession")) {
+    if (
+      status.state === "running" &&
+      !iosHintShown.current &&
+      isIOS() &&
+      !hasCapability("audioSession")
+    ) {
       iosHintShown.current = true;
       toast.info(tAudio("silentSwitch"));
     }
@@ -85,13 +103,20 @@ export function AppRuntime() {
 
   // Global shortcuts.
   const ui = useShellUi();
-  useHotkeys("mod+k", () => ui.set({ commandOpen: !ui.commandOpen }), { preventDefault: true, enableOnFormTags: true });
+  useHotkeys("mod+k", () => ui.set({ commandOpen: !ui.commandOpen }), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  });
   useHotkeys("?", () => ui.set({ helpOpen: true }), { useKey: true });
   useHotkeys("escape", () => {
     if (!dialogOpen()) audioEngine.stopAll();
   });
-  useHotkeys("mod+z", () => useAppStore.temporal.getState().undo(), { preventDefault: true });
-  useHotkeys("mod+shift+z", () => useAppStore.temporal.getState().redo(), { preventDefault: true });
+  useHotkeys("mod+z", () => useAppStore.temporal.getState().undo(), {
+    preventDefault: true,
+  });
+  useHotkeys("mod+shift+z", () => useAppStore.temporal.getState().redo(), {
+    preventDefault: true,
+  });
 
   return null;
 }

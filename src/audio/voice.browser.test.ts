@@ -21,7 +21,12 @@ function magnitude(samples: Float32Array, freq: number): number {
   return Math.hypot(re, im);
 }
 
-function peakFrequency(samples: Float32Array, from: number, to: number, step: number): number {
+function peakFrequency(
+  samples: Float32Array,
+  from: number,
+  to: number,
+  step: number,
+): number {
   let best = from;
   let bestMag = -1;
   for (let f = from; f <= to; f += step) {
@@ -45,11 +50,20 @@ function maxAbs(samples: Float32Array, fromSec: number, toSec: number): number {
 describe("R15 synth voice (offline render)", () => {
   it("renders C4 with its peak at 261.6 Hz ± 1 Hz and the R15 envelope", async () => {
     const ctx = new OfflineAudioContext(1, Math.ceil(RATE * 1.6), RATE);
-    scheduleVoice(ctx, ctx.destination, frequency({ pc: 0, octave: 4 }), 0, R15.note);
+    scheduleVoice(
+      ctx,
+      ctx.destination,
+      frequency({ pc: 0, octave: 4 }),
+      0,
+      R15.note,
+    );
     const buffer = await ctx.startRendering();
     const data = buffer.getChannelData(0);
 
-    const window = data.subarray(Math.floor(0.02 * RATE), Math.floor(1.02 * RATE));
+    const window = data.subarray(
+      Math.floor(0.02 * RATE),
+      Math.floor(1.02 * RATE),
+    );
     const peak = peakFrequency(window, 250, 275, 0.05);
     expect(Math.abs(peak - 261.63)).toBeLessThanOrEqual(1);
 
@@ -64,10 +78,17 @@ describe("R15 synth voice (offline render)", () => {
 
   it("plays a note through the engine (master gain and limiter)", async () => {
     const ctx = new OfflineAudioContext(1, RATE, RATE);
-    const engine = new AudioEngine({ createContext: () => ctx as unknown as AudioContext });
+    const engine = new AudioEngine({
+      createContext: () => ctx as unknown as AudioContext,
+    });
     engine.playNote({ pc: 9, octave: 4 });
     const data = (await ctx.startRendering()).getChannelData(0);
-    const peak = peakFrequency(data.subarray(Math.floor(0.02 * RATE), Math.floor(0.82 * RATE)), 430, 450, 0.05);
+    const peak = peakFrequency(
+      data.subarray(Math.floor(0.02 * RATE), Math.floor(0.82 * RATE)),
+      430,
+      450,
+      0.05,
+    );
     expect(Math.abs(peak - 440)).toBeLessThanOrEqual(1);
   });
 

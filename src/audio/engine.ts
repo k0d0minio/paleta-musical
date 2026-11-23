@@ -6,7 +6,8 @@ import { clearSounding, markSounding } from "./sounding";
 import type { Voice } from "./voice";
 import type * as Tone from "tone";
 
-export type AudioState = "locked" | "running" | "suspended" | "unavailable" | "error";
+export type AudioState =
+  "locked" | "running" | "suspended" | "unavailable" | "error";
 
 export interface AudioStatus {
   readonly state: AudioState;
@@ -106,7 +107,11 @@ export class AudioEngine {
   setVolume(volume: number): void {
     this.#volume = Math.min(1, Math.max(0, volume));
     if (this.#ctx && this.#master) {
-      this.#master.gain.setTargetAtTime(this.#volume, this.#ctx.currentTime, 0.02);
+      this.#master.gain.setTargetAtTime(
+        this.#volume,
+        this.#ctx.currentTime,
+        0.02,
+      );
     }
   }
 
@@ -147,7 +152,10 @@ export class AudioEngine {
     let end = 0;
     for (const event of events) {
       const kind = event.kind ?? (event.notes.length > 1 ? "chord" : "note");
-      const shape = { ...(kind === "chord" ? R15.chord : R15.note), ...event.options };
+      const shape = {
+        ...(kind === "chord" ? R15.chord : R15.note),
+        ...event.options,
+      };
       end = Math.max(end, event.at + shape.duration);
       transport.scheduleOnce((time) => {
         this.#play(event.notes, shape, time);
@@ -206,7 +214,13 @@ export class AudioEngine {
     const instrument = INSTRUMENTS[this.#instrument];
     for (const note of notes) {
       try {
-        const voice = instrument.play(ctx, master, frequency(note), start, shape);
+        const voice = instrument.play(
+          ctx,
+          master,
+          frequency(note),
+          start,
+          shape,
+        );
         this.#voices.add(voice);
         void voice.ended.then(() => {
           this.#voices.delete(voice);
@@ -283,12 +297,18 @@ export class AudioEngine {
   }
 
   #updatePlaying(): void {
-    this.#setStatus({ playing: this.#voices.size > 0 || this.#cancelPattern !== null });
+    this.#setStatus({
+      playing: this.#voices.size > 0 || this.#cancelPattern !== null,
+    });
   }
 
   #setStatus(patch: Partial<AudioStatus>): void {
     const next = { ...this.#status, ...patch };
-    if (next.state === this.#status.state && next.playing === this.#status.playing) return;
+    if (
+      next.state === this.#status.state &&
+      next.playing === this.#status.playing
+    )
+      return;
     this.#status = next;
     for (const listener of this.#listeners) listener();
   }

@@ -12,7 +12,11 @@ export function AnalyseView() {
   const goTo = useGoTo();
   return (
     <ModulePage title={t("title")} description={t("description")}>
-      <EmptyState icon={AudioWaveformIcon} title={t("emptyTitle")} body={t("emptyBody")}>
+      <EmptyState
+        icon={AudioWaveformIcon}
+        title={t("emptyTitle")}
+        body={t("emptyBody")}
+      >
         <Button onClick={() => goTo("analyse", { view: "roll" })}>
           <GridIcon aria-hidden />
           {t("openRoll")}
@@ -36,7 +40,11 @@ export function PianoRollView() {
         </Button>
       }
     >
-      <EmptyState icon={GridIcon} title={t("rollEmptyTitle")} body={t("rollEmptyBody")} />
+      <EmptyState
+        icon={GridIcon}
+        title={t("rollEmptyTitle")}
+        body={t("rollEmptyBody")}
+      />
     </ModulePage>
   );
 }

@@ -99,14 +99,26 @@
     "theme": "Tema",
     "themes": { "system": "Sistema", "light": "Claro", "dark": "Escuro" },
     "noteNames": "Nomes das notas",
-    "noteNameStyles": { "letter": "Letras (C D E)", "solfege": "Solfejo (Dó Ré Mi)", "both": "Ambos" },
+    "noteNameStyles": {
+      "letter": "Letras (C D E)",
+      "solfege": "Solfejo (Dó Ré Mi)",
+      "both": "Ambos"
+    },
     "spelling": "Acidentes",
-    "spellings": { "sharps": "Sustenidos (♯)", "flats": "Bemóis (♭)", "key": "Pela tonalidade" },
+    "spellings": {
+      "sharps": "Sustenidos (♯)",
+      "flats": "Bemóis (♭)",
+      "key": "Pela tonalidade"
+    },
     "sound": "Som",
     "instrument": "Instrumento",
     "volume": "Volume principal",
     "motion": "Animações",
-    "motions": { "system": "Sistema", "reduce": "Reduzidas", "full": "Completas" },
+    "motions": {
+      "system": "Sistema",
+      "reduce": "Reduzidas",
+      "full": "Completas"
+    },
     "data": "Os teus dados",
     "backup": "Guardar cópia de segurança",
     "backupDone": "Cópia de segurança guardada",
@@ -257,6 +269,12 @@
     "menuItem": "Opção {n}",
     "tooltip": "Uma dica",
     "toggle": "Alternar",
-    "semantic": { "success": "Sucesso", "warning": "Aviso", "danger": "Perigo", "tension": "Tensão", "accent": "Destaque" }
+    "semantic": {
+      "success": "Sucesso",
+      "warning": "Aviso",
+      "danger": "Perigo",
+      "tension": "Tensão",
+      "accent": "Destaque"
+    }
   }
 }

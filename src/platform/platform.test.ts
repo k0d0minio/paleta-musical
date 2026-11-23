@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CAPABILITIES, detectCapabilities, hasCapability, configureAudioSession } from "./capabilities";
+import {
+  CAPABILITIES,
+  detectCapabilities,
+  hasCapability,
+  configureAudioSession,
+} from "./capabilities";
 import { shareOrDownload } from "./share";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -25,15 +30,21 @@ describe("shareOrDownload", () => {
   it("uses the share sheet when files can be shared", async () => {
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { ...navigator, canShare: () => true, share });
-    await expect(shareOrDownload("x", "a.mid", "audio/midi")).resolves.toBe("shared");
+    await expect(shareOrDownload("x", "a.mid", "audio/midi")).resolves.toBe(
+      "shared",
+    );
     expect(share).toHaveBeenCalledOnce();
   });
 
   it("downloads with an anchor otherwise", async () => {
-    const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+    const click = vi
+      .spyOn(HTMLAnchorElement.prototype, "click")
+      .mockImplementation(() => {});
     URL.createObjectURL = vi.fn(() => "blob:x");
     URL.revokeObjectURL = vi.fn();
-    await expect(shareOrDownload("x", "a.mid", "audio/midi")).resolves.toBe("downloaded");
+    await expect(shareOrDownload("x", "a.mid", "audio/midi")).resolves.toBe(
+      "downloaded",
+    );
     expect(click).toHaveBeenCalledOnce();
   });
 });

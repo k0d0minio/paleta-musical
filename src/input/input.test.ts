@@ -4,8 +4,14 @@ import { KeyboardSource } from "./sources/keyboard";
 import { PointerSource } from "./sources/pointer";
 import type { NoteOnEvent } from "./types";
 
-function press(code: string, init: KeyboardEventInit = {}, target: EventTarget = window) {
-  target.dispatchEvent(new KeyboardEvent("keydown", { code, bubbles: true, ...init }));
+function press(
+  code: string,
+  init: KeyboardEventInit = {},
+  target: EventTarget = window,
+) {
+  target.dispatchEvent(
+    new KeyboardEvent("keydown", { code, bubbles: true, ...init }),
+  );
 }
 function release(code: string) {
   window.dispatchEvent(new KeyboardEvent("keyup", { code, bubbles: true }));
@@ -22,7 +28,10 @@ describe("input registry", () => {
   function setup() {
     const registry = new InputRegistry();
     let octave = 4;
-    const keyboard = new KeyboardSource({ getOctave: () => octave, stepOctave: (d) => (octave += d) });
+    const keyboard = new KeyboardSource({
+      getOctave: () => octave,
+      stepOctave: (d) => (octave += d),
+    });
     const pointer = new PointerSource();
     detach.push(registry.register(keyboard), registry.register(pointer));
     const on = vi.fn<(e: NoteOnEvent) => void>();
@@ -63,7 +72,10 @@ describe("input registry", () => {
     press("KeyS", { ctrlKey: true });
     release("KeyD");
     expect(on).toHaveBeenCalledTimes(1);
-    expect(off).toHaveBeenCalledWith({ sourceId: "keyboard", note: { pc: 4, octave: 4 } });
+    expect(off).toHaveBeenCalledWith({
+      sourceId: "keyboard",
+      note: { pc: 4, octave: 4 },
+    });
   });
 
   it("ignores keys typed into a text field", () => {

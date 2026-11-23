@@ -9,7 +9,17 @@ import { useIsClient } from "@/platform";
 import { useAppStore } from "@/state";
 import { cn } from "@/ui/cn";
 
-function Banner({ tone, icon, children, id }: { tone: "neutral" | "danger" | "warning"; icon: ReactNode; children: ReactNode; id: string }) {
+function Banner({
+  tone,
+  icon,
+  children,
+  id,
+}: {
+  tone: "neutral" | "danger" | "warning";
+  icon: ReactNode;
+  children: ReactNode;
+  id: string;
+}) {
   return (
     <motion.div
       key={id}
@@ -46,7 +56,11 @@ export function Banners() {
     <div role="status" aria-live="polite" className="z-(--z-banner)">
       <AnimatePresence initial={false}>
         {(status.state === "locked" || status.state === "suspended") && (
-          <Banner id="unlock" tone="neutral" icon={<Volume2Icon className="size-4 shrink-0" aria-hidden />}>
+          <Banner
+            id="unlock"
+            tone="neutral"
+            icon={<Volume2Icon className="size-4 shrink-0" aria-hidden />}
+          >
             <span className="flex-1">{t("audio.enable")}</span>
             <button
               type="button"
@@ -58,7 +72,16 @@ export function Banners() {
           </Banner>
         )}
         {status.state === "error" && (
-          <Banner id="error" tone="danger" icon={<AlertTriangleIcon className="size-4 shrink-0 text-danger" aria-hidden />}>
+          <Banner
+            id="error"
+            tone="danger"
+            icon={
+              <AlertTriangleIcon
+                className="size-4 shrink-0 text-danger"
+                aria-hidden
+              />
+            }
+          >
             <span className="flex-1">{t("audio.failed")}</span>
             <button
               type="button"
@@ -70,12 +93,30 @@ export function Banners() {
           </Banner>
         )}
         {status.state === "unavailable" && (
-          <Banner id="unavailable" tone="warning" icon={<AlertTriangleIcon className="size-4 shrink-0 text-warning" aria-hidden />}>
+          <Banner
+            id="unavailable"
+            tone="warning"
+            icon={
+              <AlertTriangleIcon
+                className="size-4 shrink-0 text-warning"
+                aria-hidden
+              />
+            }
+          >
             <span className="flex-1">{t("audio.unavailable")}</span>
           </Banner>
         )}
         {storage === "memory" && (
-          <Banner id="storage" tone="warning" icon={<DatabaseIcon className="size-4 shrink-0 text-warning" aria-hidden />}>
+          <Banner
+            id="storage"
+            tone="warning"
+            icon={
+              <DatabaseIcon
+                className="size-4 shrink-0 text-warning"
+                aria-hidden
+              />
+            }
+          >
             <span className="flex-1">{t("storage.memoryOnly")}</span>
           </Banner>
         )}

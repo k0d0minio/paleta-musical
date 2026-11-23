@@ -1,7 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/components/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/ui/components/dialog";
 import { Kbd } from "@/ui/components/kbd";
 import { MODULES } from "./modules";
 import { GLOBAL_SHORTCUTS, displayKey } from "./shortcuts";
@@ -36,27 +41,40 @@ export function ShortcutHelp() {
           <DialogTitle>{t("shortcuts.title")}</DialogTitle>
         </DialogHeader>
         <section className="flex flex-col gap-1">
-          <h3 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">{t("shortcuts.global")}</h3>
+          <h3 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">
+            {t("shortcuts.global")}
+          </h3>
           <ul>
             {GLOBAL_SHORTCUTS.map((s) => (
-              <Row key={s.labelKey} keys={s.keys} label={t(`shortcuts.${s.labelKey}`)} />
+              <Row
+                key={s.labelKey}
+                keys={s.keys}
+                label={t(`shortcuts.${s.labelKey}`)}
+              />
             ))}
           </ul>
         </section>
         {currentModule && (
           <section className="flex flex-col gap-1">
             <h3 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">
-              {t("shortcuts.module")} · {t(`${currentModule.messageKey}.title` as "modules.palette.title")}
+              {t("shortcuts.module")} ·{" "}
+              {t(
+                `${currentModule.messageKey}.title` as "modules.palette.title",
+              )}
             </h3>
             {currentModule.shortcuts.length === 0 ? (
-              <p className="py-2 text-sm text-fg-muted">{t("shortcuts.none")}</p>
+              <p className="py-2 text-sm text-fg-muted">
+                {t("shortcuts.none")}
+              </p>
             ) : (
               <ul>
                 {currentModule.shortcuts.map((s) => (
                   <Row
                     key={s.labelKey}
                     keys={s.keys.split(" ")}
-                    label={t(`${currentModule.messageKey}.${s.labelKey}` as "modules.palette.shortcutPlay")}
+                    label={t(
+                      `${currentModule.messageKey}.${s.labelKey}` as "modules.palette.shortcutPlay",
+                    )}
                   />
                 ))}
               </ul>

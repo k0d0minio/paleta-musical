@@ -21,7 +21,8 @@ export function readSmf(bytes: Uint8Array): Song {
     tempoBpm: midi.header.tempos[0]?.bpm ?? 120,
     timeSignature: [timeSignature[0] ?? 4, timeSignature[1] ?? 4],
     trackName: namedTrack?.name ?? midi.header.name ?? "",
-    program: midi.tracks.find((t) => t.notes.length > 0)?.instrument.number ?? 0,
+    program:
+      midi.tracks.find((t) => t.notes.length > 0)?.instrument.number ?? 0,
     notes,
   };
 }

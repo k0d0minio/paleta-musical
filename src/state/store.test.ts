@@ -1,7 +1,15 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { defaultData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
-import { STORAGE_KEY, createBackup, hydrateStore, resetAllData, restoreBackup, safeStorage, useAppStore } from "./store";
+import {
+  STORAGE_KEY,
+  createBackup,
+  hydrateStore,
+  resetAllData,
+  restoreBackup,
+  safeStorage,
+  useAppStore,
+} from "./store";
 
 const s = () => useAppStore.getState();
 
@@ -11,7 +19,9 @@ async function writeRaw(state: unknown, version: number) {
 
 beforeEach(async () => {
   await resetAllData();
-  useAppStore.setState((st) => ({ session: { ...st.session, recoveredFromBadData: false } }));
+  useAppStore.setState((st) => ({
+    session: { ...st.session, recoveredFromBadData: false },
+  }));
 });
 
 describe("global slice", () => {
@@ -35,7 +45,11 @@ describe("chord lists", () => {
     expect(s().timeline.items.map((i) => i.chord.root)).toEqual([7, 0]);
     const id = s().timeline.items[0]?.id ?? "";
     a.replace(id, { root: 5, type: "minor", inversion: 1 });
-    expect(s().timeline.items[0]?.chord).toEqual({ root: 5, type: "minor", inversion: 1 });
+    expect(s().timeline.items[0]?.chord).toEqual({
+      root: 5,
+      type: "minor",
+      inversion: 1,
+    });
     a.move(0, 9);
     expect(s().timeline.items).toHaveLength(2);
     a.remove(id);
@@ -44,8 +58,12 @@ describe("chord lists", () => {
   });
 
   it("undoes and redoes list changes", () => {
-    s().builderLineActions.append([{ chord: { root: 2, type: "minor", inversion: 0 } }]);
-    s().builderLineActions.append([{ chord: { root: 7, type: "major", inversion: 0 } }]);
+    s().builderLineActions.append([
+      { chord: { root: 2, type: "minor", inversion: 0 } },
+    ]);
+    s().builderLineActions.append([
+      { chord: { root: 7, type: "major", inversion: 0 } },
+    ]);
     useAppStore.temporal.getState().undo();
     expect(s().builderLine.items).toHaveLength(1);
     useAppStore.temporal.getState().redo();
@@ -93,7 +111,9 @@ describe("persistence", () => {
 describe("backup", () => {
   it("restores what it backed up", () => {
     s().setOctave(3);
-    s().timelineActions.append([{ chord: { root: 9, type: "minor", inversion: 0 } }]);
+    s().timelineActions.append([
+      { chord: { root: 9, type: "minor", inversion: 0 } },
+    ]);
     const file = JSON.parse(JSON.stringify(createBackup()));
     s().setOctave(6);
     s().timelineActions.clear();
@@ -103,12 +123,25 @@ describe("backup", () => {
   });
 
   it("rejects a file that is not a backup or that has bad data", () => {
-    expect(restoreBackup({ hello: 1 })).toEqual({ ok: false, reason: "format" });
+    expect(restoreBackup({ hello: 1 })).toEqual({
+      ok: false,
+      reason: "format",
+    });
     expect(
-      restoreBackup({ app: "paleta-musical", version: SCHEMA_VERSION + 1, exportedAt: "", data: {} }),
+      restoreBackup({
+        app: "paleta-musical",
+        version: SCHEMA_VERSION + 1,
+        exportedAt: "",
+        data: {},
+      }),
     ).toEqual({ ok: false, reason: "version" });
     expect(
-      restoreBackup({ app: "paleta-musical", version: SCHEMA_VERSION, exportedAt: "", data: { global: 1 } }),
+      restoreBackup({
+        app: "paleta-musical",
+        version: SCHEMA_VERSION,
+        exportedAt: "",
+        data: { global: 1 },
+      }),
     ).toEqual({ ok: false, reason: "data" });
   });
 

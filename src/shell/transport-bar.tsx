@@ -1,10 +1,20 @@
 "use client";
 
-import { ListPlusIcon, RotateCcwIcon, SquareIcon, Volume2Icon } from "lucide-react";
+import {
+  ListPlusIcon,
+  RotateCcwIcon,
+  SquareIcon,
+  Volume2Icon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { audioEngine, LAST_CHORD_MARK_SECONDS, useAudioStatus } from "@/audio";
 import { useAppStore, useOctave, useSettings } from "@/state";
-import { OCTAVE_MAX, OCTAVE_MIN, noteLabel, realizeChordInOctave } from "@/theory";
+import {
+  OCTAVE_MAX,
+  OCTAVE_MIN,
+  noteLabel,
+  realizeChordInOctave,
+} from "@/theory";
 import { cn } from "@/ui/cn";
 import { toast } from "@/ui/components/toaster";
 import { Slider } from "@/ui/components/slider";
@@ -16,7 +26,9 @@ import { useShellUi } from "./ui-store";
 export function replayLastChord(): void {
   const { lastChord, octave } = useAppStore.getState().global;
   if (!lastChord) return;
-  audioEngine.playChord(realizeChordInOctave(lastChord.pcs, octave), { markSeconds: LAST_CHORD_MARK_SECONDS });
+  audioEngine.playChord(realizeChordInOctave(lastChord.pcs, octave), {
+    markSeconds: LAST_CHORD_MARK_SECONDS,
+  });
 }
 
 function LastChord() {
@@ -24,17 +36,32 @@ function LastChord() {
   const lastChord = useAppStore((s) => s.global.lastChord);
   const append = useAppStore((s) => s.timelineActions.append);
   if (!lastChord) {
-    return <span className="hidden text-sm text-fg-subtle sm:inline">{t("noLastChord")}</span>;
+    return (
+      <span className="hidden text-sm text-fg-subtle sm:inline">
+        {t("noLastChord")}
+      </span>
+    );
   }
   const chord = lastChord.chord;
   return (
-    <div role="group" aria-label={t("lastChord")} className="flex min-w-0 items-center gap-1">
-      <span className="hidden text-xs font-medium text-fg-muted lg:inline">{t("lastChord")}</span>
-      <span className="flex min-w-0 items-center gap-1 rounded-lg bg-surface-2 px-2 py-1" data-testid="last-chord">
+    <div
+      role="group"
+      aria-label={t("lastChord")}
+      className="flex min-w-0 items-center gap-1"
+    >
+      <span className="hidden text-xs font-medium text-fg-muted lg:inline">
+        {t("lastChord")}
+      </span>
+      <span
+        className="flex min-w-0 items-center gap-1 rounded-lg bg-surface-2 px-2 py-1"
+        data-testid="last-chord"
+      >
         {chord && <ChordName chord={chord} className="mr-1" />}
         {/* F022: the notes of the last chord, with sharp names. */}
         <span className="truncate text-xs text-fg-muted">
-          {lastChord.pcs.map((pc) => noteLabel(pc, "sharps").letter).join(" · ")}
+          {lastChord.pcs
+            .map((pc) => noteLabel(pc, "sharps").letter)
+            .join(" · ")}
         </span>
       </span>
       <Tooltip content={t("replay")}>
@@ -103,10 +130,15 @@ export function TransportBar() {
           aria-label={t("transport.stopAll")}
           className={cn(
             "flex h-11 shrink-0 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors",
-            status.playing ? "bg-accent text-accent-fg" : "text-fg-muted hover:bg-surface-2",
+            status.playing
+              ? "bg-accent text-accent-fg"
+              : "text-fg-muted hover:bg-surface-2",
           )}
         >
-          <SquareIcon className={cn("size-3.5", status.playing && "fill-current")} aria-hidden />
+          <SquareIcon
+            className={cn("size-3.5", status.playing && "fill-current")}
+            aria-hidden
+          />
           <span className="hidden sm:inline">{t("transport.stopAll")}</span>
         </button>
       </Tooltip>

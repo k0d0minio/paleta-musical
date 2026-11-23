@@ -25,7 +25,8 @@ interface AudioSessionLike {
 
 export function getAudioSession(): AudioSessionLike | undefined {
   if (typeof navigator === "undefined") return undefined;
-  return (navigator as Navigator & { audioSession?: AudioSessionLike }).audioSession;
+  return (navigator as Navigator & { audioSession?: AudioSessionLike })
+    .audioSession;
 }
 
 function safe(check: () => boolean): boolean {
@@ -37,22 +38,34 @@ function safe(check: () => boolean): boolean {
 }
 
 const CHECKS: Record<Capability, () => boolean> = {
-  webAudio: () => typeof window !== "undefined" && typeof window.AudioContext === "function",
+  webAudio: () =>
+    typeof window !== "undefined" && typeof window.AudioContext === "function",
   audioWorklet: () =>
     typeof window !== "undefined" &&
     typeof window.AudioContext === "function" &&
     "audioWorklet" in window.AudioContext.prototype,
-  offlineAudio: () => typeof window !== "undefined" && typeof window.OfflineAudioContext === "function",
-  getUserMedia: () => typeof navigator !== "undefined" && !!navigator.mediaDevices?.getUserMedia,
+  offlineAudio: () =>
+    typeof window !== "undefined" &&
+    typeof window.OfflineAudioContext === "function",
+  getUserMedia: () =>
+    typeof navigator !== "undefined" && !!navigator.mediaDevices?.getUserMedia,
   webWorkers: () => typeof Worker === "function",
   indexedDB: () => typeof indexedDB !== "undefined" && indexedDB !== null,
-  storagePersist: () => typeof navigator !== "undefined" && typeof navigator.storage?.persist === "function",
+  storagePersist: () =>
+    typeof navigator !== "undefined" &&
+    typeof navigator.storage?.persist === "function",
   shareFiles: () => {
-    if (typeof navigator === "undefined" || typeof navigator.canShare !== "function") return false;
+    if (
+      typeof navigator === "undefined" ||
+      typeof navigator.canShare !== "function"
+    )
+      return false;
     const probe = new File([""], "probe.mid", { type: "audio/midi" });
     return navigator.canShare({ files: [probe] });
   },
-  finePointer: () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+  finePointer: () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches,
   audioSession: () => getAudioSession() !== undefined,
   webGL: () => {
     if (typeof document === "undefined") return false;
@@ -66,7 +79,9 @@ export function hasCapability(capability: Capability): boolean {
 }
 
 export function detectCapabilities(): Record<Capability, boolean> {
-  return Object.fromEntries(CAPABILITIES.map((c) => [c, hasCapability(c)])) as Record<Capability, boolean>;
+  return Object.fromEntries(
+    CAPABILITIES.map((c) => [c, hasCapability(c)]),
+  ) as Record<Capability, boolean>;
 }
 
 /** iOS and iPadOS (all their browsers are WebKit). */
@@ -74,7 +89,10 @@ export function isIOS(): boolean {
   return safe(() => {
     if (typeof navigator === "undefined") return false;
     const ua = navigator.userAgent;
-    return /iPad|iPhone|iPod/.test(ua) || (ua.includes("Macintosh") && navigator.maxTouchPoints > 1);
+    return (
+      /iPad|iPhone|iPod/.test(ua) ||
+      (ua.includes("Macintosh") && navigator.maxTouchPoints > 1)
+    );
   });
 }
 

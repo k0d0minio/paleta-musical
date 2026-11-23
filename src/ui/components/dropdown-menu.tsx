@@ -7,19 +7,28 @@ import { cn } from "../cn";
 export const DropdownMenu = MenuPrimitive.Root;
 export const DropdownMenuTrigger = MenuPrimitive.Trigger;
 
-export function DropdownMenuContent({ className, ...props }: ComponentProps<typeof MenuPrimitive.Content>) {
+export function DropdownMenuContent({
+  className,
+  ...props
+}: ComponentProps<typeof MenuPrimitive.Content>) {
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Content
         sideOffset={6}
-        className={cn("z-(--z-overlay) min-w-44 rounded-lg border border-border bg-surface p-1 shadow-3", className)}
+        className={cn(
+          "z-(--z-overlay) min-w-44 rounded-lg border border-border bg-surface p-1 shadow-3",
+          className,
+        )}
         {...props}
       />
     </MenuPrimitive.Portal>
   );
 }
 
-export function DropdownMenuItem({ className, ...props }: ComponentProps<typeof MenuPrimitive.Item>) {
+export function DropdownMenuItem({
+  className,
+  ...props
+}: ComponentProps<typeof MenuPrimitive.Item>) {
   return (
     <MenuPrimitive.Item
       className={cn(

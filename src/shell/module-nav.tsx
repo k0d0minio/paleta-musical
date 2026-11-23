@@ -33,17 +33,16 @@ export function NavRail() {
       aria-label={t("app.mainNav")}
       className="sticky top-0 hidden h-dvh w-24 shrink-0 flex-col items-center gap-1 border-r border-border bg-surface px-2 py-4 md:flex"
     >
-      <Link
-        href="/palette"
-        aria-label={t("app.name")}
+      <div
+        aria-hidden
         className="mb-4 grid size-12 place-items-center rounded-2xl"
         style={{
           background:
             "conic-gradient(var(--note-0), var(--note-1), var(--note-2), var(--note-3), var(--note-4), var(--note-5), var(--note-6), var(--note-7), var(--note-8), var(--note-9), var(--note-10), var(--note-11), var(--note-0))",
         }}
       >
-        <span aria-hidden className="size-5 rounded-full bg-surface" />
-      </Link>
+        <span className="size-5 rounded-full bg-surface" />
+      </div>
       <ul className="flex w-full flex-1 flex-col gap-1">
         {MODULES.map((m) => {
           const active = current === m.id;
@@ -66,7 +65,9 @@ export function NavRail() {
                   />
                 )}
                 <Icon className="relative size-5" aria-hidden />
-                <span className="relative">{t(`${m.messageKey}.title` as "modules.palette.title")}</span>
+                <span className="relative">
+                  {t(`${m.messageKey}.title` as "modules.palette.title")}
+                </span>
               </Link>
             </li>
           );
@@ -140,7 +141,9 @@ export function TabBar() {
                 >
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <span className="max-w-full truncate px-0.5">{t(`${m.messageKey}.title` as "modules.palette.title")}</span>
+                <span className="max-w-full truncate px-0.5">
+                  {t(`${m.messageKey}.title` as "modules.palette.title")}
+                </span>
               </Link>
             </li>
           );

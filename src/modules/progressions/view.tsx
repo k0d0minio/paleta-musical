@@ -9,7 +9,11 @@ export function ProgressionsView() {
   const t = useTranslations("modules.progressions");
   return (
     <ModulePage title={t("title")} description={t("description")}>
-      <EmptyState icon={ListMusicIcon} title={t("emptyTitle")} body={t("emptyBody")} />
+      <EmptyState
+        icon={ListMusicIcon}
+        title={t("emptyTitle")}
+        body={t("emptyBody")}
+      />
     </ModulePage>
   );
 }

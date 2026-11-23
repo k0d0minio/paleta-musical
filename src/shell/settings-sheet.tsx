@@ -29,7 +29,13 @@ import { toast } from "@/ui/components/toaster";
 import { SegmentedControl } from "@/ui/components/toggle-group";
 import { useShellUi } from "./ui-store";
 
-function Field({ label, children }: { label: string; children: (labelId: string) => ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: (labelId: string) => ReactNode;
+}) {
   const id = useId();
   return (
     <div className="flex flex-col gap-2">
@@ -44,7 +50,9 @@ function Field({ label, children }: { label: string; children: (labelId: string)
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-5 first:border-t-0 first:pt-0">
-      <h3 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">{title}</h3>
+      <h3 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">
+        {title}
+      </h3>
       {children}
     </section>
   );
@@ -83,7 +91,10 @@ export function SettingsSheet() {
     try {
       const result = restoreBackup(JSON.parse(await file.text()));
       if (result.ok) toast.success(t("restoreDone"));
-      else toast.error(result.reason === "version" ? t("restoreNewer") : t("restoreFailed"));
+      else
+        toast.error(
+          result.reason === "version" ? t("restoreNewer") : t("restoreFailed"),
+        );
     } catch {
       toast.error(t("restoreFailed"));
     } finally {
@@ -113,7 +124,10 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.locale}
                     onValueChange={(locale) => update({ locale })}
-                    options={LOCALES.map((l) => ({ value: l, label: t(`languages.${l}`) }))}
+                    options={LOCALES.map((l) => ({
+                      value: l,
+                      label: t(`languages.${l}`),
+                    }))}
                   />
                 )}
               </Field>
@@ -125,7 +139,10 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.theme}
                     onValueChange={(theme) => update({ theme })}
-                    options={THEMES.map((v) => ({ value: v, label: t(`themes.${v}`) }))}
+                    options={THEMES.map((v) => ({
+                      value: v,
+                      label: t(`themes.${v}`),
+                    }))}
                   />
                 )}
               </Field>
@@ -135,10 +152,12 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.noteNames}
                     onValueChange={(noteNames) => update({ noteNames })}
-                    options={(["letter", "solfege", "both"] as const).map((v) => ({
-                      value: v,
-                      label: t(`noteNameStyles.${v}`),
-                    }))}
+                    options={(["letter", "solfege", "both"] as const).map(
+                      (v) => ({
+                        value: v,
+                        label: t(`noteNameStyles.${v}`),
+                      }),
+                    )}
                   />
                 )}
               </Field>
@@ -148,7 +167,10 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.spelling}
                     onValueChange={(spelling) => update({ spelling })}
-                    options={(["sharps", "flats", "key"] as const).map((v) => ({ value: v, label: t(`spellings.${v}`) }))}
+                    options={(["sharps", "flats", "key"] as const).map((v) => ({
+                      value: v,
+                      label: t(`spellings.${v}`),
+                    }))}
                   />
                 )}
               </Field>
@@ -158,7 +180,10 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.motion}
                     onValueChange={(motion) => update({ motion })}
-                    options={MOTION_SETTINGS.map((v) => ({ value: v, label: t(`motions.${v}`) }))}
+                    options={MOTION_SETTINGS.map((v) => ({
+                      value: v,
+                      label: t(`motions.${v}`),
+                    }))}
                   />
                 )}
               </Field>
@@ -170,7 +195,10 @@ export function SettingsSheet() {
                     aria-labelledby={id}
                     value={settings.instrument}
                     onValueChange={(instrument) => update({ instrument })}
-                    options={INSTRUMENT_IDS.map((v) => ({ value: v, label: tInstr(v) }))}
+                    options={INSTRUMENT_IDS.map((v) => ({
+                      value: v,
+                      label: tInstr(v),
+                    }))}
                   />
                 )}
               </Field>
@@ -188,7 +216,10 @@ export function SettingsSheet() {
             </Section>
             <Section title={t("data")}>
               <p className="text-sm text-fg-muted">
-                {storage === "memory" ? tStorage("memory") : tStorage("persistent")} {tStorage("safariNote")}
+                {storage === "memory"
+                  ? tStorage("memory")
+                  : tStorage("persistent")}{" "}
+                {tStorage("safariNote")}
               </p>
               <div className="flex flex-col gap-2">
                 <Button onClick={backup}>
@@ -209,7 +240,11 @@ export function SettingsSheet() {
                     {t("restore")}
                   </span>
                 </label>
-                <Button variant="ghost" className="text-danger" onClick={() => setConfirmReset(true)}>
+                <Button
+                  variant="ghost"
+                  className="text-danger"
+                  onClick={() => setConfirmReset(true)}
+                >
                   <Trash2Icon aria-hidden />
                   {t("reset")}
                 </Button>
@@ -226,7 +261,9 @@ export function SettingsSheet() {
             <DialogDescription>{t("resetBody")}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={() => setConfirmReset(false)}>{t("cancel")}</Button>
+            <Button onClick={() => setConfirmReset(false)}>
+              {t("cancel")}
+            </Button>
             <Button variant="danger" onClick={() => void reset()}>
               {t("resetConfirm")}
             </Button>

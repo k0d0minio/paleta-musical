@@ -9,7 +9,9 @@ export interface Note {
   readonly octave: number;
 }
 
-export const PITCH_CLASSES: readonly PitchClass[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+export const PITCH_CLASSES: readonly PitchClass[] = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+];
 
 export const OCTAVE_MIN = 2;
 export const OCTAVE_MAX = 6;

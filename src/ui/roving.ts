@@ -6,8 +6,15 @@ import type { KeyboardEvent } from "react";
  * Roving focus for a row or grid of notes: one tab stop, arrow keys move the
  * focus. Put `onKeyDown` on the container and `data-roving` on each item.
  */
-export function rovingKeyDown(event: KeyboardEvent<HTMLElement>, columns?: number): void {
-  const items = [...event.currentTarget.querySelectorAll<HTMLElement>("[data-roving]:not([disabled])")];
+export function rovingKeyDown(
+  event: KeyboardEvent<HTMLElement>,
+  columns?: number,
+): void {
+  const items = [
+    ...event.currentTarget.querySelectorAll<HTMLElement>(
+      "[data-roving]:not([disabled])",
+    ),
+  ];
   const index = items.indexOf(document.activeElement as HTMLElement);
   if (index < 0) return;
   const cols = columns ?? items.length;

@@ -6,7 +6,13 @@ import { defaultData, type PersistedData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
 import { backupSchema, persistedSchema } from "./schema";
 import { blobStorage, createSafeStorage } from "./storage";
-import type { LastChord, ModuleId, ProgressionItem, Settings, StorageStatus } from "./types";
+import type {
+  LastChord,
+  ModuleId,
+  ProgressionItem,
+  Settings,
+  StorageStatus,
+} from "./types";
 
 type ListKey = "timeline" | "builderLine";
 
@@ -63,37 +69,76 @@ export const useAppStore = create<AppState>()(
     temporal(
       (set, get) => {
         const listActions = (key: ListKey): ListActions => {
-          const update = (fn: (items: ProgressionItem[]) => ProgressionItem[]) =>
-            set((s) => ({ [key]: { items: fn([...s[key].items]) } }) as Partial<AppState>);
+          const update = (
+            fn: (items: ProgressionItem[]) => ProgressionItem[],
+          ) =>
+            set(
+              (s) =>
+                ({
+                  [key]: { items: fn([...s[key].items]) },
+                }) as Partial<AppState>,
+            );
           return {
             append: (chords) =>
               update((items) => [
                 ...items,
-                ...chords.map((c) => ({ id: newId(), chord: c.chord, tension: c.tension ?? false })),
+                ...chords.map((c) => ({
+                  id: newId(),
+                  chord: c.chord,
+                  tension: c.tension ?? false,
+                })),
               ]),
             move: (from, to) =>
               update((items) => {
-                if (from < 0 || from >= items.length || to < 0 || to >= items.length) return items;
+                if (
+                  from < 0 ||
+                  from >= items.length ||
+                  to < 0 ||
+                  to >= items.length
+                )
+                  return items;
                 const [item] = items.splice(from, 1);
                 if (item) items.splice(to, 0, item);
                 return items;
               }),
             remove: (id) => update((items) => items.filter((i) => i.id !== id)),
-            replace: (id, chord) => update((items) => items.map((i) => (i.id === id ? { ...i, chord } : i))),
+            replace: (id, chord) =>
+              update((items) =>
+                items.map((i) => (i.id === id ? { ...i, chord } : i)),
+              ),
             clear: () => update(() => []),
           };
         };
 
         return {
           ...defaultData(),
-          session: { currentModule: null, storage: "pending", recoveredFromBadData: false, hydrated: false },
-          setOctave: (octave) => set((s) => ({ global: { ...s.global, octave: clampOctave(octave) } })),
+          session: {
+            currentModule: null,
+            storage: "pending",
+            recoveredFromBadData: false,
+            hydrated: false,
+          },
+          setOctave: (octave) =>
+            set((s) => ({
+              global: { ...s.global, octave: clampOctave(octave) },
+            })),
           stepOctave: (delta) => get().setOctave(get().global.octave + delta),
           setLastChord: (pcs, chord = null) =>
-            set((s) => ({ global: { ...s.global, lastChord: { pcs: [...pcs], chord } satisfies LastChord } })),
+            set((s) => ({
+              global: {
+                ...s.global,
+                lastChord: { pcs: [...pcs], chord } satisfies LastChord,
+              },
+            })),
           updateSettings: (patch) =>
-            set((s) => ({ global: { ...s.global, settings: { ...s.global.settings, ...patch } } })),
-          setCurrentModule: (id) => set((s) => ({ session: { ...s.session, currentModule: id } })),
+            set((s) => ({
+              global: {
+                ...s.global,
+                settings: { ...s.global.settings, ...patch },
+              },
+            })),
+          setCurrentModule: (id) =>
+            set((s) => ({ session: { ...s.session, currentModule: id } })),
           timelineActions: listActions("timeline"),
           builderLineActions: listActions("builderLine"),
           replaceData: (data) => set(() => ({ ...pickData(data) })),
@@ -101,8 +146,12 @@ export const useAppStore = create<AppState>()(
       },
       {
         // Undo/redo covers the chord lists. Tickets 3 and 6 add their slices here.
-        partialize: (s) => ({ timeline: s.timeline, builderLine: s.builderLine }),
-        equality: (a, b) => a.timeline === b.timeline && a.builderLine === b.builderLine,
+        partialize: (s) => ({
+          timeline: s.timeline,
+          builderLine: s.builderLine,
+        }),
+        equality: (a, b) =>
+          a.timeline === b.timeline && a.builderLine === b.builderLine,
         limit: 100,
       },
     ),
@@ -117,7 +166,10 @@ export const useAppStore = create<AppState>()(
         if (persisted === undefined || persisted === null) return current;
         const parsed = persistedSchema.safeParse(persisted);
         if (!parsed.success) {
-          return { ...current, session: { ...current.session, recoveredFromBadData: true } };
+          return {
+            ...current,
+            session: { ...current.session, recoveredFromBadData: true },
+          };
         }
         return { ...current, ...(parsed.data as PersistedData) };
       },
@@ -168,13 +220,15 @@ export function createBackup(now = new Date()): BackupFile {
   };
 }
 
-export type RestoreResult = { ok: true } | { ok: false; reason: "format" | "version" | "data" };
+export type RestoreResult =
+  { ok: true } | { ok: false; reason: "format" | "version" | "data" };
 
 /** Restores a backup: checks the file, runs the migrations, validates, then replaces all data. */
 export function restoreBackup(json: unknown): RestoreResult {
   const envelope = backupSchema.safeParse(json);
   if (!envelope.success) return { ok: false, reason: "format" };
-  if (envelope.data.version > SCHEMA_VERSION) return { ok: false, reason: "version" };
+  if (envelope.data.version > SCHEMA_VERSION)
+    return { ok: false, reason: "version" };
   const migrated = migrate(envelope.data.data, envelope.data.version);
   const parsed = persistedSchema.safeParse(migrated);
   if (!parsed.success) return { ok: false, reason: "data" };

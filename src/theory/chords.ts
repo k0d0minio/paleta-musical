@@ -27,7 +27,12 @@ export const CHORD_TYPES = [
   { id: "halfDim", intervals: [0, 3, 6, 10], symbol: "ø7", tonal: "m7b5" },
   { id: "aug7", intervals: [0, 4, 8, 10], symbol: "+7", tonal: "7#5" },
   { id: "dom7b9", intervals: [0, 4, 7, 10, 13], symbol: "7♭9", tonal: "7b9" },
-  { id: "sharp11", intervals: [0, 4, 6, 10, 18], symbol: "7♭5♯11", tonal: null },
+  {
+    id: "sharp11",
+    intervals: [0, 4, 6, 10, 18],
+    symbol: "7♭5♯11",
+    tonal: null,
+  },
   { id: "dom13", intervals: [0, 4, 7, 10, 14, 21], symbol: "13", tonal: "13" },
   { id: "m11", intervals: [0, 3, 7, 10, 14, 17], symbol: "m11", tonal: "m11" },
   { id: "six", intervals: [0, 4, 7, 9], symbol: "6", tonal: "6" },
@@ -47,10 +52,15 @@ export interface ChordTypeDef {
   readonly tonal: string | null;
 }
 
-export const CHORD_TYPE_IDS: readonly ChordTypeId[] = CHORD_TYPES.map((c) => c.id);
+export const CHORD_TYPE_IDS: readonly ChordTypeId[] = CHORD_TYPES.map(
+  (c) => c.id,
+);
 
 export function isChordTypeId(value: unknown): value is ChordTypeId {
-  return typeof value === "string" && (CHORD_TYPE_IDS as readonly string[]).includes(value);
+  return (
+    typeof value === "string" &&
+    (CHORD_TYPE_IDS as readonly string[]).includes(value)
+  );
 }
 
 export function getChordType(id: ChordTypeId): ChordTypeDef {
@@ -67,7 +77,10 @@ export interface ChordRef {
 }
 
 /** The distinct pitch classes of a chord, root first, in interval order. */
-export function chordPitchClasses(root: PitchClass, type: ChordTypeId): PitchClass[] {
+export function chordPitchClasses(
+  root: PitchClass,
+  type: ChordTypeId,
+): PitchClass[] {
   const out: PitchClass[] = [];
   for (const i of getChordType(type).intervals) {
     const pc = toPitchClass(root + i);

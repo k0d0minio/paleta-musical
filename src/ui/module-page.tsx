@@ -17,10 +17,16 @@ export function ModulePage({
   className?: string;
 }) {
   return (
-    <section aria-labelledby="module-title" className={cn("mx-auto flex w-full max-w-5xl flex-col gap-6", className)}>
+    <section
+      aria-labelledby="module-title"
+      className={cn("mx-auto flex w-full max-w-5xl flex-col gap-6", className)}
+    >
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h1 id="module-title" className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h1
+            id="module-title"
+            className="text-2xl font-semibold tracking-tight sm:text-3xl"
+          >
             {title}
           </h1>
           {description && <p className="text-fg-muted">{description}</p>}

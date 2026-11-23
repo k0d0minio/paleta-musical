@@ -99,9 +99,17 @@
     "theme": "Theme",
     "themes": { "system": "System", "light": "Light", "dark": "Dark" },
     "noteNames": "Note names",
-    "noteNameStyles": { "letter": "Letters (C D E)", "solfege": "Solfège (Dó Ré Mi)", "both": "Both" },
+    "noteNameStyles": {
+      "letter": "Letters (C D E)",
+      "solfege": "Solfège (Dó Ré Mi)",
+      "both": "Both"
+    },
     "spelling": "Accidentals",
-    "spellings": { "sharps": "Sharps (♯)", "flats": "Flats (♭)", "key": "By key" },
+    "spellings": {
+      "sharps": "Sharps (♯)",
+      "flats": "Flats (♭)",
+      "key": "By key"
+    },
     "sound": "Sound",
     "instrument": "Instrument",
     "volume": "Master volume",
@@ -257,6 +265,12 @@
     "menuItem": "Option {n}",
     "tooltip": "A tip",
     "toggle": "Toggle",
-    "semantic": { "success": "Success", "warning": "Warning", "danger": "Danger", "tension": "Tension", "accent": "Accent" }
+    "semantic": {
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Danger",
+      "tension": "Tension",
+      "accent": "Accent"
+    }
   }
 }

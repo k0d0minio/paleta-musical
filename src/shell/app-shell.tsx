@@ -25,7 +25,11 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <MobileHeader />
         <Banners />
-        <main id="main" tabIndex={-1} className="flex-1 overflow-y-auto px-4 py-6 outline-none sm:px-6 md:px-10 md:py-10">
+        <main
+          id="main"
+          tabIndex={-1}
+          className="flex-1 overflow-y-auto px-4 py-6 outline-none sm:px-6 md:px-10 md:py-10"
+        >
           <ModuleBoundary>{children}</ModuleBoundary>
         </main>
         <TransportBar />

@@ -24,7 +24,10 @@ export function SegmentedControl<T extends string>({
       type="single"
       value={value}
       onValueChange={(v) => v && onValueChange(v as T)}
-      className={cn("inline-flex w-full flex-wrap gap-1 rounded-lg bg-surface-2 p-1", className)}
+      className={cn(
+        "inline-flex w-full flex-wrap gap-1 rounded-lg bg-surface-2 p-1",
+        className,
+      )}
       {...props}
     >
       {options.map((o) => (
@@ -40,7 +43,10 @@ export function SegmentedControl<T extends string>({
   );
 }
 
-export function Toggle({ className, ...props }: ComponentProps<typeof ToggleGroupPrimitive.Item>) {
+export function Toggle({
+  className,
+  ...props
+}: ComponentProps<typeof ToggleGroupPrimitive.Item>) {
   return (
     <ToggleGroupPrimitive.Item
       className={cn(
