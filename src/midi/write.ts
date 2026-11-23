@@ -1,7 +1,8 @@
 import { writeMidi, type MidiEvent } from "midi-file";
 import { TICKS_PER_QUARTER, clampMidi, clampVelocity, type Song } from "./song";
 
-type AbsoluteEvent = { tick: number; order: number; event: Omit<MidiEvent, "deltaTime"> };
+type WithoutDelta<T> = T extends unknown ? Omit<T, "deltaTime"> : never;
+type AbsoluteEvent = { tick: number; order: number; event: WithoutDelta<MidiEvent> };
 
 /**
  * Writes a Standard MIDI File, format 0 (one track), 480 ticks per quarter

@@ -1,26 +1,298 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Dark mode follows the class that next-themes sets on <html> (and on any scoped subtree). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Every colour is a CSS variable that the light and dark themes
+ * set. Colour belongs to the notes: the chrome is neutral ink, so that the 12
+ * note colours (F276) are the only strong hues on screen.
+ */
+:root,
+.light {
+  color-scheme: light;
+
+  /* Neutral scale (cool grey) */
+  --neutral-0: #ffffff;
+  --neutral-50: #f6f6f7;
+  --neutral-100: #eceef1;
+  --neutral-200: #dfe2e7;
+  --neutral-300: #c6cad2;
+  --neutral-400: #9aa0ab;
+  --neutral-500: #6f7682;
+  --neutral-600: #555b66;
+  --neutral-700: #3d424b;
+  --neutral-800: #272a31;
+  --neutral-900: #17191e;
+  --neutral-950: #0b0c0f;
+
+  /* Surfaces and text */
+  --bg: var(--neutral-50);
+  --surface: var(--neutral-0);
+  --surface-2: var(--neutral-100);
+  --surface-sunken: #eff0f3;
+  --border: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --fg: var(--neutral-900);
+  --fg-muted: var(--neutral-600);
+  --fg-subtle: var(--neutral-500);
+
+  /* Accent: ink. Primary actions are dark on light. */
+  --accent: var(--neutral-900);
+  --accent-fg: var(--neutral-0);
+  --accent-soft: var(--neutral-100);
+  --focus: #1f6feb;
+
+  /* Semantic */
+  --success: #13804a;
+  --success-soft: #e3f4ea;
+  --warning: #a35c00;
+  --warning-soft: #fdf0dc;
+  --danger: #c4282e;
+  --danger-soft: #fde7e7;
+  /* Tension is not a note colour: a dark wine ink with a hatch pattern. */
+  --tension: #6b1d4f;
+  --tension-soft: #f6e6ef;
+
+  /* Note identity colours (R1 hues, tuned for 3:1 against the light surfaces) */
+  --note-0: #f24e56;
+  --note-1: #ec5900;
+  --note-2: #a08807;
+  --note-3: #5c9802;
+  --note-4: #0b95c0;
+  --note-5: #3186fe;
+  --note-6: #c160de;
+  --note-7: #e84e97;
+  --note-8: #c77603;
+  --note-9: #009e5a;
+  --note-10: #039a97;
+  --note-11: #8574ff;
+  --note-on: #0b0c0f;
+
+  --shadow-color: 220 20% 20%;
+
+  /* Z-index layers (use as z-(--z-modal)) */
+  --z-sticky: 10;
+  --z-nav: 20;
+  --z-banner: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+  --z-tooltip: 70;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --bg: #101216;
+  --surface: #1a1d23;
+  --surface-2: #23272e;
+  --surface-sunken: #0c0e11;
+  --border: #2c3038;
+  --border-strong: #3b404a;
+  --fg: #eef0f3;
+  --fg-muted: #a7adb8;
+  --fg-subtle: #848b97;
+
+  --accent: #eef0f3;
+  --accent-fg: #101216;
+  --accent-soft: #23272e;
+  --focus: #6aa6ff;
+
+  --success: #4cc985;
+  --success-soft: #12271c;
+  --warning: #f0b14a;
+  --warning-soft: #2b2112;
+  --danger: #ff7b7b;
+  --danger-soft: #2e1517;
+  --tension: #f5c6e2;
+  --tension-soft: #2d1a26;
+
+  /* Note identity colours tuned for the dark surfaces */
+  --note-0: #ff7172;
+  --note-1: #ff763b;
+  --note-2: #c0a301;
+  --note-3: #73bc09;
+  --note-4: #03b4e9;
+  --note-5: #68a5ff;
+  --note-6: #d775f4;
+  --note-7: #ff65ab;
+  --note-8: #e98b04;
+  --note-9: #00c471;
+  --note-10: #0ebcb8;
+  --note-11: #9c95ff;
+  --note-on: #0b0c0f;
+
+  --shadow-color: 220 40% 2%;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Colour utilities: bg-surface, text-fg-muted, border-border, bg-note-3… */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-focus: var(--focus);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-tension: var(--tension);
+  --color-tension-soft: var(--tension-soft);
+  --color-note-on: var(--note-on);
+  --color-note-0: var(--note-0);
+  --color-note-1: var(--note-1);
+  --color-note-2: var(--note-2);
+  --color-note-3: var(--note-3);
+  --color-note-4: var(--note-4);
+  --color-note-5: var(--note-5);
+  --color-note-6: var(--note-6);
+  --color-note-7: var(--note-7);
+  --color-note-8: var(--note-8);
+  --color-note-9: var(--note-9);
+  --color-note-10: var(--note-10);
+  --color-note-11: var(--note-11);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Typography: one sans family, one scale (ratio 1.2) */
+  --font-sans: var(--font-app), ui-sans-serif, system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.2rem;
+  --text-lg--line-height: 1.6rem;
+  --text-xl: 1.44rem;
+  --text-xl--line-height: 1.85rem;
+  --text-2xl: 1.728rem;
+  --text-2xl--line-height: 2.1rem;
+  --text-3xl: 2.074rem;
+  --text-3xl--line-height: 2.4rem;
+
+  /* Spacing: 4 px base */
+  --spacing: 0.25rem;
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px hsl(var(--shadow-color) / 0.08), 0 1px 1px hsl(var(--shadow-color) / 0.04);
+  --shadow-2: 0 4px 12px -2px hsl(var(--shadow-color) / 0.12), 0 2px 4px hsl(var(--shadow-color) / 0.06);
+  --shadow-3: 0 16px 40px -8px hsl(var(--shadow-color) / 0.24), 0 6px 12px hsl(var(--shadow-color) / 0.08);
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-note-glow: note-glow 700ms var(--ease-out) both;
+
+  @keyframes note-glow {
+    0% {
+      box-shadow:
+        0 0 0 0 color-mix(in oklab, var(--note) 70%, transparent),
+        0 0 0 0 color-mix(in oklab, var(--note) 40%, transparent);
+      transform: scale(1);
+    }
+    18% {
+      box-shadow:
+        0 0 0 4px color-mix(in oklab, var(--note) 55%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--note) 45%, transparent);
+      transform: scale(1.04);
+    }
+    100% {
+      box-shadow:
+        0 0 0 3px color-mix(in oklab, var(--note) 35%, transparent),
+        0 0 18px 4px color-mix(in oklab, var(--note) 20%, transparent);
+      transform: scale(1);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    min-height: 100dvh;
+  }
+
+  /* F269: every control reacts to a tap at once (no double-tap zoom delay). */
+  button,
+  a,
+  [role="button"],
+  input,
+  label,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  /* One visible focus ring for every control. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--focus) 30%, transparent);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--tension) 22%, transparent) 0 2px,
+    transparent 2px 7px
+  );
+}
+
+/* The sounding-note mark (F011): a short glow in the note colour. */
+[data-sounding="true"] {
+  animation: var(--animate-note-glow);
+}
+
+/* Reduced motion: a static highlight instead of the glow. Follows the system unless the setting overrides it. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) [data-sounding="true"] {
+    animation: none;
+    box-shadow: 0 0 0 3px var(--fg);
+  }
+  :root:not([data-motion="full"]) * {
+    transition-duration: 0ms !important;
+  }
+}
+:root[data-motion="reduce"] [data-sounding="true"] {
+  animation: none;
+  box-shadow: 0 0 0 3px var(--fg);
+}
+:root[data-motion="reduce"] * {
+  transition-duration: 0ms !important;
 }

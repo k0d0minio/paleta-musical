@@ -4,6 +4,7 @@ import { INSTRUMENTS, type InstrumentId } from "./instruments";
 import { NOTE_MARK_SECONDS, R15, type VoiceShape } from "./r15";
 import { clearSounding, markSounding } from "./sounding";
 import type { Voice } from "./voice";
+import type * as Tone from "tone";
 
 export type AudioState = "locked" | "running" | "suspended" | "unavailable" | "error";
 
@@ -31,7 +32,7 @@ export interface EngineOptions {
   readonly createContext?: () => AudioContext;
 }
 
-type ToneModule = typeof import("tone");
+type ToneModule = typeof Tone;
 
 /**
  * The one audio engine (a singleton service). It owns the one AudioContext,
