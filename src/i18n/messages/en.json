@@ -13,7 +13,7 @@
       "title": "Palette",
       "description": "The 12 notes, scales and chords.",
       "emptyTitle": "The full palette is on its way",
-      "emptyBody": "For now, play the 12 notes below or use your computer keyboard.",
+      "emptyBody": "For now, play the 12 notes or use your computer keyboard.",
       "notesLabel": "The 12 notes",
       "keyboardHint": "Computer keyboard: <keys></keys> play one octave; <down></down> and <up></up> change the octave.",
       "shortcutPlay": "Play a note (A W S E D F T G Y H U J K)",

@@ -13,7 +13,7 @@
       "title": "Paleta",
       "description": "As 12 notas, escalas e acordes.",
       "emptyTitle": "A paleta completa está a caminho",
-      "emptyBody": "Por agora, toca nas 12 notas abaixo ou usa o teclado do computador.",
+      "emptyBody": "Por agora, toca nas 12 notas ou usa o teclado do computador.",
       "notesLabel": "As 12 notas",
       "keyboardHint": "Teclado do computador: <keys></keys> tocam uma oitava; <down></down> e <up></up> mudam a oitava.",
       "shortcutPlay": "Tocar uma nota (A W S E D F T G Y H U J K)",
