@@ -26,6 +26,13 @@ export interface PatternEvent {
   readonly notes: readonly Note[];
   readonly kind?: "note" | "chord";
   readonly options?: PlayOptions;
+  /** Runs on the main thread when the event sounds (e.g. to mark the playing chord). */
+  readonly onStart?: () => void;
+}
+
+export interface ScheduleOptions {
+  /** Runs once when the pattern ends, is cancelled, is replaced or stopAll runs. */
+  readonly onEnd?: () => void;
 }
 
 export interface EngineOptions {
@@ -138,9 +145,15 @@ export class AudioEngine {
    * Schedules a pattern on the Tone.js Transport, sample-accurate. A new
    * pattern replaces the one that plays. Returns a function that cancels it.
    */
-  async schedule(events: readonly PatternEvent[]): Promise<() => void> {
+  async schedule(
+    events: readonly PatternEvent[],
+    scheduleOptions: ScheduleOptions = {},
+  ): Promise<() => void> {
     const ctx = this.#ensureContext();
-    if (!ctx || events.length === 0) return () => {};
+    if (!ctx || events.length === 0) {
+      scheduleOptions.onEnd?.();
+      return () => {};
+    }
     this.#cancelPattern?.();
     const Tone = await this.#loadTone(ctx);
     const transport = Tone.getTransport();
@@ -164,16 +177,24 @@ export class AudioEngine {
             event.notes.map((n) => n.pc),
             event.options?.markSeconds ?? shape.duration,
           );
+          event.onStart?.();
         }, time);
       }, event.at);
     }
     transport.scheduleOnce(() => cancel(), end);
 
+    let ended = false;
     const cancel = () => {
-      transport.stop();
-      transport.cancel();
-      if (this.#cancelPattern === cancel) this.#cancelPattern = null;
+      if (this.#cancelPattern === cancel) {
+        transport.stop();
+        transport.cancel();
+        this.#cancelPattern = null;
+      }
       this.#updatePlaying();
+      if (!ended) {
+        ended = true;
+        scheduleOptions.onEnd?.();
+      }
     };
     this.#cancelPattern = cancel;
     this.#resume();

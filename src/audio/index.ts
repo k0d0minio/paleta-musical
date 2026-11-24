@@ -4,6 +4,7 @@ export type {
   AudioStatus,
   PatternEvent,
   PlayOptions,
+  ScheduleOptions,
 } from "./engine";
 export {
   INSTRUMENT_IDS,
@@ -19,3 +20,4 @@ export {
   useSounding,
 } from "./sounding";
 export { useAudioStatus, useAudioUnlock } from "./react";
+export * from "./rhythms";
