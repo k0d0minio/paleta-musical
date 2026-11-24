@@ -1,6 +1,10 @@
 import { temporal } from "zundo";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import {
+  createJSONStorage,
+  persist,
+  type StateStorage,
+} from "zustand/middleware";
 import { clampOctave, type ChordRef, type PitchClass } from "@/theory";
 import { defaultData, type ModuleSlices, type PersistedData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
@@ -58,6 +62,20 @@ export function newId(): string {
 }
 
 export const safeStorage = createSafeStorage();
+
+/**
+ * Persist writes start after the first hydration. zustand's persist writes
+ * on every setState, also before `rehydrate` has read the stored data: a
+ * write of the defaults there (e.g. the route sync sets the current module)
+ * replaced the stored data on each reload.
+ */
+let persistReady = false;
+const persistStorage: StateStorage = {
+  getItem: (name) => safeStorage.getItem(name),
+  setItem: (name, value) =>
+    persistReady ? safeStorage.setItem(name, value) : undefined,
+  removeItem: (name) => safeStorage.removeItem(name),
+};
 
 /** Picks the data that persists (and that a backup holds). */
 export function pickData(state: PersistedData): PersistedData {
@@ -167,7 +185,7 @@ export const useAppStore = create<AppState>()(
     {
       name: STORAGE_KEY,
       version: SCHEMA_VERSION,
-      storage: createJSONStorage(() => safeStorage),
+      storage: createJSONStorage(() => persistStorage),
       skipHydration: true,
       partialize: (s) => pickData(s),
       migrate: (persisted, version) => migrate(persisted, version),
@@ -207,6 +225,9 @@ export async function hydrateStore(): Promise<void> {
   try {
     await useAppStore.persist.rehydrate();
   } finally {
+    persistReady = true;
+    // Writes the merged state once (changes made before hydration included).
+    useAppStore.setState({});
     temporalState.resume();
     temporalState.clear();
   }

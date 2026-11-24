@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
 import {
@@ -73,6 +73,7 @@ describe("chord lists", () => {
 
 describe("persistence", () => {
   it("keeps the octave and the settings after a reload", async () => {
+    await hydrateStore();
     s().setOctave(5);
     s().updateSettings({ locale: "en", noteNames: "solfege" });
     await new Promise((r) => setTimeout(r, 20));
@@ -84,6 +85,26 @@ describe("persistence", () => {
     expect(s().global.octave).toBe(5);
     expect(s().global.settings.locale).toBe("en");
     expect(s().session.storage).toBe("persistent");
+  });
+
+  it("a state change before the first hydration does not replace the stored data", async () => {
+    vi.resetModules();
+    const fresh = await import("./store");
+    const stored = defaultData();
+    stored.timeline.items.push({
+      id: "a",
+      chord: { root: 0, type: "major", inversion: 0 },
+      tension: false,
+    });
+    await fresh.safeStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ state: stored, version: SCHEMA_VERSION }),
+    );
+    // The route sync sets the current module before the stored data loads.
+    fresh.useAppStore.getState().setCurrentModule("progressions");
+    await new Promise((r) => setTimeout(r, 20));
+    await fresh.hydrateStore();
+    expect(fresh.useAppStore.getState().timeline.items).toHaveLength(1);
   });
 
   it("runs migrate for an older schema version", async () => {
