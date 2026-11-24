@@ -1,4 +1,4 @@
-import { AbortError, chromaAggregates, noteStrengths } from "./r16-chroma";
+import { AbortError, R16, chromaAggregates, noteStrengths } from "./r16-chroma";
 import { rankScales, tensionNotes } from "./r17-scales";
 import { chordCandidates } from "./r18-chords";
 import type {
@@ -29,13 +29,13 @@ export function chordStrengths(
     : strengths;
 }
 
-/** Over-time windows: at least 2 s each, at most 64 windows. */
-export const SECTION_MIN_SECONDS = 2;
-export const SECTION_MAX_COUNT = 64;
+/** Over-time windows: at least 1 s each (about one chord), at most 96 windows. */
+export const SECTION_MIN_SECONDS = 1;
+export const SECTION_MAX_COUNT = 96;
 
 /**
  * The windows of the over-time strip: count = round(duration / length) with
- * length = max(2 s, duration / 64), at least 1; the windows split the signal
+ * length = max(1 s, duration / 96), at least 1; the windows split the signal
  * into equal parts. Returns [start, end) in samples.
  */
 export function sectionBounds(
@@ -56,6 +56,22 @@ export function sectionBounds(
     Math.round((i * length) / count),
     Math.round(((i + 1) * length) / count),
   ]);
+}
+
+/**
+ * The samples that a section reads. R16 frames need 32768 samples, more than
+ * a 1 s window at 44.1 kHz, so the frames of a section start inside the
+ * window and read up to one large FFT past its end. At the end of the signal
+ * the span moves back instead.
+ */
+export function sectionSpan(
+  from: number,
+  to: number,
+  total: number,
+): [number, number] {
+  const length = to - from + R16.largeFft;
+  if (from + length <= total) return [from, from + length];
+  return [Math.max(0, total - length), total];
 }
 
 /**
@@ -88,7 +104,7 @@ export async function analyseSignal(
   const sections: Section[] = [];
   for (const [i, [from, to]] of bounds.entries()) {
     if (hooks.signal?.aborted) throw new AbortError();
-    const part = samples.subarray(from, to);
+    const part = samples.subarray(...sectionSpan(from, to, samples.length));
     const c = await chromaAggregates(part, sampleRate, {
       signal: hooks.signal,
       yieldControl: hooks.yieldControl,

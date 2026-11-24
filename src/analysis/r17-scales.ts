@@ -236,7 +236,10 @@ export function tieBreak<
       (pc) => !shared.includes(pc),
     );
     if (own.length === 0) return 0;
-    return own.reduce((s, pc) => s + strengthOf(strengths, pc), 0) / own.length;
+    return (
+      own.reduce<number>((s, pc) => s + strengthOf(strengths, pc), 0) /
+      own.length
+    );
   };
   let winner = sameRoot[0] ?? best;
   for (const c of sameRoot) {

@@ -5,7 +5,7 @@ import {
   heldChord,
   render,
 } from "../../tests/fixtures/audio";
-import { analyseSignal, peaks, sectionBounds } from "./pipeline";
+import { analyseSignal, peaks, sectionBounds, sectionSpan } from "./pipeline";
 import { AbortError } from "./r16-chroma";
 
 describe("the pipeline on synthetic files", () => {
@@ -97,11 +97,26 @@ describe("the pipeline on synthetic files", () => {
 });
 
 describe("sections and peaks", () => {
-  it("splits into windows of at least 2 s, at most 64", () => {
-    expect(sectionBounds(44100 * 8, 44100)).toHaveLength(4);
+  it("splits into windows of at least 1 s, at most 96", () => {
+    expect(sectionBounds(44100 * 8, 44100)).toHaveLength(8);
     expect(sectionBounds(44100 * 1, 44100)).toHaveLength(1);
-    expect(sectionBounds(1000 * 600, 1000)).toHaveLength(64);
+    expect(sectionBounds(1000 * 600, 1000)).toHaveLength(96);
     expect(sectionBounds(0, 44100)).toEqual([]);
+  });
+
+  it("lets a section read one large FFT past its window, or move back at the end", () => {
+    expect(sectionSpan(0, 44100, 441000)).toEqual([0, 44100 + 32768]);
+    expect(sectionSpan(396900, 441000, 441000)).toEqual([
+      441000 - 44100 - 32768,
+      441000,
+    ]);
+  });
+
+  it("gives every 1 s window frames, also at 22.05 kHz", async () => {
+    const sr = 22050;
+    const r = await analyseSignal(render(C_MAJOR, { sampleRate: sr }), sr);
+    expect(r.sections).toHaveLength(8);
+    expect(r.sections.every((s) => s.chord !== null)).toBe(true);
   });
 
   it("gives the maximum absolute value per block", () => {

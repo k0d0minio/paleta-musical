@@ -45,6 +45,7 @@ export {
   chordStrengths,
   peaks,
   sectionBounds,
+  sectionSpan,
 } from "./pipeline";
 export {
   magnitudeAt,
