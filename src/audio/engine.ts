@@ -157,11 +157,11 @@ export class AudioEngine {
     this.#cancelPattern?.();
     const Tone = await this.#loadTone(ctx);
     const transport = Tone.getTransport();
-    const draw = Tone.getDraw();
     transport.stop();
     transport.cancel();
     transport.position = 0;
 
+    const uiTimers = new Set<ReturnType<typeof setTimeout>>();
     let end = 0;
     for (const event of events) {
       const kind = event.kind ?? (event.notes.length > 1 ? "chord" : "note");
@@ -172,19 +172,32 @@ export class AudioEngine {
       end = Math.max(end, event.at + shape.duration);
       transport.scheduleOnce((time) => {
         this.#play(event.notes, shape, time);
-        draw.schedule(() => {
+        // A main-thread timer on the audio clock (Tone's Draw uses
+        // requestAnimationFrame and drops late callbacks in a throttled page).
+        const delay = Math.max(0, (time - ctx.currentTime) * 1000);
+        const timer = setTimeout(() => {
+          uiTimers.delete(timer);
           markSounding(
             event.notes.map((n) => n.pc),
             event.options?.markSeconds ?? shape.duration,
           );
           event.onStart?.();
-        }, time);
+        }, delay);
+        uiTimers.add(timer);
       }, event.at);
     }
-    transport.scheduleOnce(() => cancel(), end);
+    transport.scheduleOnce((time) => {
+      const timer = setTimeout(
+        () => cancel(),
+        Math.max(0, (time - ctx.currentTime) * 1000),
+      );
+      uiTimers.add(timer);
+    }, end);
 
     let ended = false;
     const cancel = () => {
+      for (const timer of uiTimers) clearTimeout(timer);
+      uiTimers.clear();
       if (this.#cancelPattern === cancel) {
         transport.stop();
         transport.cancel();
