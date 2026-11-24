@@ -124,7 +124,7 @@
       "majorKeyLabel": "{key} major, {role}",
       "minorKeyLabel": "{key} minor, relative of {major} major",
       "roles": {
-        "tonic": "active tonic",
+        "tonic": "active tonic (I)",
         "dominant": "dominant (V)",
         "subdominant": "subdominant (IV)",
         "other": "other"

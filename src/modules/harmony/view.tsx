@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useState, type CSSProperties } from "react";
-import { audioEngine } from "@/audio";
+import { audioEngine, useSounding } from "@/audio";
 import { useGoTo } from "@/nav";
 import { useAppStore } from "@/state";
 import {
@@ -181,7 +181,7 @@ function Relations() {
   );
 }
 
-/** Small note chips: colour and name, in the spelling of the key. */
+/** Small note chips: colour and name, in the spelling of the key; sounding notes are marked (F012). */
 function TriadNotes({
   root,
   type,
@@ -191,20 +191,30 @@ function TriadNotes({
   type: "major" | "minor";
   keyTonic: PitchClass;
 }) {
-  const names = useKeyNames();
   return (
     <ul className="flex flex-wrap gap-1.5">
       {chordPitchClasses(root, type).map((pc) => (
-        <li
-          key={pc}
-          data-pc={pc}
-          style={{ "--note": `var(--note-${pc})` } as CSSProperties}
-          className="rounded-md bg-(--note) px-2 py-1 text-sm font-semibold text-note-on"
-        >
-          {names.noteFull(pc, keyTonic)}
-        </li>
+        <TriadNote key={pc} pc={pc} keyTonic={keyTonic} />
       ))}
     </ul>
+  );
+}
+
+function TriadNote({ pc, keyTonic }: { pc: PitchClass; keyTonic: PitchClass }) {
+  const names = useKeyNames();
+  const sounding = useSounding(pc);
+  return (
+    <li
+      data-pc={pc}
+      data-sounding={sounding}
+      style={{ "--note": `var(--note-${pc})` } as CSSProperties}
+      className={cn(
+        "rounded-md bg-(--note) px-2 py-1 text-sm font-semibold text-note-on transition-shadow",
+        sounding && "ring-2 ring-fg ring-offset-2 ring-offset-surface",
+      )}
+    >
+      {names.noteFull(pc, keyTonic)}
+    </li>
   );
 }
 

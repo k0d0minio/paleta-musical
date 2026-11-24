@@ -24,13 +24,15 @@ const INNER = { r1: 66, r2: 116 };
 const STEP = 360 / 12;
 const GAP = 0.9;
 
+/** A point on the circle. Rounded, so server and client render the same text (hydration). */
 function polar(r: number, deg: number): [number, number] {
   const rad = ((deg - 90) * Math.PI) / 180;
-  return [C + r * Math.cos(rad), C + r * Math.sin(rad)];
+  const round = (n: number) => Math.round(n * 100) / 100;
+  return [round(C + r * Math.cos(rad)), round(C + r * Math.sin(rad))];
 }
 
 function fmt([x, y]: [number, number]): string {
-  return `${x.toFixed(2)} ${y.toFixed(2)}`;
+  return `${x} ${y}`;
 }
 
 function sector(r1: number, r2: number, a0: number, a1: number): string {
@@ -224,7 +226,6 @@ export function CircleOfFifths({
         const role = keyRole(tonic, major);
         const isTonic = role === "tonic";
         const [lx, ly] = polar((OUTER.r1 + OUTER.r2) / 2 + 6, angle);
-        const [rx, ry] = polar(OUTER.r1 + 12, angle);
         const path = sector(
           OUTER.r1,
           OUTER.r2,
@@ -281,20 +282,30 @@ export function CircleOfFifths({
             >
               {names.majorLetter(major)}
             </text>
-            {ROMAN[role] && (
-              <text
-                x={rx}
-                y={ry}
-                textAnchor="middle"
-                dominantBaseline="central"
-                className="pointer-events-none fill-note-on text-[11px] font-semibold"
-              >
-                {ROMAN[role]}
-              </text>
-            )}
           </g>
         );
       })}
+
+      {/* Roman numerals of I, V, IV: outside the buttons (their names say the role). */}
+      <g aria-hidden className="pointer-events-none">
+        {CIRCLE_OF_FIFTHS.map((major, i) => {
+          const numeral = ROMAN[keyRole(tonic, major)];
+          if (!numeral) return null;
+          const [rx, ry] = polar(OUTER.r1 + 12, i * STEP);
+          return (
+            <text
+              key={major}
+              x={rx}
+              y={ry}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="fill-note-on text-[11px] font-semibold"
+            >
+              {numeral}
+            </text>
+          );
+        })}
+      </g>
 
       {/* F189: dominant → tonic, subdominant → tonic, tonic → relative minor. */}
       <g aria-hidden className="pointer-events-none">

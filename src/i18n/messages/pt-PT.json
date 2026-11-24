@@ -124,7 +124,7 @@
       "majorKeyLabel": "{key} Maior, {role}",
       "minorKeyLabel": "{key} menor, relativa de {major} Maior",
       "roles": {
-        "tonic": "tónica ativa",
+        "tonic": "tónica ativa (I)",
         "dominant": "dominante (V)",
         "subdominant": "subdominante (IV)",
         "other": "outra"
