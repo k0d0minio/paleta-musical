@@ -4,7 +4,6 @@ import {
   QUEUE_REFILL_COUNT,
   QUEUE_START,
   effectiveScale,
-  generateChord,
   generateChords,
   getChordType,
   getScale,
@@ -18,9 +17,17 @@ import {
   weightedIndex,
   type EndlessContext,
   type GeneratedChord,
+  type Note,
 } from ".";
 
 const SEED = 20261124;
+
+/** How often each index 0…n−1 occurs. */
+function tally(indices: readonly number[], n: number): number[] {
+  const out = new Array<number>(n).fill(0);
+  for (const i of indices) out[i] = (out[i] ?? 0) + 1;
+  return out;
+}
 const DRAWS = 40_000;
 
 describe("seeded random (mulberry32)", () => {
@@ -43,10 +50,12 @@ describe("seeded random (mulberry32)", () => {
 
   it("draws indices in proportion to their weights", () => {
     const random = mulberry32(SEED);
-    const counts = [0, 0, 0];
-    for (let i = 0; i < DRAWS; i++) counts[weightedIndex([1, 2, 1], random)]!++;
-    expect(counts[0]! / DRAWS).toBeCloseTo(0.25, 1);
-    expect(counts[1]! / DRAWS).toBeCloseTo(0.5, 1);
+    const counts = tally(
+      Array.from({ length: DRAWS }, () => weightedIndex([1, 2, 1], random)),
+      3,
+    );
+    expect((counts[0] ?? 0) / DRAWS).toBeCloseTo(0.25, 1);
+    expect((counts[1] ?? 0) / DRAWS).toBeCloseTo(0.5, 1);
   });
 });
 
@@ -105,16 +114,20 @@ describe("R13 chord rule with a fixed seed", () => {
         Math.min(8, scale.intervals.length),
       );
       const total = weights.reduce((a, b) => a + b, 0);
-      const counts = new Array<number>(weights.length).fill(0);
-      for (const c of chords) counts[c.degree]!++;
+      const counts = tally(
+        chords.map((c) => c.degree),
+        weights.length,
+      );
       weights.forEach((w, d) =>
-        expect(Math.abs(counts[d]! / DRAWS - w / total)).toBeLessThan(0.01),
+        expect(Math.abs((counts[d] ?? 0) / DRAWS - w / total)).toBeLessThan(
+          0.01,
+        ),
       );
 
       // The root is the degree of the effective scale on the key.
       for (const c of chords.slice(0, 200)) {
         expect(c.chord.root).toBe(
-          toPitchClass(context.key + scale.intervals[c.degree]!),
+          toPitchClass(context.key + (scale.intervals[c.degree] ?? NaN)),
         );
       }
 
@@ -198,8 +211,8 @@ describe("smooth voicing", () => {
       random,
       64,
     );
-    let previous = smoothVoicing(null, chords[0]!.chord, 4).notes;
-    for (const c of chords.slice(1)) {
+    let previous: Note[] | null = null;
+    for (const c of chords) {
       const voiced = smoothVoicing(previous, c.chord, 4);
       const midis = voiced.notes.map(toMidi);
       const mean = midis.reduce((a, b) => a + b, 0) / midis.length;

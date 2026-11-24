@@ -15,6 +15,7 @@ import {
   neighbourChords,
   oneFourFiveOne,
   relativeMinor,
+  spellInMajorKey,
   subdominantOf,
   twoFiveOne,
   type PitchClass,
@@ -186,5 +187,16 @@ describe("Harmonia chords", () => {
     const iiVI = twoFiveOne(2);
     expect(names(iiVI)).toEqual(["4:minor", "9:dom7", "2:major"]);
     expect(iiVI.map((c) => c.tension ?? false)).toEqual([false, true, false]);
+  });
+});
+
+describe("spelling in a key of the circle", () => {
+  it("spells notes as the key's scale does with 'by key' spelling", () => {
+    expect(spellInMajorKey(5, 1, "key")).toBe("E♯");
+    expect(spellInMajorKey(1, 8, "key")).toBe("D♭");
+    expect(spellInMajorKey(6, 0, "key")).toBe("F♯");
+    expect(spellInMajorKey(10, 5, "key")).toBe("B♭");
+    expect(spellInMajorKey(1, 8, "sharps")).toBe("C♯");
+    expect(spellInMajorKey(6, 0, "flats")).toBe("G♭");
   });
 });

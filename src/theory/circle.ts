@@ -1,3 +1,4 @@
+import { Note as TonalNote, Scale } from "tonal";
 import { type ChordRef, type ChordTypeId } from "./chords";
 import { FLAT_LETTERS, SHARP_LETTERS, type Spelling } from "./names";
 import { toPitchClass, type PitchClass } from "./pitch";
@@ -84,6 +85,31 @@ export function minorKeyName(minor: PitchClass, spelling: Spelling): string {
   return R14_SIGNATURES[relativeMajor(minor)].accidental === "flat"
     ? FLAT_LETTERS[minor]
     : SHARP_LETTERS[minor];
+}
+
+/**
+ * The name of a note in the major key shown on the circle ("key" spelling):
+ * the scale spelling of that key (E♯ in C♯ major), else the key's accidental.
+ * Other spellings give plain sharps or flats.
+ */
+export function spellInMajorKey(
+  pc: PitchClass,
+  major: PitchClass,
+  spelling: Spelling,
+): string {
+  if (spelling === "flats") return FLAT_LETTERS[pc];
+  if (spelling === "sharps") return SHARP_LETTERS[pc];
+  const tonic = majorKeyName(major, "key").replace("♯", "#").replace("♭", "b");
+  const match = Scale.get(`${tonic} major`).notes.find(
+    (n) => TonalNote.chroma(n) === pc,
+  );
+  if (match)
+    return (
+      match.charAt(0) + match.slice(1).replace(/#/g, "♯").replace(/b/g, "♭")
+    );
+  return R14_SIGNATURES[major].accidental === "flat"
+    ? FLAT_LETTERS[pc]
+    : SHARP_LETTERS[pc];
 }
 
 export interface SpelledSignature extends KeySignature {
