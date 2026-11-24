@@ -9,7 +9,7 @@ export interface ChordMatch {
   /** True when the chord's pitch classes equal the selection. */
   readonly exact: boolean;
   /** The chord's distinct pitch classes, root first, in interval order. */
-  readonly pcs: readonly PitchClass[];
+  readonly pcs: PitchClass[];
 }
 
 /**
@@ -58,7 +58,7 @@ export function detectChords(selection: readonly PitchClass[]): ChordMatch[] {
 }
 
 /** The inversion of a chord type that puts `bass` lowest (0 when `bass` is not a chord note). */
-export function inversionForBass(
+function bassInversion(
   root: PitchClass,
   type: ChordTypeId,
   bass: PitchClass,
@@ -86,6 +86,6 @@ export function nameNotes(
     root: best.root,
     type: best.type,
     inversion:
-      bass === undefined ? 0 : inversionForBass(best.root, best.type, bass),
+      bass === undefined ? 0 : bassInversion(best.root, best.type, bass),
   };
 }
