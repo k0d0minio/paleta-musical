@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { useSounding } from "@/audio";
 import { pointerSource } from "@/input/sources/pointer";
 import { useOctave } from "@/state";
-import type { PitchClass } from "@/theory";
+import type { KeyContext, PitchClass } from "@/theory";
 import { cn } from "../cn";
 import { NoteName } from "./note-name";
 
@@ -25,6 +25,8 @@ export interface NoteChipProps {
   /** Muted: the note is outside the current set. */
   dimmed?: boolean;
   size?: "sm" | "md" | "lg";
+  /** Spells the name in this key when the spelling setting is "key". */
+  keyContext?: KeyContext;
   /** Plays through the pointer input source (default true). */
   playsNote?: boolean;
   onPress?: (pc: PitchClass) => void;
@@ -46,6 +48,7 @@ export const NoteChip = memo(function NoteChip({
   tension = false,
   dimmed = false,
   size = "md",
+  keyContext,
   playsNote = true,
   onPress,
   tabIndex,
@@ -99,7 +102,12 @@ export const NoteChip = memo(function NoteChip({
         className,
       )}
     >
-      <NoteName pc={pc} stacked className="leading-tight" />
+      <NoteName
+        pc={pc}
+        stacked
+        keyContext={keyContext}
+        className="leading-tight"
+      />
       {extra && <span className="sr-only"> ({extra})</span>}
       {tension && (
         <span aria-hidden className="absolute inset-0 -z-10 rounded-xl hatch" />
