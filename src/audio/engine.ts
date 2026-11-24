@@ -26,6 +26,13 @@ export interface PatternEvent {
   readonly notes: readonly Note[];
   readonly kind?: "note" | "chord";
   readonly options?: PlayOptions;
+  /** Runs on the main thread when the event sounds (e.g. to mark the playing chord). */
+  readonly onStart?: () => void;
+}
+
+export interface ScheduleOptions {
+  /** Runs once when the pattern ends, is cancelled, is replaced or stopAll runs. */
+  readonly onEnd?: () => void;
 }
 
 export interface EngineOptions {
@@ -119,6 +126,18 @@ export class AudioEngine {
     this.#instrument = id;
   }
 
+  /**
+   * The master input (master gain, limiter, speakers) for a module that builds
+   * its own graph (the synth). Call it inside a gesture: it creates or resumes
+   * the context. Null without audio.
+   */
+  moduleOutput(): { ctx: AudioContext; destination: AudioNode } | null {
+    const ctx = this.#ensureContext();
+    if (!ctx || !this.#master) return null;
+    this.#resume();
+    return { ctx, destination: this.#master };
+  }
+
   /** Plays one note (F007, R15 note values). */
   playNote(note: Note, options: PlayOptions = {}): void {
     markSounding([note.pc], options.markSeconds ?? NOTE_MARK_SECONDS);
@@ -138,17 +157,23 @@ export class AudioEngine {
    * Schedules a pattern on the Tone.js Transport, sample-accurate. A new
    * pattern replaces the one that plays. Returns a function that cancels it.
    */
-  async schedule(events: readonly PatternEvent[]): Promise<() => void> {
+  async schedule(
+    events: readonly PatternEvent[],
+    scheduleOptions: ScheduleOptions = {},
+  ): Promise<() => void> {
     const ctx = this.#ensureContext();
-    if (!ctx || events.length === 0) return () => {};
+    if (!ctx || events.length === 0) {
+      scheduleOptions.onEnd?.();
+      return () => {};
+    }
     this.#cancelPattern?.();
     const Tone = await this.#loadTone(ctx);
     const transport = Tone.getTransport();
-    const draw = Tone.getDraw();
     transport.stop();
     transport.cancel();
     transport.position = 0;
 
+    const uiTimers = new Set<ReturnType<typeof setTimeout>>();
     let end = 0;
     for (const event of events) {
       const kind = event.kind ?? (event.notes.length > 1 ? "chord" : "note");
@@ -159,21 +184,42 @@ export class AudioEngine {
       end = Math.max(end, event.at + shape.duration);
       transport.scheduleOnce((time) => {
         this.#play(event.notes, shape, time);
-        draw.schedule(() => {
+        // A main-thread timer on the audio clock (Tone's Draw uses
+        // requestAnimationFrame and drops late callbacks in a throttled page).
+        const delay = Math.max(0, (time - ctx.currentTime) * 1000);
+        const timer = setTimeout(() => {
+          uiTimers.delete(timer);
           markSounding(
             event.notes.map((n) => n.pc),
             event.options?.markSeconds ?? shape.duration,
           );
-        }, time);
+          event.onStart?.();
+        }, delay);
+        uiTimers.add(timer);
       }, event.at);
     }
-    transport.scheduleOnce(() => cancel(), end);
+    transport.scheduleOnce((time) => {
+      const timer = setTimeout(
+        () => cancel(),
+        Math.max(0, (time - ctx.currentTime) * 1000),
+      );
+      uiTimers.add(timer);
+    }, end);
 
+    let ended = false;
     const cancel = () => {
-      transport.stop();
-      transport.cancel();
-      if (this.#cancelPattern === cancel) this.#cancelPattern = null;
+      for (const timer of uiTimers) clearTimeout(timer);
+      uiTimers.clear();
+      if (this.#cancelPattern === cancel) {
+        transport.stop();
+        transport.cancel();
+        this.#cancelPattern = null;
+      }
       this.#updatePlaying();
+      if (!ended) {
+        ended = true;
+        scheduleOptions.onEnd?.();
+      }
     };
     this.#cancelPattern = cancel;
     this.#resume();

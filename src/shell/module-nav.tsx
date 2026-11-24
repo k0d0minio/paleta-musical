@@ -119,7 +119,7 @@ export function TabBar() {
       aria-label={t("app.mainNav")}
       className="border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
     >
-      <ul className="grid grid-cols-6">
+      <ul className="grid auto-cols-fr grid-flow-col">
         {MODULES.map((m) => {
           const active = current === m.id;
           const Icon = m.icon;

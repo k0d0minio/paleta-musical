@@ -12,6 +12,7 @@ import { useAppStore, useOctave, useSettings } from "@/state";
 import {
   OCTAVE_MAX,
   OCTAVE_MIN,
+  nameNotes,
   noteLabel,
   realizeChordInOctave,
 } from "@/theory";
@@ -42,7 +43,8 @@ function LastChord() {
       </span>
     );
   }
-  const chord = lastChord.chord;
+  // U09: a last chord without a chord reference is named with R10 detection.
+  const chord = lastChord.chord ?? nameNotes(lastChord.pcs);
   return (
     <div
       role="group"
@@ -56,7 +58,11 @@ function LastChord() {
         className="flex min-w-0 items-center gap-1 rounded-lg bg-surface-2 px-2 py-1"
         data-testid="last-chord"
       >
-        {chord && <ChordName chord={chord} className="mr-1" />}
+        {chord ? (
+          <ChordName chord={chord} className="mr-1" />
+        ) : (
+          <span className="mr-1 font-semibold">?</span>
+        )}
         {/* F022: the notes of the last chord, with sharp names. */}
         <span className="truncate text-xs text-fg-muted">
           {lastChord.pcs

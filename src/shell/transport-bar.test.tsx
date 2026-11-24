@@ -56,6 +56,20 @@ describe("TransportBar", () => {
     ).toEqual([7]);
   });
 
+  it("U09: names a last chord without a chord reference with R10 and adds a valid chord", () => {
+    // E G C: C major, first inversion (old: "E?" with type "?").
+    useAppStore.getState().setLastChord([4, 7, 0], null);
+    renderWithProviders(<TransportBar />);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Juntar à linha do tempo" }),
+    );
+    expect(useAppStore.getState().timeline.items[0]?.chord).toEqual({
+      root: 0,
+      type: "major",
+      inversion: 1,
+    });
+  });
+
   it("clamps the octave stepper to 2–6", () => {
     renderWithProviders(<TransportBar />);
     const up = screen.getByRole("button", { name: "Aumentar Oitava" });

@@ -8,7 +8,7 @@ import type {
 
 export type { ChordRef, Note, PitchClass };
 
-/** The six modules. `/analyse/roll` is a view of the analyse module. */
+/** The seven modules. `/analyse/roll` is a view of the analyse module. */
 export const MODULE_IDS = [
   "palette",
   "progressions",
@@ -16,6 +16,7 @@ export const MODULE_IDS = [
   "chords",
   "harmony",
   "analyse",
+  "synth",
 ] as const;
 export type ModuleId = (typeof MODULE_IDS)[number];
 

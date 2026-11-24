@@ -17,14 +17,26 @@ export interface Instrument {
   ): Voice;
 }
 
-export const INSTRUMENT_IDS = ["triangle"] as const;
+export const INSTRUMENT_IDS = ["triangle", "synth"] as const;
 export type InstrumentId = (typeof INSTRUMENT_IDS)[number];
 
+type PlayFn = Instrument["play"];
+
+const playTriangle: PlayFn = (ctx, destination, frequency, when, shape) =>
+  scheduleVoice(ctx, destination, frequency, when, shape, R15.oscillator);
+
+/** The Sintetizador sound (JAM-557). The synth installs its player; until then, the triangle plays. */
+let synthPlayer: PlayFn | null = null;
+
+export function setSynthPlayer(play: PlayFn): void {
+  synthPlayer = play;
+}
+
 export const INSTRUMENTS: Record<InstrumentId, Instrument> = {
-  triangle: {
-    id: "triangle",
-    play: (ctx, destination, frequency, when, shape) =>
-      scheduleVoice(ctx, destination, frequency, when, shape, R15.oscillator),
+  triangle: { id: "triangle", play: playTriangle },
+  synth: {
+    id: "synth",
+    play: (...args) => (synthPlayer ?? playTriangle)(...args),
   },
 };
 

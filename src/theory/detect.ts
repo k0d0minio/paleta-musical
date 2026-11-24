@@ -1,60 +1,91 @@
-import { CHORD_TYPES, chordPitchClasses, type ChordTypeId } from "./chords";
+import { CHORD_TYPES, type ChordRef, type ChordTypeId } from "./chords";
+import { toPitchClass, type PitchClass } from "./pitch";
 import { SHARP_LETTERS } from "./names";
-import { PITCH_CLASSES, toPitchClass, type PitchClass } from "./pitch";
 
-/** One R10 result: a chord type on a root that holds every selected note. */
+/** One R10 result: a chord whose pitch classes hold every selected note. */
 export interface ChordMatch {
   readonly root: PitchClass;
   readonly type: ChordTypeId;
-  /** True when the chord pitch classes equal the selection. */
+  /** True when the chord's pitch classes equal the selection. */
   readonly exact: boolean;
-  /** The distinct pitch classes of the chord, root first. */
+  /** The chord's distinct pitch classes, root first, in interval order. */
   readonly pcs: PitchClass[];
 }
 
-/** Sharp letter names in ASCII, for the alphabetical root order of R10. */
-const ROOT_SORT_NAMES = SHARP_LETTERS.map((n) => n.replace("♯", "#"));
-
-function distinct(notes: readonly PitchClass[]): PitchClass[] {
-  return [...new Set(notes.map((n) => toPitchClass(n)))];
-}
-
 /**
- * R10 chord detection (Acordes module and the builder Detetar mode).
- * - Needs 2 or more distinct notes; else the result is empty.
- * - For each chord type (R4) and each root: every selected note must be a
- *   chord pitch class. Exact: the chord pitch classes equal the selection.
- *   Partial: not exact, and the type has more intervals than the selection
- *   has notes.
- * - Order: exact before partial, then fewer intervals first, then the root
- *   name alphabetically (C♯ sorts as "C#"), then the R4 order.
+ * R10: chord detection from notes. Needs 2 or more notes. For every chord
+ * type and every root, every selected note must be a chord note. Exact: the
+ * chord notes equal the selection. Partial: not exact, and the chord has more
+ * intervals than there are selected notes. Order: exact first, then fewer
+ * intervals, then the root name A–Z.
  */
-export function detectChords(notes: readonly PitchClass[]): ChordMatch[] {
-  const selection = distinct(notes);
-  if (selection.length < 2) return [];
-  const out: (ChordMatch & { intervals: number; order: number })[] = [];
-  CHORD_TYPES.forEach((type, order) => {
-    for (const root of PITCH_CLASSES) {
-      const pcs = chordPitchClasses(root, type.id);
-      if (!selection.every((n) => pcs.includes(n))) continue;
-      const exact = pcs.length === selection.length;
-      if (!exact && type.intervals.length <= selection.length) continue;
+export function detectChords(selection: readonly PitchClass[]): ChordMatch[] {
+  const selected = [...new Set(selection.map(toPitchClass))];
+  if (selected.length < 2) return [];
+  const out: (ChordMatch & { size: number })[] = [];
+  for (const type of CHORD_TYPES) {
+    for (let r = 0; r < 12; r++) {
+      const root = r as PitchClass;
+      const pcs: PitchClass[] = [];
+      for (const iv of type.intervals) {
+        const pc = toPitchClass(root + iv);
+        if (!pcs.includes(pc)) pcs.push(pc);
+      }
+      if (!selected.every((pc) => pcs.includes(pc))) continue;
+      const exact = pcs.length === selected.length;
+      if (!exact && type.intervals.length <= selected.length) continue;
       out.push({
         root,
         type: type.id,
         exact,
         pcs,
-        intervals: type.intervals.length,
-        order,
+        size: type.intervals.length,
       });
     }
-  });
+  }
   out.sort(
     (a, b) =>
       Number(b.exact) - Number(a.exact) ||
-      a.intervals - b.intervals ||
-      ROOT_SORT_NAMES[a.root].localeCompare(ROOT_SORT_NAMES[b.root], "en") ||
-      a.order - b.order,
+      a.size - b.size ||
+      SHARP_LETTERS[a.root].localeCompare(SHARP_LETTERS[b.root]),
   );
-  return out.map(({ root, type, exact, pcs }) => ({ root, type, exact, pcs }));
+  return out.map((m) => ({
+    root: m.root,
+    type: m.type,
+    exact: m.exact,
+    pcs: m.pcs,
+  }));
+}
+
+/** The inversion of a chord type that puts `bass` lowest (0 when `bass` is not a chord note). */
+function bassInversion(
+  root: PitchClass,
+  type: ChordTypeId,
+  bass: PitchClass,
+): number {
+  const def = CHORD_TYPES.find((c) => c.id === type);
+  if (!def) return 0;
+  const sorted = [...def.intervals].sort((a, b) => a - b);
+  const index = sorted.findIndex((iv) => toPitchClass(root + iv) === bass);
+  return Math.max(0, index);
+}
+
+/**
+ * Names a set of notes with R10 (fixes U09): the exact match whose root is the
+ * bass, else the first exact match, as a chord with the inversion of the bass.
+ * Null when no chord matches exactly.
+ */
+export function nameNotes(
+  pcs: readonly PitchClass[],
+  bass: PitchClass | undefined = pcs[0],
+): ChordRef | null {
+  const exact = detectChords(pcs).filter((m) => m.exact);
+  const best = exact.find((m) => m.root === bass) ?? exact[0];
+  if (!best) return null;
+  return {
+    root: best.root,
+    type: best.type,
+    inversion:
+      bass === undefined ? 0 : bassInversion(best.root, best.type, bass),
+  };
 }

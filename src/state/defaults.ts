@@ -28,6 +28,7 @@ export interface SharedModuleKeys {
   chords: Record<never, never>;
   harmony: { tonic: PitchClass };
   analyse: Record<never, never>;
+  synth: Record<never, never>;
 }
 
 export type ModuleSlices = {
@@ -43,6 +44,7 @@ export function defaultModules(): ModuleSlices {
     chords: {},
     harmony: { tonic: 0 },
     analyse: {},
+    synth: {},
   };
 }
 
