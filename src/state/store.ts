@@ -2,7 +2,7 @@ import { temporal } from "zundo";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { clampOctave, type ChordRef, type PitchClass } from "@/theory";
-import { defaultData, type PersistedData } from "./defaults";
+import { defaultData, type ModuleSlices, type PersistedData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
 import { backupSchema, persistedSchema } from "./schema";
 import { blobStorage, createSafeStorage } from "./storage";
@@ -38,6 +38,11 @@ export interface AppState extends PersistedData {
   setLastChord(pcs: readonly PitchClass[], chord?: ChordRef | null): void;
   updateSettings(patch: Partial<Settings>): void;
   setCurrentModule(id: ModuleId | null): void;
+  /** Merges a patch into one module slice. */
+  setModuleState<K extends ModuleId>(
+    id: K,
+    patch: Partial<ModuleSlices[K]>,
+  ): void;
   timelineActions: ListActions;
   builderLineActions: ListActions;
   /** Replaces all data (restore from backup). */
@@ -54,6 +59,63 @@ export function newId(): string {
 
 export const safeStorage = createSafeStorage();
 
+/**
+ * Module keys in the undo history, by module (each key holds one value that
+ * an edit replaces, not mutates). zundo restores a history entry with a plain
+ * `set`, so these keys travel as `moduleHistory` and `temporalWithModules`
+ * merges them back into their module slice; other module keys stay as they are.
+ */
+export const UNDO_MODULE_KEYS = {
+  analyse: ["roll"],
+} as const satisfies Partial<Record<ModuleId, readonly string[]>>;
+
+type ModuleHistory = Partial<Record<ModuleId, Record<string, unknown>>>;
+
+function pickModuleHistory(modules: ModuleSlices): ModuleHistory {
+  const out: ModuleHistory = {};
+  for (const [id, keys] of Object.entries(UNDO_MODULE_KEYS)) {
+    const slice: Record<string, unknown> = modules[id as ModuleId];
+    out[id as ModuleId] = Object.fromEntries(keys.map((k) => [k, slice[k]]));
+  }
+  return out;
+}
+
+function sameModuleHistory(a: ModuleHistory, b: ModuleHistory): boolean {
+  return Object.entries(UNDO_MODULE_KEYS).every(([id, keys]) =>
+    keys.every((k) => a[id as ModuleId]?.[k] === b[id as ModuleId]?.[k]),
+  );
+}
+
+type AnySet = (partial: unknown, replace?: boolean) => void;
+type AnyCreator = (set: AnySet, get: () => AppState, api: unknown) => unknown;
+
+/** zundo's `temporal`, plus: a `moduleHistory` that undo/redo sets is merged into `modules`. */
+const temporalWithModules = ((...args: Parameters<typeof temporal>) => {
+  const inner = temporal(...args) as unknown as AnyCreator;
+  const outer: AnyCreator = (set, get, api) =>
+    inner(
+      (partial, replace) => {
+        if (
+          typeof partial !== "object" ||
+          partial === null ||
+          !("moduleHistory" in partial)
+        )
+          return set(partial, replace);
+        const { moduleHistory, ...rest } = partial as {
+          moduleHistory: ModuleHistory;
+        };
+        const modules: Record<string, unknown> = { ...get().modules };
+        for (const [id, values] of Object.entries(moduleHistory)) {
+          modules[id] = { ...(modules[id] as object), ...values };
+        }
+        set({ ...rest, modules }, replace);
+      },
+      get,
+      api,
+    );
+  return outer;
+}) as unknown as typeof temporal;
+
 /** Picks the data that persists (and that a backup holds). */
 export function pickData(state: PersistedData): PersistedData {
   return {
@@ -66,7 +128,7 @@ export function pickData(state: PersistedData): PersistedData {
 
 export const useAppStore = create<AppState>()(
   persist(
-    temporal(
+    temporalWithModules(
       (set, get) => {
         const listActions = (key: ListKey): ListActions => {
           const update = (
@@ -139,19 +201,27 @@ export const useAppStore = create<AppState>()(
             })),
           setCurrentModule: (id) =>
             set((s) => ({ session: { ...s.session, currentModule: id } })),
+          setModuleState: (id, patch) =>
+            set((s) => ({
+              modules: { ...s.modules, [id]: { ...s.modules[id], ...patch } },
+            })),
           timelineActions: listActions("timeline"),
           builderLineActions: listActions("builderLine"),
           replaceData: (data) => set(() => ({ ...pickData(data) })),
         };
       },
       {
-        // Undo/redo covers the chord lists. Tickets 3 and 6 add their slices here.
+        // Undo/redo covers the chord lists and the module keys of UNDO_MODULE_KEYS
+        // (JAM-552: the piano roll, modules.analyse.roll).
         partialize: (s) => ({
           timeline: s.timeline,
           builderLine: s.builderLine,
+          moduleHistory: pickModuleHistory(s.modules),
         }),
         equality: (a, b) =>
-          a.timeline === b.timeline && a.builderLine === b.builderLine,
+          a.timeline === b.timeline &&
+          a.builderLine === b.builderLine &&
+          sameModuleHistory(a.moduleHistory, b.moduleHistory),
         limit: 100,
       },
     ),

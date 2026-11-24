@@ -5,8 +5,13 @@ import { inputRegistry } from "@/input";
 import { KeyboardSource } from "@/input/sources/keyboard";
 import { pointerSource } from "@/input/sources/pointer";
 import { resetAllData, useAppStore } from "@/state";
-import { renderWithProviders } from "../../../tests/unit/render";
+import { renderModule } from "./testing";
 import { PaletteView } from "./view";
+
+const search = vi.hoisted(() => ({ value: "" }));
+vi.mock("next/navigation", () => ({
+  useSearchParams: () => new URLSearchParams(search.value),
+}));
 
 let detach: (() => void)[] = [];
 
@@ -32,7 +37,7 @@ describe("Palette vertical slice", () => {
       .spyOn(audioEngine, "playNote")
       .mockImplementation(() => {});
     const stopAll = vi.spyOn(audioEngine, "stopAll");
-    renderWithProviders(<PaletteView />);
+    renderModule(<PaletteView />);
     const c = screen.getByRole("button", { name: /^C Dó$/ });
     fireEvent.click(c, { detail: 0 });
     expect(playNote).toHaveBeenLastCalledWith(
@@ -53,7 +58,7 @@ describe("Palette vertical slice", () => {
     const playNote = vi
       .spyOn(audioEngine, "playNote")
       .mockImplementation(() => {});
-    renderWithProviders(<PaletteView />);
+    renderModule(<PaletteView />);
     fireEvent.keyDown(window, { code: "KeyH" });
     expect(playNote).toHaveBeenCalledWith(
       { pc: 9, octave: 4 },
@@ -65,7 +70,7 @@ describe("Palette vertical slice", () => {
     const playNote = vi
       .spyOn(audioEngine, "playNote")
       .mockImplementation(() => {});
-    const view = renderWithProviders(<PaletteView />);
+    const view = renderModule(<PaletteView />);
     view.unmount();
     fireEvent.keyDown(window, { code: "KeyA" });
     expect(playNote).not.toHaveBeenCalled();

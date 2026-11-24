@@ -1,7 +1,7 @@
-import { defaultData, type PersistedData } from "./defaults";
+import { defaultData, defaultModules, type PersistedData } from "./defaults";
 
 /** The current schema version of the persisted data. Increase it with each schema change. */
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 type Migration = (data: Record<string, unknown>) => Record<string, unknown>;
 
@@ -22,6 +22,23 @@ const MIGRATIONS: Record<number, Migration> = {
           ...(data.settings as object | undefined),
         },
       },
+    };
+  },
+  /** Version 2 adds the shared module keys (tonic, key, scale) with their R2 defaults. */
+  1: (data) => {
+    const modules = (data.modules ?? {}) as Record<
+      string,
+      Record<string, unknown>
+    >;
+    const base = defaultModules();
+    return {
+      ...data,
+      modules: Object.fromEntries(
+        Object.entries(base).map(([id, defaults]) => [
+          id,
+          { ...defaults, ...modules[id] },
+        ]),
+      ),
     };
   },
 };

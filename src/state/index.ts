@@ -1,5 +1,12 @@
 export * from "./types";
-export { DEFAULT_SETTINGS, defaultData, type PersistedData } from "./defaults";
+export {
+  DEFAULT_SETTINGS,
+  defaultData,
+  defaultModules,
+  type ModuleSlices,
+  type PersistedData,
+  type SharedModuleKeys,
+} from "./defaults";
 export { SCHEMA_VERSION, migrate } from "./migrations";
 export { persistedSchema, settingsSchema } from "./schema";
 export {

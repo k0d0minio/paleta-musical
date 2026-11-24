@@ -40,6 +40,24 @@ test("/ opens the Paleta module", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("the design tokens are applied (note colours and the app font)", async ({
+  page,
+}) => {
+  await ready(page);
+  const tokens = await page.evaluate(() => {
+    const root = getComputedStyle(document.documentElement);
+    const c = document.querySelector('main [data-pc="0"]');
+    return {
+      note0: root.getPropertyValue("--note-0").trim(),
+      chipBackground: c ? getComputedStyle(c).backgroundColor : "",
+      font: getComputedStyle(document.body).fontFamily,
+    };
+  });
+  expect(tokens.note0).toMatch(/^#[0-9a-f]{6}$/i);
+  expect(tokens.chipBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(tokens.font).toContain("Geist");
+});
+
 test("every module route exists and the navigation marks the current module", async ({
   page,
 }) => {
