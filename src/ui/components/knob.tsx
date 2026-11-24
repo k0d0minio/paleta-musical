@@ -243,7 +243,7 @@ export function Knob({
             fill="none"
             strokeLinecap="round"
             strokeWidth={4}
-            className="stroke-surface-2"
+            className="stroke-border"
           />
           {position > 0.002 && (
             <path

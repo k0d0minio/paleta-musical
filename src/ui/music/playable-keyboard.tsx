@@ -105,8 +105,7 @@ export function PlayableKeyboard({
   ) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
     event.preventDefault(); // no focus steal, no text selection, no scroll
-    // The key does not follow the pointer to the next key (no glissando, SU3).
-    event.currentTarget.releasePointerCapture?.(event.pointerId);
+    // A held key does not follow the pointer to the next key (no glissando, SU3).
     const sounding = [...pointers.current.values()].includes(midi);
     pointers.current.set(event.pointerId, midi);
     if (!sounding) pointerSource.press(fromMidi(midi));

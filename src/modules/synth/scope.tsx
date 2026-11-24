@@ -13,6 +13,13 @@ import { cn } from "@/ui/cn";
 /** S029: the trigger is searched in the first 1024 samples; 900 samples show. */
 const TRIGGER_SEARCH = 1024;
 const SHOWN = 900;
+/** The display gain follows the level, so that a quiet sound still shows its shape. */
+const MAX_GAIN = 8;
+
+/** The display gain for a window peak: the wave fills about 90 % of the height. */
+export function displayGain(peak: number): number {
+  return Math.min(MAX_GAIN, 0.9 / Math.max(peak, 0.9 / MAX_GAIN));
+}
 
 /** The first rising zero crossing in the search window, or 0. */
 export function findTrigger(
@@ -57,6 +64,7 @@ export function Scope({ colourPc }: { colourPc: number | null }) {
     observer.observe(canvas);
 
     let frame = 0;
+    let gain = 1;
     const draw = () => {
       frame = requestAnimationFrame(draw);
       const analyser = synth.analyser;
@@ -74,6 +82,10 @@ export function Scope({ colourPc }: { colourPc: number | null }) {
       ctx.stroke();
 
       const start = findTrigger(data);
+      let peak = 0;
+      for (let i = 0; i < SHOWN; i++)
+        peak = Math.max(peak, Math.abs(data[start + i] ?? 0));
+      gain += (displayGain(peak) - gain) * 0.15;
       ctx.lineWidth = 2 * ratio;
       ctx.lineJoin = "round";
       ctx.strokeStyle = style.getPropertyValue("--scope-line");
@@ -81,7 +93,7 @@ export function Scope({ colourPc }: { colourPc: number | null }) {
       for (let i = 0; i < SHOWN; i++) {
         const x = (i / (SHOWN - 1)) * width;
         const v = data[start + i] ?? 0;
-        const y = height / 2 - v * (height / 2) * 0.9;
+        const y = height / 2 - v * gain * (height / 2);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }

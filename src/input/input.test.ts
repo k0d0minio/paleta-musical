@@ -78,6 +78,18 @@ describe("input registry", () => {
     });
   });
 
+  it("maps O, L and P to 13, 14 and 15 semitones (SR5 of the synth)", () => {
+    const { on } = setup();
+    press("KeyO");
+    press("KeyL");
+    press("KeyP");
+    expect(on.mock.calls.map(([e]) => e.note)).toEqual([
+      { pc: 1, octave: 5 },
+      { pc: 2, octave: 5 },
+      { pc: 3, octave: 5 },
+    ]);
+  });
+
   it("ignores keys typed into a text field", () => {
     const { on } = setup();
     const input = document.createElement("input");

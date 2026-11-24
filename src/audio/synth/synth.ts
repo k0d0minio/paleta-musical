@@ -301,13 +301,15 @@ function buildGraph(output: SynthOutput, sound: SynthSound): Graph {
   feedback.gain.value = params.fb;
   const wet = ctx.createGain();
   wet.gain.value = params.dm;
-  // S009: the compressor keeps many notes from clipping.
+  // S009: a compressor set as a limiter keeps many notes from clipping. A
+  // lower threshold also squeezes the envelope of one note (Chromium compresses
+  // below the threshold too), so it acts near full scale only.
   const compressor = ctx.createDynamicsCompressor();
-  compressor.threshold.value = -10;
-  compressor.knee.value = 6;
-  compressor.ratio.value = 12;
+  compressor.threshold.value = -1;
+  compressor.knee.value = 0;
+  compressor.ratio.value = 20;
   compressor.attack.value = 0.003;
-  compressor.release.value = 0.15;
+  compressor.release.value = 0.1;
   const analyser = ctx.createAnalyser();
   analyser.fftSize = SCOPE_FRAME;
 

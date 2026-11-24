@@ -157,13 +157,26 @@ function ParamKnob({ id }: { id: ParamId }) {
   );
 }
 
+/** Large screens, six columns: oscillator, filter and output; then envelope and echo. */
+const GROUP_ORDER: readonly ParamGroup[] = [
+  "osc",
+  "filter",
+  "out",
+  "env",
+  "echo",
+];
 const GROUP_LAYOUT: Record<ParamGroup, string> = {
   osc: "md:col-span-2 lg:col-span-3",
-  env: "md:col-span-2 lg:col-span-3",
   filter: "lg:col-span-2",
-  echo: "lg:col-span-3",
   out: "lg:col-span-1",
+  env: "md:col-span-2 lg:col-span-3",
+  echo: "md:col-span-2 lg:col-span-3",
 };
+
+const GROUPS = Object.fromEntries(PARAM_GROUPS.map((g) => [g.id, g])) as Record<
+  ParamGroup,
+  (typeof PARAM_GROUPS)[number]
+>;
 
 /** S013–S019: the parameters, by group (SR1), and the two waveforms (S001). */
 function Controls() {
@@ -172,14 +185,14 @@ function Controls() {
   const waves = WAVEFORMS.map((w) => ({ value: w, label: t(`waves.${w}`) }));
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-      {PARAM_GROUPS.map((group) => (
+      {GROUP_ORDER.map((id) => GROUPS[id]).map((group) => (
         <Card
           key={group.id}
           title={t(`groups.${group.id}`)}
           className={GROUP_LAYOUT[group.id]}
         >
           {group.id === "osc" && (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3">
               {([1, 2] as const).map((osc) => (
                 <WaveChoice
                   key={osc}

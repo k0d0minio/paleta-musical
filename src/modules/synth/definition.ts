@@ -1,16 +1,15 @@
-import { AudioWaveformIcon } from "lucide-react";
-import { synth } from "@/audio";
+import { KeyboardMusicIcon } from "lucide-react";
 import type { ModuleDefinition } from "@/nav";
 
+/** A module switch runs stop-all, which also silences the synth (src/audio/synth/index.ts). */
 export const synthModule: ModuleDefinition = {
   id: "synth",
   route: "/synth",
-  icon: AudioWaveformIcon,
+  icon: KeyboardMusicIcon,
   messageKey: "modules.synth",
   shortcuts: [
-    { keys: "A W S E D F T G Y H U J K O L P", labelKey: "shortcutPlay" },
-    { keys: "Z X", labelKey: "shortcutOctave" },
-    { keys: "↑ ↓ PgUp PgDn Home End", labelKey: "shortcutKnob" },
+    { keys: "a w s e d f t g y h u j k o l p", labelKey: "shortcutPlay" },
+    { keys: "z x", labelKey: "shortcutOctave" },
+    { keys: "↑ ↓ PageUp PageDown Home End", labelKey: "shortcutKnob" },
   ],
-  onLeave: () => synth.releaseAll(),
 };
