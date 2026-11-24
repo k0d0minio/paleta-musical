@@ -266,6 +266,116 @@
       "rollTitle": "Piano roll",
       "rollEmptyTitle": "The piano roll is coming soon",
       "rollEmptyBody": "Here you will edit the detected notes and export them as MIDI.",
+      "roll": {
+        "description": "Edit notes against time, capture from the microphone and export MIDI.",
+        "canvasLabel": "Piano roll: notes against time and pitch",
+        "roleDescription": "piano roll",
+        "canvasHelp": "Keyboard: [ and ] choose the previous or next note (Shift adds to the selection), the arrows move the selected notes (Shift: one beat or one octave), Delete removes, Enter plays the note, Space plays or stops, Home goes to the start, Q quantizes, E exports MIDI, 1 2 3 change the tool, Ctrl+A selects all, Ctrl+C, X and V copy, cut and paste, + and − zoom.",
+        "source": {
+          "title": "Note source",
+          "noFileTitle": "No file loaded",
+          "noFileBody": "Load an audio file in Analyse to detect its notes with timing.",
+          "goAnalyse": "Go to Analyse",
+          "file": "File: {name}",
+          "analyse": "Analyse the file",
+          "micStart": "Capture from the microphone",
+          "micStop": "Stop the capture",
+          "micMode": "Microphone mode",
+          "mono": "One note (voice, wind)",
+          "poly": "Chords (piano, guitar)",
+          "importMidi": "Import .mid",
+          "liveNotes": "Sounding notes",
+          "spectrum": "Live spectrum, 0 to 5 kHz",
+          "progress": "Analysis progress"
+        },
+        "status": {
+          "initial": "Analyse the file to detect notes with timing, or use the microphone.",
+          "analysing": "Analysing the file with onset detection…",
+          "processing": "Processing… {pct}%",
+          "detected": "{n} notes detected · estimated BPM: {bpm}",
+          "analysisError": "Analysis error: {message}",
+          "noBuffer": "Audio buffer not available. Load the file again.",
+          "micRequest": "Asking for microphone access…",
+          "micDenied": "Microphone denied: {message}",
+          "capturing": "Capturing via the microphone… play your instrument!",
+          "captureStopped": "Capture stopped. {n} notes captured.",
+          "imported": "{n} notes imported · {bpm} BPM",
+          "importError": "Could not read the MIDI file: {message}"
+        },
+        "confirmCapture": {
+          "title": "Start a new capture?",
+          "body": "The capture replaces the {n} notes of the piano roll. You can undo it later.",
+          "confirm": "Capture",
+          "cancel": "Cancel"
+        },
+        "tools": {
+          "label": "Tool",
+          "select": "Select",
+          "draw": "Draw",
+          "erase": "Erase"
+        },
+        "transportLabel": "Playback",
+        "home": "Back to the start",
+        "loop": "Repeat the region",
+        "loopHint": "Drag on the bar ruler to mark the region.",
+        "playMode": {
+          "label": "Play",
+          "audio": "Audio",
+          "piano": "Piano"
+        },
+        "bpm": "BPM",
+        "grid": {
+          "label": "Grid",
+          "q4": "1/4 (quarter)",
+          "q8": "1/8 (eighth)",
+          "q16": "1/16 (sixteenth)",
+          "q32": "1/32 (thirty-second)",
+          "t8": "1/8 triplet",
+          "t16": "1/16 triplet"
+        },
+        "editLabel": "Edit",
+        "viewLabel": "View",
+        "quantize": "Quantize",
+        "deleteSelected": "Delete the selection",
+        "clear": "Clear all",
+        "heatmap": "Frequency heatmap",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "fit": "Show all",
+        "exportMidi": "Export MIDI",
+        "openPalette": "Open in Palette",
+        "undo": "Undo",
+        "redo": "Redo",
+        "close": "Close",
+        "shortcuts": "Keyboard shortcuts",
+        "scrollbar": "Visible part of the duration",
+        "visible": "{start} s to {end} s of {duration} s",
+        "noAudio": "No audio — analyse a file first.",
+        "noNotes": "No notes — analyse a file first.",
+        "audioUnavailable": "Sound is not available in this browser.",
+        "exported": "MIDI exported! {n} notes · {bpm} BPM",
+        "nothingToExport": "No notes to export.",
+        "summary": {
+          "title": "Notes",
+          "count": "{n, plural, one {# note} other {# notes}}",
+          "empty": "No notes yet. Analyse the file or use the microphone.",
+          "selectPc": "Select the {note} notes ({count})"
+        },
+        "selection": {
+          "title": "Selection",
+          "none": "No note selected. Choose a note in the piano roll.",
+          "count": "{n, plural, one {# note selected} other {# notes selected}}",
+          "pitch": "Note",
+          "start": "Start",
+          "length": "Length",
+          "velocity": "Velocity",
+          "seconds": "{value} s"
+        },
+        "announce": {
+          "note": "{name}, start {start} s, length {length} s, velocity {velocity}",
+          "count": "{n, plural, =0 {No note selected} one {# note selected} other {# notes selected}}"
+        }
+      },
       "openRoll": "Open the piano roll",
       "backToAnalysis": "Back to the analysis"
     }

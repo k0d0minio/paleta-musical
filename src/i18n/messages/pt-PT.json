@@ -266,6 +266,116 @@
       "rollTitle": "Piano roll",
       "rollEmptyTitle": "O piano roll chega em breve",
       "rollEmptyBody": "Aqui vais editar as notas detetadas e exportá-las em MIDI.",
+      "roll": {
+        "description": "Edita as notas no tempo, captura do microfone e exporta MIDI.",
+        "canvasLabel": "Piano roll: notas no tempo e na altura",
+        "roleDescription": "piano roll",
+        "canvasHelp": "Teclado: [ e ] escolhem a nota anterior ou seguinte (Shift junta à seleção), as setas movem as notas selecionadas (Shift: um tempo ou uma oitava), Delete apaga, Enter toca a nota, Espaço toca ou para, Home volta ao início, Q quantiza, E exporta MIDI, 1 2 3 mudam a ferramenta, Ctrl+A seleciona tudo, Ctrl+C, X e V copiam, cortam e colam, + e − fazem zoom.",
+        "source": {
+          "title": "Origem das notas",
+          "noFileTitle": "Nenhum ficheiro carregado",
+          "noFileBody": "Carrega um ficheiro de áudio em Analisar para detetar as notas com o tempo.",
+          "goAnalyse": "Ir para Analisar",
+          "file": "Ficheiro: {name}",
+          "analyse": "Analisar ficheiro",
+          "micStart": "Capturar do microfone",
+          "micStop": "Parar captura",
+          "micMode": "Modo do microfone",
+          "mono": "Uma nota (voz, sopro)",
+          "poly": "Acordes (piano, guitarra)",
+          "importMidi": "Importar .mid",
+          "liveNotes": "Notas a soar",
+          "spectrum": "Espetro ao vivo, 0 a 5 kHz",
+          "progress": "Progresso da análise"
+        },
+        "status": {
+          "initial": "Analisa o ficheiro para detetar as notas com o tempo, ou usa o microfone.",
+          "analysing": "A analisar ficheiro com onset detection…",
+          "processing": "A processar… {pct}%",
+          "detected": "{n} notas detetadas · BPM estimado: {bpm}",
+          "analysisError": "Erro na análise: {message}",
+          "noBuffer": "Buffer de áudio não disponível. Carrega o ficheiro novamente.",
+          "micRequest": "A pedir acesso ao microfone…",
+          "micDenied": "Microfone negado: {message}",
+          "capturing": "A capturar via microfone… toca o teu instrumento!",
+          "captureStopped": "Captura parada. {n} notas capturadas.",
+          "imported": "{n} notas importadas · {bpm} BPM",
+          "importError": "Não foi possível ler o ficheiro MIDI: {message}"
+        },
+        "confirmCapture": {
+          "title": "Começar uma nova captura?",
+          "body": "A captura substitui as {n} notas do piano roll. Podes desfazer depois.",
+          "confirm": "Capturar",
+          "cancel": "Cancelar"
+        },
+        "tools": {
+          "label": "Ferramenta",
+          "select": "Selecionar",
+          "draw": "Desenhar",
+          "erase": "Apagar"
+        },
+        "transportLabel": "Reprodução",
+        "home": "Voltar ao início",
+        "loop": "Repetir a região",
+        "loopHint": "Arrasta na régua dos compassos para marcar a região.",
+        "playMode": {
+          "label": "Reproduzir",
+          "audio": "Áudio",
+          "piano": "Piano"
+        },
+        "bpm": "BPM",
+        "grid": {
+          "label": "Grelha",
+          "q4": "1/4 (semínima)",
+          "q8": "1/8 (colcheia)",
+          "q16": "1/16 (semicolcheia)",
+          "q32": "1/32 (fusa)",
+          "t8": "1/8 tercina",
+          "t16": "1/16 tercina"
+        },
+        "editLabel": "Edição",
+        "viewLabel": "Vista",
+        "quantize": "Quantizar",
+        "deleteSelected": "Apagar a seleção",
+        "clear": "Limpar tudo",
+        "heatmap": "Mapa de frequências",
+        "zoomIn": "Aproximar",
+        "zoomOut": "Afastar",
+        "fit": "Ver tudo",
+        "exportMidi": "Exportar MIDI",
+        "openPalette": "Abrir na Paleta",
+        "undo": "Desfazer",
+        "redo": "Refazer",
+        "close": "Fechar",
+        "shortcuts": "Atalhos do teclado",
+        "scrollbar": "Parte visível da duração",
+        "visible": "{start} s a {end} s de {duration} s",
+        "noAudio": "Sem áudio — analisa primeiro um ficheiro.",
+        "noNotes": "Sem notas — analisa primeiro um ficheiro.",
+        "audioUnavailable": "O som não está disponível neste navegador.",
+        "exported": "MIDI exportado! {n} notas · {bpm} BPM",
+        "nothingToExport": "Nenhuma nota para exportar.",
+        "summary": {
+          "title": "Notas",
+          "count": "{n, plural, one {# nota} other {# notas}}",
+          "empty": "Nenhuma nota ainda. Analisa o ficheiro ou usa o microfone.",
+          "selectPc": "Selecionar as notas {note} ({count})"
+        },
+        "selection": {
+          "title": "Seleção",
+          "none": "Nenhuma nota selecionada. Escolhe uma nota no piano roll.",
+          "count": "{n, plural, one {# nota selecionada} other {# notas selecionadas}}",
+          "pitch": "Nota",
+          "start": "Início",
+          "length": "Duração",
+          "velocity": "Velocidade",
+          "seconds": "{value} s"
+        },
+        "announce": {
+          "note": "{name}, início {start} s, duração {length} s, velocidade {velocity}",
+          "count": "{n, plural, =0 {Nenhuma nota selecionada} one {# nota selecionada} other {# notas selecionadas}}"
+        }
+      },
       "openRoll": "Abrir o piano roll",
       "backToAnalysis": "Voltar à análise"
     }
