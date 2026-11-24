@@ -5,3 +5,6 @@ export { NoteName, useNoteNameText } from "./note-name";
 export { PianoKeys } from "./piano-keys";
 export { Stepper } from "./stepper";
 export { TransportButton } from "./transport-button";
+export { GuitarDiagram } from "./guitar-diagram";
+export { KeyboardView } from "./keyboard-view";
+export { StaffView, vexKey, type StaffNote } from "./staff-view";

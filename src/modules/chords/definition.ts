@@ -6,5 +6,8 @@ export const chordsModule: ModuleDefinition = {
   route: "/chords",
   icon: PianoIcon,
   messageKey: "modules.chords",
-  shortcuts: [],
+  shortcuts: [
+    { keys: "a w s e d f t g y h u j k", labelKey: "shortcutPlay" },
+    { keys: "Esc", labelKey: "shortcutClear" },
+  ],
 };
