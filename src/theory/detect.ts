@@ -9,7 +9,7 @@ export interface ChordMatch {
   /** True when the chord pitch classes equal the selection. */
   readonly exact: boolean;
   /** The distinct pitch classes of the chord, root first. */
-  readonly pcs: readonly PitchClass[];
+  readonly pcs: PitchClass[];
 }
 
 /** Sharp letter names in ASCII, for the alphabetical root order of R10. */
