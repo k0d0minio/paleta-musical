@@ -214,6 +214,21 @@ describe("chord lists", () => {
   });
 });
 
+describe("U30: one inversion model", () => {
+  it("the editor and the line list the same inversions; extended chords keep their register", async () => {
+    const { inversionOptions } = await import("./chord-list");
+    const { voiceChord, toMidi } = await import("@/theory");
+    const nine = chord(2, "dom9");
+    const options = inversionOptions(nine);
+    expect(options).toHaveLength(4);
+    // 1st inversion of D9: F♯ in the bass, the 9th (E) stays the top voice.
+    const midi = voiceChord(options[1]?.chord ?? nine, 4).map(toMidi);
+    expect(midi[0]).toBe(66);
+    expect(midi).toEqual([...midi].sort((a, b) => a - b));
+    expect(new Set(midi.map((m) => m % 12))).toEqual(new Set([2, 6, 9, 0, 4]));
+  });
+});
+
 describe("Construtor", () => {
   it("F105: up to 6 exact; partial matches fill up to 3", () => {
     expect(builderResults([0, 4, 7])).toMatchObject({ exact: true });
