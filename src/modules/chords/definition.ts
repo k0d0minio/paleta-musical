@@ -7,7 +7,7 @@ export const chordsModule: ModuleDefinition = {
   icon: PianoIcon,
   messageKey: "modules.chords",
   shortcuts: [
-    { keys: "a w s e d f t g y h u j k", labelKey: "shortcutPlay" },
+    { keys: "a w s e d f t g y h u j k o l p", labelKey: "shortcutPlay" },
     { keys: "Esc", labelKey: "shortcutClear" },
   ],
 };

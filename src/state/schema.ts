@@ -63,6 +63,7 @@ export const persistedSchema = z.object({
     chords: moduleSlice,
     harmony: z.looseObject({ tonic: pitchClass }),
     analyse: moduleSlice,
+    synth: moduleSlice,
   }),
 });
 

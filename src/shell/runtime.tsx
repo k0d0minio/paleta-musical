@@ -14,6 +14,7 @@ import {
 import { inputRegistry } from "@/input";
 import { KeyboardSource } from "@/input/sources/keyboard";
 import { pointerSource } from "@/input/sources/pointer";
+import { wireSynthSound } from "@/modules/synth";
 import { moduleFromPath, useNavigator } from "@/nav";
 import { hasCapability, isIOS } from "@/platform";
 import {
@@ -64,6 +65,9 @@ export function AppRuntime() {
       offPointer();
     };
   }, []);
+
+  // The saved synth sound → the synth (the Sintetizador and the "synth" instrument).
+  useEffect(() => wireSynthSound(), []);
 
   // Settings → engine, theme and motion.
   useEffect(() => audioEngine.setVolume(settings.volume), [settings.volume]);

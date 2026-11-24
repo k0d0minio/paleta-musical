@@ -8,6 +8,7 @@ const MODULES = [
   { path: "/chords", name: "Acordes" },
   { path: "/harmony", name: "Harmonia" },
   { path: "/analyse", name: "Analisar" },
+  { path: "/synth", name: "Sintetizador" },
 ];
 
 /** Collects uncaught page errors; every test asserts there are none. */

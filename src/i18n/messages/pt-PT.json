@@ -801,6 +801,100 @@
       },
       "openRoll": "Abrir o piano roll",
       "backToAnalysis": "Voltar à análise"
+    },
+    "synth": {
+      "title": "Sintetizador",
+      "description": "Toca e molda o teu próprio som: dois osciladores, um filtro, uma envolvente e um eco.",
+      "shortcutPlay": "Tocar notas (16 teclas a partir da primeira tecla)",
+      "shortcutOctave": "Oitava abaixo / acima",
+      "shortcutKnob": "Ajustar o botão com foco",
+      "scopeTitle": "Osciloscópio",
+      "scopeLabel": "Osciloscópio: a forma de onda do som",
+      "scopeIdle": "Toca numa tecla para ligar o som",
+      "groups": {
+        "osc": "Oscilador",
+        "filter": "Filtro",
+        "env": "Envolvente",
+        "echo": "Eco",
+        "out": "Saída"
+      },
+      "waveLabel": "Oscilador {n}",
+      "waves": {
+        "sine": "Seno",
+        "square": "Quadrada",
+        "sawtooth": "Serra",
+        "triangle": "Triângulo"
+      },
+      "params": {
+        "mix": "Mistura",
+        "det": "Afinação",
+        "cut": "Corte",
+        "res": "Ressonância",
+        "a": "Ataque",
+        "d": "Decaimento",
+        "s": "Sustentação",
+        "r": "Libertação",
+        "dt": "Tempo",
+        "fb": "Repetição",
+        "dm": "Mistura",
+        "vol": "Volume"
+      },
+      "paramsLong": {
+        "mix": "Mistura dos osciladores",
+        "det": "Afinação do oscilador 2",
+        "cut": "Corte do filtro",
+        "res": "Ressonância do filtro",
+        "a": "Ataque",
+        "d": "Decaimento",
+        "s": "Sustentação",
+        "r": "Libertação",
+        "dt": "Tempo do eco",
+        "fb": "Repetição do eco",
+        "dm": "Mistura do eco",
+        "vol": "Volume do sintetizador"
+      },
+      "units": {
+        "percent": "{value} %",
+        "cents": "{value} cents",
+        "hz": "{value} Hz",
+        "khz": "{value} kHz",
+        "ms": "{value} ms",
+        "s": "{value} s",
+        "q": "{value}"
+      },
+      "soundsTitle": "Sons",
+      "presetsLabel": "Sons iniciais",
+      "presets": {
+        "lead": "Líder",
+        "bass": "Baixo",
+        "pad": "Pad",
+        "pizzicato": "Pizzicato"
+      },
+      "userSoundsLabel": "Os meus sons",
+      "noUserSounds": "Ainda não guardaste nenhum som. Molda um som e guarda-o com um nome.",
+      "save": "Guardar som",
+      "saveTitle": "Guardar o som atual",
+      "nameLabel": "Nome",
+      "defaultName": "O meu som {n}",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "saved": "“{name}” guardado",
+      "full": "Já tens {max} sons. Apaga um para guardar outro.",
+      "remove": "Apagar {name}",
+      "removed": "“{name}” apagado",
+      "undo": "Anular",
+      "keyboardTitle": "Teclado",
+      "range": "{from} – {to}",
+      "keyboardLabel": "Teclado de {from} a {to}",
+      "instructions": "Arrasta um botão para cima ou para baixo. Toca nas teclas ou usa o teclado do computador.",
+      "helpTitle": "Ajuda",
+      "help": {
+        "adjust": "A roda do rato ou as setas ajustam um botão; Page Up e Page Down dão passos maiores.",
+        "fine": "Com Shift, arrastar ou rodar dá passos finos (precisão).",
+        "reset": "Um duplo clique (ou dois toques) repõe o valor inicial do botão.",
+        "keys": "As teclas <keys>A W S E D F T G Y H U J K O L P</keys> tocam 16 notas a partir da primeira tecla do teclado.",
+        "octave": "<z>Z</z> desce uma oitava e <x>X</x> sobe uma oitava."
+      }
     }
   },
   "transport": {
@@ -822,7 +916,8 @@
     "stop": "Parar"
   },
   "instruments": {
-    "triangle": "Sintetizador original"
+    "triangle": "Sintetizador original",
+    "synth": "O teu som do Sintetizador"
   },
   "audio": {
     "enable": "Toca em qualquer lado para ativar o som",
@@ -1030,6 +1125,7 @@
       "danger": "Perigo",
       "tension": "Tensão",
       "accent": "Destaque"
-    }
+    },
+    "knob": "Botão rotativo"
   }
 }

@@ -126,6 +126,18 @@ export class AudioEngine {
     this.#instrument = id;
   }
 
+  /**
+   * The master input (master gain, limiter, speakers) for a module that builds
+   * its own graph (the synth). Call it inside a gesture: it creates or resumes
+   * the context. Null without audio.
+   */
+  moduleOutput(): { ctx: AudioContext; destination: AudioNode } | null {
+    const ctx = this.#ensureContext();
+    if (!ctx || !this.#master) return null;
+    this.#resume();
+    return { ctx, destination: this.#master };
+  }
+
   /** Plays one note (F007, R15 note values). */
   playNote(note: Note, options: PlayOptions = {}): void {
     markSounding([note.pc], options.markSeconds ?? NOTE_MARK_SECONDS);
