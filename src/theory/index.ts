@@ -6,3 +6,7 @@ export * from "./names";
 export * from "./random";
 export * from "./endless";
 export * from "./circle";
+export * from "./detect";
+export * from "./diatonic";
+export * from "./altered";
+export * from "./scale-match";
