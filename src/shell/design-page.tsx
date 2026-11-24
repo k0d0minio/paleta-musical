@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/components/dropdown-menu";
 import { Kbd } from "@/ui/components/kbd";
+import { Knob } from "@/ui/components/knob";
 import {
   Popover,
   PopoverContent,
@@ -141,6 +142,7 @@ export function DesignPage() {
   const [step, setStep] = useState(4);
   const [playing, setPlaying] = useState(false);
   const [choice, setChoice] = useState<"a" | "b" | "c">("a");
+  const [knob, setKnob] = useState(0.5);
 
   const playChord = (chord: ChordRef) => {
     audioEngine.playChord(voiceChord(chord, octave));
@@ -318,6 +320,13 @@ export function DesignPage() {
               ]}
             />
             <Slider aria-label={tc("volume")} defaultValue={[60]} max={100} />
+            <Knob
+              label={t("knob")}
+              value={knob}
+              defaultValue={0.5}
+              onValueChange={setKnob}
+              valueText={`${Math.round(knob * 100)} %`}
+            />
           </div>
         </div>
         <div className="flex flex-wrap gap-2 text-sm">

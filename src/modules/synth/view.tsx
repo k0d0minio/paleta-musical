@@ -3,7 +3,6 @@
 import { SaveIcon, XIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  useEffect,
   useId,
   useState,
   useSyncExternalStore,
@@ -26,7 +25,7 @@ import {
   type Waveform,
 } from "@/audio";
 import { useInputNotes } from "@/input";
-import { useAppStore, useOctave } from "@/state";
+import { useOctave } from "@/state";
 import { fromMidi, letterName, toMidi, toPitchClass } from "@/theory";
 import { cn } from "@/ui/cn";
 import { Button } from "@/ui/components/button";
@@ -54,7 +53,6 @@ import {
   removeUserSound,
   restoreUserSound,
   saveUserSound,
-  selectSynth,
   setParam,
   setSound,
   setWave,
@@ -65,24 +63,12 @@ import {
 /** S021: 25 keys, two octaves and one note, from a C. */
 const KEY_COUNT = 25;
 
-/** The store drives the synth: the sound applies at once, also before the audio starts (S012). */
-function useWireSynth(): void {
-  useEffect(() => {
-    synth.setSound(getSynthState().sound);
-    return useAppStore.subscribe((state) => {
-      const next = selectSynth(state).sound;
-      if (next !== synth.sound) synth.setSound(next);
-    });
-  }, []);
-}
-
 function useHeld() {
   return useSyncExternalStore(synth.subscribe, synth.getHeld, synth.getHeld);
 }
 
 export function SynthView() {
   const t = useTranslations("modules.synth");
-  useWireSynth();
   const held = useHeld();
 
   // Every input source plays the synth: the on-screen keys and the computer keyboard (S024–S027).

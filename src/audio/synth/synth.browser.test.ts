@@ -128,4 +128,29 @@ describe("Synth (offline render)", () => {
     // The new volume: 0.1² / 0.5² of the level.
     expect(maxAbs(data, 0.8, 1) / level).toBeCloseTo(0.04, 2);
   });
+
+  it("plays one note as an instrument of the other modules and ends it", async () => {
+    const { ctx, synth } = offline(2);
+    synth.setSound(plain({ a: 0.01, r: 0.2 }));
+    const voice = synth.playOnce(ctx, 440, 0.2, 1, 0.3);
+    expect(voice).not.toBeNull();
+    let ended = false;
+    void voice?.ended.then(() => (ended = true));
+    const data = (await ctx.startRendering()).getChannelData(0);
+    const window = data.subarray(
+      Math.floor(0.4 * RATE),
+      Math.floor(0.8 * RATE),
+    );
+    expect(magnitude(window, 440)).toBeGreaterThan(magnitude(window, 520) * 20);
+    // Released at 1 − release s after the start, silent before 2 s.
+    expect(maxAbs(data, 1.7, 2)).toBe(0);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(ended).toBe(true);
+  });
+
+  it("does not play as an instrument on another context", () => {
+    const { synth } = offline(1);
+    const other = new OfflineAudioContext(1, RATE, RATE);
+    expect(synth.playOnce(other, 440, 0, 1, 0.3)).toBeNull();
+  });
 });

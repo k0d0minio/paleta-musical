@@ -141,6 +141,21 @@ export function PlayableKeyboard({
         className,
       )}
     >
+      {/* The octave of each C, in the free top-left part of its key (outside the button, so the key's name stays the note name). */}
+      {layout
+        .filter((key) => key.pc === 0)
+        .map((key) => (
+          <span
+            key={`octave-${key.midi}`}
+            aria-hidden
+            style={{
+              left: `calc(${key.whiteIndex} * (100% / var(--white)))`,
+            }}
+            className="pointer-events-none absolute top-1.5 z-20 w-[calc(100%/var(--white)*0.68)] text-center text-[0.65rem] font-semibold text-fg-subtle tabular"
+          >
+            {fromMidi(key.midi).octave}
+          </span>
+        ))}
       {layout.map((key, i) => {
         const note = fromMidi(key.midi);
         const on = held.has(key.midi);
@@ -185,9 +200,6 @@ export function PlayableKeyboard({
               )}
             >
               {text}
-              {key.pc === 0 && !key.black && (
-                <sub className="ml-px text-[0.8em] tabular">{note.octave}</sub>
-              )}
             </span>
             <span
               aria-hidden

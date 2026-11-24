@@ -8,7 +8,6 @@ import {
   useSyncExternalStore,
 } from "react";
 import { SCOPE_FRAME, synth, useAudioStatus } from "@/audio";
-import { cn } from "@/ui/cn";
 
 /** S029: the trigger is searched in the first 1024 samples; 900 samples show. */
 const TRIGGER_SEARCH = 1024;
@@ -124,15 +123,11 @@ export function Scope({ colourPc }: { colourPc: number | null }) {
         aria-label={t("scopeLabel")}
         className="block size-full"
       />
-      <p
-        className={cn(
-          "absolute inset-0 grid place-items-center px-4 text-center text-sm text-fg-muted transition-opacity duration-(--duration-base)",
-          live && "pointer-events-none opacity-0",
-        )}
-        aria-hidden={live}
-      >
-        {t("scopeIdle")}
-      </p>
+      {!live && (
+        <p className="absolute inset-0 grid place-items-center px-4 text-center text-sm text-fg-muted">
+          {t("scopeIdle")}
+        </p>
+      )}
     </div>
   );
 }

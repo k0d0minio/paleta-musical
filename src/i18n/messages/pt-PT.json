@@ -851,7 +851,7 @@
         "dt": "Tempo do eco",
         "fb": "Repetição do eco",
         "dm": "Mistura do eco",
-        "vol": "Volume"
+        "vol": "Volume do sintetizador"
       },
       "units": {
         "percent": "{value} %",
@@ -916,7 +916,8 @@
     "stop": "Parar"
   },
   "instruments": {
-    "triangle": "Sintetizador original"
+    "triangle": "Sintetizador original",
+    "synth": "O teu som do Sintetizador"
   },
   "audio": {
     "enable": "Toca em qualquer lado para ativar o som",
@@ -1124,6 +1125,7 @@
       "danger": "Perigo",
       "tension": "Tensão",
       "accent": "Destaque"
-    }
+    },
+    "knob": "Botão rotativo"
   }
 }

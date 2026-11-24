@@ -1,4 +1,5 @@
 import { frequencyOfMidi } from "@/theory";
+import type { Voice } from "../voice";
 import {
   defaultSound,
   mixGains,
@@ -51,13 +52,13 @@ class SynthVoice {
   #released = false;
 
   constructor(
-    private readonly ctx: BaseAudioContext,
+    ctx: BaseAudioContext,
     destination: AudioNode,
-    midi: number,
+    f: number,
     when: number,
     sound: SynthSound,
+    peak = ENVELOPE_PEAK,
   ) {
-    const f = frequencyOfMidi(midi); // SR3
     const { params } = sound;
     const [m1, m2] = mixGains(params.mix);
     this.#osc1 = ctx.createOscillator();
@@ -75,7 +76,6 @@ class SynthVoice {
 
     // SR3: linear attack to the peak, then an exponential approach to the sustain level.
     const env = this.#env.gain;
-    const peak = ENVELOPE_PEAK;
     env.setValueAtTime(0, when);
     env.linearRampToValueAtTime(peak, when + params.a);
     env.setTargetAtTime(peak * params.s, when + params.a, params.d / 3);
@@ -224,7 +224,7 @@ export class Synth {
       const voice = new SynthVoice(
         graph.ctx,
         graph.bus,
-        midi,
+        frequencyOfMidi(midi), // SR3
         start,
         this.#sound,
       );
@@ -250,6 +250,39 @@ export class Synth {
       );
     }
     this.#emitHeld();
+  }
+
+  /**
+   * The synth as an instrument of the other modules: one note with the
+   * current sound, released so that it ends near `duration`. `volume` is the
+   * envelope peak (the R15 note and chord levels). Null when the synth graph
+   * is not on this context.
+   */
+  playOnce(
+    ctx: BaseAudioContext,
+    frequency: number,
+    when: number,
+    duration: number,
+    volume: number,
+  ): Voice | null {
+    const graph = this.#ensureGraph();
+    if (graph?.ctx !== ctx) return null;
+    const { params } = this.#sound;
+    const voice = new SynthVoice(
+      ctx,
+      graph.bus,
+      frequency,
+      when,
+      this.#sound,
+      volume,
+    );
+    this.#voices.add(voice);
+    void voice.ended.then(() => this.#voices.delete(voice));
+    voice.release(when + Math.max(params.a, duration - params.r), params.r);
+    return {
+      ended: voice.ended,
+      release: (at = ctx.currentTime) => voice.stop(at),
+    };
   }
 
   /** Releases every held note with the release of the sound. */

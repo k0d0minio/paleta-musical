@@ -10,6 +10,7 @@ import {
   type ParamId,
   type SynthSound,
   type Waveform,
+  synth,
 } from "@/audio";
 import { newId, useAppStore, type AppState } from "@/state";
 
@@ -167,5 +168,18 @@ export function applyUserSound(entry: UserSound): void {
     wave1: entry.wave1,
     wave2: entry.wave2,
     params: { ...entry.params, vol: current.params.vol },
+  });
+}
+
+/**
+ * The store drives the synth: the saved sound applies at once, before the
+ * audio starts (S012) and for the "synth" instrument of the other modules.
+ * The app runtime calls it once; it returns the unsubscribe.
+ */
+export function wireSynthSound(): () => void {
+  synth.setSound(getSynthState().sound);
+  return useAppStore.subscribe((state) => {
+    const next = selectSynth(state).sound;
+    if (next !== synth.sound) synth.setSound(next);
   });
 }

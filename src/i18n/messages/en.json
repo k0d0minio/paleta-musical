@@ -851,7 +851,7 @@
         "dt": "Echo time",
         "fb": "Echo feedback",
         "dm": "Echo mix",
-        "vol": "Volume"
+        "vol": "Synth volume"
       },
       "units": {
         "percent": "{value}%",
@@ -916,7 +916,8 @@
     "stop": "Stop"
   },
   "instruments": {
-    "triangle": "Original synth"
+    "triangle": "Original synth",
+    "synth": "Your Synth sound"
   },
   "audio": {
     "enable": "Tap anywhere to enable sound",
@@ -1124,6 +1125,7 @@
       "danger": "Danger",
       "tension": "Tension",
       "accent": "Accent"
-    }
+    },
+    "knob": "Rotary knob"
   }
 }
