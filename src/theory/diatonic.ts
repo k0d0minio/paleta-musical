@@ -55,3 +55,14 @@ export function diatonicChords(tonic: PitchClass, scale: ScaleId): ChordRef[] {
     inversion: 0,
   }));
 }
+
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII"] as const;
+
+/** The Roman numeral of a diatonic triad: upper case for major and augmented, lower case for minor and diminished. */
+export function romanNumeral(degree: number, type: ChordTypeId): string {
+  const base = ROMAN[degree] ?? "";
+  if (type === "minor") return base.toLowerCase();
+  if (type === "dim") return `${base.toLowerCase()}°`;
+  if (type === "aug") return `${base}+`;
+  return base;
+}

@@ -10,9 +10,13 @@ import {
   DIATONIC_QUALITIES,
   diatonicChords,
   hasDiatonicChords,
+  romanNumeral,
 } from "./diatonic";
+import { letterName } from "./names";
+import { chordKeyContext } from "./spelling";
 import type { PitchClass } from "./pitch";
 import { compatibleScales, partialScales } from "./scale-match";
+import { chordDegreeLabel, scaleDegreeLabel } from "./degrees";
 import { SCALES, scalePitchClasses, type ScaleId } from "./scales";
 
 const SYMBOL: Record<string, string> = {
@@ -194,5 +198,44 @@ describe("scale matches (F060, F064, F066)", () => {
       expect(result[i]?.matched).toBeLessThanOrEqual(
         result[i - 1]?.matched ?? 0,
       );
+  });
+});
+
+describe("degree labels", () => {
+  it("labels scale degrees from the tonic", () => {
+    expect(scaleDegreeLabel(3, 0, "naturalMinor")).toBe("♭3");
+    expect(scaleDegreeLabel(4, 0, "naturalMinor")).toBeNull();
+    expect(scaleDegreeLabel(11, 5, "lydian")).toBe("♯4");
+    expect(scaleDegreeLabel(6, 0, "blues")).toBe("♭5");
+    expect(scaleDegreeLabel(2, 2, "dorian")).toBe("1");
+  });
+  it("labels chord tones with extensions", () => {
+    expect(chordDegreeLabel(2, 0, "dom9")).toBe("9");
+    expect(chordDegreeLabel(1, 0, "dom7b9")).toBe("♭9");
+    expect(chordDegreeLabel(10, 0, "dom7")).toBe("♭7");
+    expect(chordDegreeLabel(5, 0, "m11")).toBe("11");
+    expect(chordDegreeLabel(1, 0, "major")).toBeNull();
+  });
+});
+
+describe("spelling by key", () => {
+  it("spells chords in a key that holds their notes", () => {
+    const letters = (root: PitchClass, type: ChordTypeId) =>
+      chordPitchClasses(root, type).map((pc) =>
+        letterName(pc, "key", chordKeyContext(root, type)),
+      );
+    expect(letters(0, "min7")).toEqual(["C", "E♭", "G", "B♭"]);
+    expect(letters(0, "dom7")).toEqual(["C", "E", "G", "B♭"]);
+    expect(letters(5, "major")).toEqual(["F", "A", "C"]);
+    expect(letters(0, "halfDim")).toEqual(["C", "E♭", "G♭", "B♭"]);
+  });
+  it("spells B♭ in F major (scale key)", () => {
+    expect(letterName(10, "key", { tonic: 5, scale: "major" })).toBe("B♭");
+  });
+  it("gives Roman numerals by quality", () => {
+    expect(romanNumeral(0, "major")).toBe("I");
+    expect(romanNumeral(1, "minor")).toBe("ii");
+    expect(romanNumeral(6, "dim")).toBe("vii°");
+    expect(romanNumeral(2, "aug")).toBe("III+");
   });
 });

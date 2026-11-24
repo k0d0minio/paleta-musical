@@ -11,3 +11,5 @@ export * from "./diatonic";
 export * from "./altered";
 export * from "./scale-match";
 export * from "./guitar";
+export * from "./degrees";
+export * from "./spelling";

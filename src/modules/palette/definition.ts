@@ -9,5 +9,6 @@ export const paletteModule: ModuleDefinition = {
   shortcuts: [
     { keys: "a w s e d f t g y h u j k", labelKey: "shortcutPlay" },
     { keys: "z x", labelKey: "shortcutOctave" },
+    { keys: "Esc", labelKey: "shortcutClear" },
   ],
 };
