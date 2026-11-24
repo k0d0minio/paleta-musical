@@ -9,3 +9,6 @@ export * from "./roman";
 export * from "./rhythms";
 export * from "./suggestions";
 export * from "./substitutions";
+export * from "./random";
+export * from "./endless";
+export * from "./circle";

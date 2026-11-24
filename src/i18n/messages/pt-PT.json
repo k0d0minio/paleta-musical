@@ -373,9 +373,84 @@
     },
     "endless": {
       "title": "Infinito",
-      "description": "Um gerador de acordes sem fim.",
-      "emptyTitle": "O gerador infinito chega em breve",
-      "emptyBody": "Aqui vais poder gerar acordes ao acaso num estilo, sem parar."
+      "description": "Um gerador de acordes sem fim, por estilo.",
+      "start": "Iniciar",
+      "resume": "Retomar",
+      "stop": "Parar",
+      "statusLabel": "Estado do gerador",
+      "status": {
+        "running": "A gerar",
+        "paused": "Em pausa: a página foi para segundo plano",
+        "idle": "Parado"
+      },
+      "settingsTitle": "Definições",
+      "keyLabel": "Tonalidade",
+      "scaleLabel": "Escala",
+      "scaleForced": "{style} usa sempre a escala Menor Natural.",
+      "styleLabel": "Estilo",
+      "styleInfo": "Sobre o estilo",
+      "tension": "Tensão",
+      "baseBpm": "BPM base",
+      "mode": "Modo",
+      "modeMinor": "Menor",
+      "modeMixed": "Misto (maior e menor)",
+      "slot": "Um acorde {beats, plural, one {por tempo} other {a cada # tempos}}",
+      "styles": {
+        "trap": {
+          "name": "Trap",
+          "description": "Acordes menores pesados · alta tensão"
+        },
+        "hipHop": {
+          "name": "Hip Hop",
+          "description": "Samples de soul · groove funky"
+        },
+        "relaxing": {
+          "name": "Relaxante",
+          "description": "Consonante · progressões suaves"
+        },
+        "dramatic": {
+          "name": "Dramático",
+          "description": "Tensão moderada · mistura maior/menor"
+        },
+        "jazz": {
+          "name": "Jazz",
+          "description": "ii-V-I · acordes de sétima"
+        },
+        "epic": {
+          "name": "Épico",
+          "description": "Cinematográfico · lento"
+        },
+        "dark": {
+          "name": "Dark",
+          "description": "Muito tenso · modo menor sombrio"
+        },
+        "soul": {
+          "name": "Soul",
+          "description": "R&B suave · caloroso"
+        },
+        "random": {
+          "name": "Aleatório",
+          "description": "Tudo pode acontecer"
+        }
+      },
+      "seedLabel": "Semente",
+      "seedHint": "A mesma semente, tonalidade, escala e estilo dão a mesma sequência.",
+      "newSeed": "Nova semente ao acaso",
+      "smoothLabel": "Condução suave das vozes",
+      "smoothHint": "Cada acorde escolhe a inversão mais próxima do anterior.",
+      "currentTitle": "Acorde atual",
+      "noNotes": "— inicia o gerador para ver as notas —",
+      "historyTitle": "Últimos acordes",
+      "historyEmpty": "Os acordes gerados aparecem aqui.",
+      "currentMark": "atual",
+      "seventhMark": "sétima acrescentada (tensão)",
+      "playChord": "Tocar {chord}",
+      "sendLast": "Enviar os últimos {count} para a linha do tempo",
+      "sendAll": "Enviar todos ({count}) para a linha do tempo",
+      "sent": "{count, plural, one {# acorde juntado} other {# acordes juntados}} à linha do tempo",
+      "exportMidi": "Exportar MIDI",
+      "exported": "Ficheiro MIDI pronto",
+      "shortcutToggle": "Iniciar / parar o gerador (Espaço)"
     },
     "chords": {
       "title": "Acordes",
@@ -385,9 +460,82 @@
     },
     "harmony": {
       "title": "Harmonia",
-      "description": "O círculo de quintas.",
-      "emptyTitle": "O círculo de quintas chega em breve",
-      "emptyBody": "Aqui vais explorar tonalidades, cadências e acordes vizinhos."
+      "description": "O círculo de quintas: tonalidades, cadências e acordes vizinhos.",
+      "helpTitle": "Como usar o círculo",
+      "helpBody": "Cada segmento é uma tonalidade maior; o anel interior tem a sua relativa menor. Toca ou clica numa tonalidade para a escolher e ouvir o acorde. Passa o rato, foca ou mantém o dedo numa tonalidade para ver os detalhes. Teclado: as setas andam à volta do círculo, Enter escolhe, Shift+Enter toca a relativa menor.",
+      "hideHelp": "Esconder a ajuda",
+      "circleLabel": "Círculo de quintas",
+      "keyMajor": "{key} Maior",
+      "keyMinor": "{key}m",
+      "majorKeyLabel": "{key} Maior, {role}",
+      "minorKeyLabel": "{key} menor, relativa de {major} Maior",
+      "roles": {
+        "tonic": "tónica ativa (I)",
+        "dominant": "dominante (V)",
+        "subdominant": "subdominante (IV)",
+        "other": "outra"
+      },
+      "relations": {
+        "title": "Relações",
+        "dominant": "dominante → tónica",
+        "subdominant": "subdominante → tónica",
+        "relative": "tónica → relativa menor"
+      },
+      "inspectTitle": "Detalhes",
+      "inspectHint": "Passa o rato, foca ou mantém o dedo numa tonalidade para ver os detalhes aqui.",
+      "role": "Papel",
+      "relativeOf": "Relativa de {key} Maior",
+      "triadNotes": "Notas da tríade",
+      "keyTitle": "Tonalidade",
+      "tonic": "Tónica",
+      "major": "Maior",
+      "relativeMinor": "Relativa menor",
+      "signature": "Armação de clave",
+      "sharps": "{count, plural, =0 {sem sustenidos nem bemóis} one {# sustenido} other {# sustenidos}}",
+      "flats": "{count, plural, =0 {sem sustenidos nem bemóis} one {# bemol} other {# bemóis}}",
+      "signatureOf": "(como {key} Maior)",
+      "playTonic": "Tocar o acorde da tónica",
+      "neighboursTitle": "Acordes vizinhos",
+      "neighbours": {
+        "IV": "Subdominante",
+        "V": "Dominante (acorde de tensão)",
+        "vi": "Relativa menor"
+      },
+      "diatonicTitle": "Acordes da escala de {key} Maior",
+      "diatonicMinorTitle": "Acordes de {key} menor (relativa)",
+      "qualities": {
+        "major": "M",
+        "minor": "m",
+        "dim": "°"
+      },
+      "cadencesTitle": "Cadências",
+      "cadences": {
+        "perfect": {
+          "name": "Perfeita",
+          "description": "tensão → repouso"
+        },
+        "plagal": {
+          "name": "Plagal",
+          "description": "suave, «ámen»"
+        },
+        "jazz": {
+          "name": "Jazz / clássica",
+          "description": "ii → V7 → I"
+        },
+        "pop": {
+          "name": "Pop",
+          "description": "a mais usada!"
+        }
+      },
+      "playCadence": "Tocar a cadência {name}",
+      "progressionsTitle": "Levar para Progressões",
+      "viewStyles": "Ver os estilos em {key}",
+      "addOneFourFiveOne": "Juntar I–IV–V–I à linha do tempo",
+      "addTwoFiveOne": "Juntar ii–V–I à linha do tempo",
+      "added": "{count, plural, one {# acorde juntado} other {# acordes juntados}} à linha do tempo",
+      "shortcutMove": "Andar à volta do círculo (setas)",
+      "shortcutChoose": "Escolher a tonalidade (Enter)",
+      "shortcutMinor": "Tocar a relativa menor (Shift+Enter)"
     },
     "analyse": {
       "title": "Analisar",

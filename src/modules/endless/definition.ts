@@ -6,5 +6,5 @@ export const endlessModule: ModuleDefinition = {
   route: "/endless",
   icon: InfinityIcon,
   messageKey: "modules.endless",
-  shortcuts: [],
+  shortcuts: [{ keys: "Space", labelKey: "shortcutToggle" }],
 };

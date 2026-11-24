@@ -373,9 +373,84 @@
     },
     "endless": {
       "title": "Endless",
-      "description": "A chord generator that never stops.",
-      "emptyTitle": "The endless generator is coming soon",
-      "emptyBody": "Here you will generate random chords in a style, without stopping."
+      "description": "A chord generator that never stops, by style.",
+      "start": "Start",
+      "resume": "Resume",
+      "stop": "Stop",
+      "statusLabel": "Generator status",
+      "status": {
+        "running": "Generating",
+        "paused": "Paused: the page went to the background",
+        "idle": "Stopped"
+      },
+      "settingsTitle": "Settings",
+      "keyLabel": "Key",
+      "scaleLabel": "Scale",
+      "scaleForced": "{style} always uses the Natural Minor scale.",
+      "styleLabel": "Style",
+      "styleInfo": "About the style",
+      "tension": "Tension",
+      "baseBpm": "Base BPM",
+      "mode": "Mode",
+      "modeMinor": "Minor",
+      "modeMixed": "Mixed (major and minor)",
+      "slot": "One chord {beats, plural, one {per beat} other {every # beats}}",
+      "styles": {
+        "trap": {
+          "name": "Trap",
+          "description": "Heavy minor chords · high tension"
+        },
+        "hipHop": {
+          "name": "Hip Hop",
+          "description": "Soul samples · funky groove"
+        },
+        "relaxing": {
+          "name": "Relaxed",
+          "description": "Consonant · smooth progressions"
+        },
+        "dramatic": {
+          "name": "Dramatic",
+          "description": "Moderate tension · major/minor mix"
+        },
+        "jazz": {
+          "name": "Jazz",
+          "description": "ii-V-I · seventh chords"
+        },
+        "epic": {
+          "name": "Epic",
+          "description": "Cinematic · slow"
+        },
+        "dark": {
+          "name": "Dark",
+          "description": "Very tense · dark minor mode"
+        },
+        "soul": {
+          "name": "Soul",
+          "description": "Smooth R&B · warm"
+        },
+        "random": {
+          "name": "Random",
+          "description": "Anything can happen"
+        }
+      },
+      "seedLabel": "Seed",
+      "seedHint": "The same seed, key, scale and style give the same sequence.",
+      "newSeed": "New random seed",
+      "smoothLabel": "Smooth voicing",
+      "smoothHint": "Each chord takes the inversion nearest to the one before.",
+      "currentTitle": "Current chord",
+      "noNotes": "— start the generator to see the notes —",
+      "historyTitle": "Last chords",
+      "historyEmpty": "The generated chords show here.",
+      "currentMark": "current",
+      "seventhMark": "added 7th (tension)",
+      "playChord": "Play {chord}",
+      "sendLast": "Send the last {count} to the timeline",
+      "sendAll": "Send all ({count}) to the timeline",
+      "sent": "{count, plural, one {# chord} other {# chords}} added to the timeline",
+      "exportMidi": "Export MIDI",
+      "exported": "MIDI file ready",
+      "shortcutToggle": "Start / stop the generator (Space)"
     },
     "chords": {
       "title": "Chords",
@@ -385,9 +460,82 @@
     },
     "harmony": {
       "title": "Harmony",
-      "description": "The circle of fifths.",
-      "emptyTitle": "The circle of fifths is coming soon",
-      "emptyBody": "Here you will explore keys, cadences and neighbour chords."
+      "description": "The circle of fifths: keys, cadences and neighbour chords.",
+      "helpTitle": "How to use the circle",
+      "helpBody": "Each segment is a major key; the inner ring has its relative minor. Tap or click a key to choose it and hear its chord. Hover, focus or press and hold a key to see its details. Keyboard: the arrows move around the circle, Enter chooses, Shift+Enter plays the relative minor.",
+      "hideHelp": "Hide the help",
+      "circleLabel": "Circle of fifths",
+      "keyMajor": "{key} major",
+      "keyMinor": "{key}m",
+      "majorKeyLabel": "{key} major, {role}",
+      "minorKeyLabel": "{key} minor, relative of {major} major",
+      "roles": {
+        "tonic": "active tonic (I)",
+        "dominant": "dominant (V)",
+        "subdominant": "subdominant (IV)",
+        "other": "other"
+      },
+      "relations": {
+        "title": "Relations",
+        "dominant": "dominant → tonic",
+        "subdominant": "subdominant → tonic",
+        "relative": "tonic → relative minor"
+      },
+      "inspectTitle": "Details",
+      "inspectHint": "Hover, focus or press and hold a key to see its details here.",
+      "role": "Role",
+      "relativeOf": "Relative of {key} major",
+      "triadNotes": "Triad notes",
+      "keyTitle": "Key",
+      "tonic": "Tonic",
+      "major": "Major",
+      "relativeMinor": "Relative minor",
+      "signature": "Key signature",
+      "sharps": "{count, plural, =0 {no sharps or flats} one {# sharp} other {# sharps}}",
+      "flats": "{count, plural, =0 {no sharps or flats} one {# flat} other {# flats}}",
+      "signatureOf": "(as {key} major)",
+      "playTonic": "Play the tonic chord",
+      "neighboursTitle": "Neighbour chords",
+      "neighbours": {
+        "IV": "Subdominant",
+        "V": "Dominant (tension chord)",
+        "vi": "Relative minor"
+      },
+      "diatonicTitle": "Chords of {key} major",
+      "diatonicMinorTitle": "Chords of {key} minor (relative)",
+      "qualities": {
+        "major": "M",
+        "minor": "m",
+        "dim": "°"
+      },
+      "cadencesTitle": "Cadences",
+      "cadences": {
+        "perfect": {
+          "name": "Perfect",
+          "description": "tension → rest"
+        },
+        "plagal": {
+          "name": "Plagal",
+          "description": "soft, “amen”"
+        },
+        "jazz": {
+          "name": "Jazz / classical",
+          "description": "ii → V7 → I"
+        },
+        "pop": {
+          "name": "Pop",
+          "description": "the most used!"
+        }
+      },
+      "playCadence": "Play the {name} cadence",
+      "progressionsTitle": "Use in Progressions",
+      "viewStyles": "See the styles in {key}",
+      "addOneFourFiveOne": "Add I–IV–V–I to the timeline",
+      "addTwoFiveOne": "Add ii–V–I to the timeline",
+      "added": "{count, plural, one {# chord} other {# chords}} added to the timeline",
+      "shortcutMove": "Move around the circle (arrows)",
+      "shortcutChoose": "Choose the key (Enter)",
+      "shortcutMinor": "Play the relative minor (Shift+Enter)"
     },
     "analyse": {
       "title": "Analyse",
