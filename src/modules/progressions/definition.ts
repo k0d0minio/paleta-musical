@@ -6,5 +6,9 @@ export const progressionsModule: ModuleDefinition = {
   route: "/progressions",
   icon: ListMusicIcon,
   messageKey: "modules.progressions",
-  shortcuts: [],
+  shortcuts: [
+    { keys: "space", labelKey: "shortcutPlay" },
+    { keys: "delete", labelKey: "shortcutRemove" },
+    { keys: "alt+up alt+down", labelKey: "shortcutMove" },
+  ],
 };
