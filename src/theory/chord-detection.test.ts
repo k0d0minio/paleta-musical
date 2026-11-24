@@ -1,13 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   builderMatches,
-  detectChords,
   inversionForBass,
   slashChord,
   splitMatches,
   tonalChordNames,
-  type ChordMatch,
-} from "./detect";
+} from "./chord-match";
+import { detectChords, type ChordMatch } from "./detect";
 import type { PitchClass } from "./pitch";
 
 const short = (m: ChordMatch) => `${m.root}:${m.type}:${m.exact ? "x" : "p"}`;

@@ -13,3 +13,4 @@ export * from "./scale-match";
 export * from "./guitar";
 export * from "./degrees";
 export * from "./spelling";
+export * from "./chord-match";
