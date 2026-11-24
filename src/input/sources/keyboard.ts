@@ -2,8 +2,9 @@ import { toPitchClass, type Note } from "@/theory";
 import { BaseSource } from "../base-source";
 
 /**
- * The computer keyboard as one octave: A W S E D F T G Y H U J K = C … C.
- * Z and X step the octave down and up. Physical key codes, so the layout
+ * The computer keyboard as a piano: A W S E D F T G Y H U J K O L P = C … D#
+ * one octave up (16 semitones, SR5 of the synth spec). Z and X step the
+ * octave down and up. Physical key codes, so the layout
  * of the keyboard does not matter.
  */
 export const KEY_OFFSETS: Readonly<Record<string, number>> = {
@@ -20,6 +21,9 @@ export const KEY_OFFSETS: Readonly<Record<string, number>> = {
   KeyU: 10,
   KeyJ: 11,
   KeyK: 12,
+  KeyO: 13,
+  KeyL: 14,
+  KeyP: 15,
 };
 
 export interface KeyboardSourceOptions {
@@ -31,8 +35,17 @@ export interface KeyboardSourceOptions {
 const BLOCKING =
   'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="dialog"], [role="menu"], [role="listbox"], [role="slider"]';
 
+/**
+ * A control that uses no letter keys (the rotary control: arrows, Page, Home,
+ * End) marks itself with this attribute: the note keys still play while it
+ * has the focus.
+ */
+export const NOTE_KEYS_PASS_ATTRIBUTE = "data-note-keys-pass";
+
 export function isTypingTarget(target: EventTarget | null): boolean {
-  return target instanceof Element && target.closest(BLOCKING) !== null;
+  if (!(target instanceof Element)) return false;
+  if (target.hasAttribute(NOTE_KEYS_PASS_ATTRIBUTE)) return false;
+  return target.closest(BLOCKING) !== null;
 }
 
 export class KeyboardSource extends BaseSource {

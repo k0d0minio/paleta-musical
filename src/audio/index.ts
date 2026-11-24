@@ -21,3 +21,4 @@ export {
 } from "./sounding";
 export { useAudioStatus, useAudioUnlock } from "./react";
 export * from "./rhythms";
+export * from "./synth";

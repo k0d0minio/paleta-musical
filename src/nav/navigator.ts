@@ -7,6 +7,7 @@ export const MODULE_ROUTES: Readonly<Record<ModuleId, string>> = {
   chords: "/chords",
   harmony: "/harmony",
   analyse: "/analyse",
+  synth: "/synth",
 };
 
 /** Sub-views that have their own route. */

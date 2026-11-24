@@ -1,7 +1,7 @@
 import { defaultData, defaultModules, type PersistedData } from "./defaults";
 
 /** The current schema version of the persisted data. Increase it with each schema change. */
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 type Migration = (data: Record<string, unknown>) => Record<string, unknown>;
 
@@ -40,6 +40,11 @@ const MIGRATIONS: Record<number, Migration> = {
         ]),
       ),
     };
+  },
+  /** Version 3 adds the Sintetizador module slice (JAM-557). */
+  2: (data) => {
+    const modules = (data.modules ?? {}) as Record<string, unknown>;
+    return { ...data, modules: { ...modules, synth: modules.synth ?? {} } };
   },
 };
 

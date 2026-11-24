@@ -801,6 +801,100 @@
       },
       "openRoll": "Open the piano roll",
       "backToAnalysis": "Back to the analysis"
+    },
+    "synth": {
+      "title": "Synth",
+      "description": "Play and shape your own sound: two oscillators, a filter, an envelope and an echo.",
+      "shortcutPlay": "Play notes (16 keys from the first key)",
+      "shortcutOctave": "Octave down / up",
+      "shortcutKnob": "Adjust the focused knob",
+      "scopeTitle": "Oscilloscope",
+      "scopeLabel": "Oscilloscope: the waveform of the sound",
+      "scopeIdle": "Play a key to turn the sound on",
+      "groups": {
+        "osc": "Oscillator",
+        "filter": "Filter",
+        "env": "Envelope",
+        "echo": "Echo",
+        "out": "Output"
+      },
+      "waveLabel": "Oscillator {n}",
+      "waves": {
+        "sine": "Sine",
+        "square": "Square",
+        "sawtooth": "Saw",
+        "triangle": "Triangle"
+      },
+      "params": {
+        "mix": "Mix",
+        "det": "Detune",
+        "cut": "Cutoff",
+        "res": "Resonance",
+        "a": "Attack",
+        "d": "Decay",
+        "s": "Sustain",
+        "r": "Release",
+        "dt": "Time",
+        "fb": "Feedback",
+        "dm": "Mix",
+        "vol": "Volume"
+      },
+      "paramsLong": {
+        "mix": "Oscillator mix",
+        "det": "Oscillator 2 detune",
+        "cut": "Filter cutoff",
+        "res": "Filter resonance",
+        "a": "Attack",
+        "d": "Decay",
+        "s": "Sustain",
+        "r": "Release",
+        "dt": "Echo time",
+        "fb": "Echo feedback",
+        "dm": "Echo mix",
+        "vol": "Volume"
+      },
+      "units": {
+        "percent": "{value}%",
+        "cents": "{value} cents",
+        "hz": "{value} Hz",
+        "khz": "{value} kHz",
+        "ms": "{value} ms",
+        "s": "{value} s",
+        "q": "{value}"
+      },
+      "soundsTitle": "Sounds",
+      "presetsLabel": "Starting sounds",
+      "presets": {
+        "lead": "Lead",
+        "bass": "Bass",
+        "pad": "Pad",
+        "pizzicato": "Pizzicato"
+      },
+      "userSoundsLabel": "My sounds",
+      "noUserSounds": "No saved sounds yet. Shape a sound and save it with a name.",
+      "save": "Save sound",
+      "saveTitle": "Save the current sound",
+      "nameLabel": "Name",
+      "defaultName": "My sound {n}",
+      "cancel": "Cancel",
+      "close": "Close",
+      "saved": "“{name}” saved",
+      "full": "You have {max} sounds. Delete one to save another.",
+      "remove": "Delete {name}",
+      "removed": "“{name}” deleted",
+      "undo": "Undo",
+      "keyboardTitle": "Keyboard",
+      "range": "{from} – {to}",
+      "keyboardLabel": "Keyboard from {from} to {to}",
+      "instructions": "Drag a knob up or down. Play the keys or use the computer keyboard.",
+      "helpTitle": "Help",
+      "help": {
+        "adjust": "The mouse wheel or the arrow keys adjust a knob; Page Up and Page Down take bigger steps.",
+        "fine": "With Shift, dragging or the wheel takes fine steps (precision).",
+        "reset": "A double-click (or a double tap) resets the knob to its default.",
+        "keys": "The keys <keys>A W S E D F T G Y H U J K O L P</keys> play 16 notes from the first key of the keyboard.",
+        "octave": "<z>Z</z> goes one octave down and <x>X</x> one octave up."
+      }
     }
   },
   "transport": {
