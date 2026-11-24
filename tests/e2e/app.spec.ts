@@ -40,7 +40,9 @@ test("/ opens the Paleta module", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("the design tokens are applied (note colours and the app font)", async ({ page }) => {
+test("the design tokens are applied (note colours and the app font)", async ({
+  page,
+}) => {
   await ready(page);
   const tokens = await page.evaluate(() => {
     const root = getComputedStyle(document.documentElement);
