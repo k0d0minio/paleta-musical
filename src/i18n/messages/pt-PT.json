@@ -179,7 +179,7 @@
       "noMatchHint": "Experimenta adicionar ou remover notas",
       "otherNames": "Outros nomes: {names}",
       "inversion": "{n}.ª inversão",
-      "choose": "{chord}: tocar e guardar como último acorde",
+      "chooseHint": "tocar e guardar como último acorde",
       "play": "Tocar {chord}",
       "addToTimeline": "Juntar {chord} à linha do tempo",
       "addToBuilder": "Juntar {chord} ao construtor",

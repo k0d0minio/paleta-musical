@@ -179,7 +179,7 @@
       "noMatchHint": "Try adding or removing notes",
       "otherNames": "Other names: {names}",
       "inversion": "{n, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} inversion",
-      "choose": "{chord}: play and keep as the last chord",
+      "chooseHint": "play and keep as the last chord",
       "play": "Play {chord}",
       "addToTimeline": "Add {chord} to the timeline",
       "addToBuilder": "Add {chord} to the builder",

@@ -76,11 +76,16 @@ export function StaffView({
         if (cancelled) return;
         const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = VF;
         el.replaceChildren();
-        const width = Math.max(260, el.clientWidth || 320);
-        const height = 150;
+        // Drawn at 1.5× so the note heads read well; the staff is as wide
+        // as the view (min 260 px, max 720 px).
+        const zoom = 1.5;
+        const outer = Math.min(720, Math.max(260, el.clientWidth || 320));
+        const width = outer / zoom;
+        const height = 130;
         const renderer = new Renderer(el, Renderer.Backends.SVG);
-        renderer.resize(width, height);
+        renderer.resize(outer, height * zoom);
         const ctx = renderer.getContext();
+        ctx.scale(zoom, zoom);
         const fg = cssVar("--fg") || "#000";
         ctx.setFillStyle(fg);
         ctx.setStrokeStyle(fg);
@@ -88,7 +93,7 @@ export function StaffView({
           notes.reduce((sum, n) => sum + n.note.octave, 0) /
           Math.max(1, notes.length);
         const clef = avg < 4 ? "bass" : "treble";
-        const stave = new Stave(0, 20, width - 1);
+        const stave = new Stave(0, 10, width - 1);
         stave.addClef(clef);
         stave.setStyle({ strokeStyle: fg, fillStyle: fg });
         stave.setContext(ctx).draw();
@@ -161,7 +166,7 @@ export function StaffView({
       aria-label={label}
       aria-busy={status === "loading"}
       className={cn(
-        "relative min-h-[150px] w-full overflow-x-auto rounded-lg border border-border bg-surface px-2",
+        "relative min-h-[195px] w-full overflow-x-auto rounded-lg border border-border bg-surface px-2",
         className,
       )}
     >

@@ -100,7 +100,7 @@ function ChordResult({
       <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
         <button
           type="button"
-          aria-label={t("choose", { chord: symbol })}
+          data-chord={symbol}
           onClick={() => {
             // F179: choosing the result plays it and sets the last chord.
             playChordRef(slash.chord);
@@ -119,6 +119,7 @@ function ChordResult({
             {slash.bass !== null &&
               ` · ${t("inversion", { n: slash.chord.inversion })}`}
           </span>
+          <span className="sr-only"> · {t("chooseHint")}</span>
         </button>
         <span className="flex flex-wrap gap-1.5">
           {match.pcs.map((pc) => {
@@ -298,10 +299,7 @@ export function ChordsView() {
           <SubHeading id="chords-partial">
             {t("partialTitle", { count: split.partial.length })}
           </SubHeading>
-          <ul
-            aria-labelledby="chords-partial"
-            className="grid gap-2 lg:grid-cols-2"
-          >
+          <ul aria-labelledby="chords-partial" className="flex flex-col gap-2">
             {split.partial.map((m) => (
               <ChordResult
                 key={`${m.root}-${m.type}`}

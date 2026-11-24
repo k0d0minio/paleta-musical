@@ -36,6 +36,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** The "choose" button of a result, by its chord symbol. */
+const result = (symbol: string) =>
+  document.querySelector<HTMLElement>(`button[data-chord="${symbol}"]`);
 const chip = (pc: number) =>
   document.querySelector<HTMLElement>(`[role="toolbar"] [data-pc="${pc}"]`);
 
@@ -64,15 +67,15 @@ describe("Acordes (F170–F182)", () => {
     expect(within(exact).getAllByRole("listitem")).toHaveLength(1);
     expect(
       within(exact).getByRole("button", {
-        name: "C: tocar e guardar como último acorde",
+        name: /^C.*Maior.*tocar e guardar como último acorde$/,
       }),
-    ).toBeTruthy();
+    ).toBe(result("C"));
     const partial = screen.getByRole("list", {
       name: "Interpretações possíveis (13)",
     });
     const names = within(partial)
       .getAllByRole("button", { name: /tocar e guardar/ })
-      .map((b) => b.getAttribute("aria-label")?.split(":")[0]);
+      .map((b) => b.dataset.chord);
     expect(names).toEqual([
       "Am7/C",
       "C7",
@@ -102,11 +105,7 @@ describe("Acordes (F170–F182)", () => {
   it("names a slash chord from the first note (E G C → C/E)", () => {
     act(() => setChordNotes([4, 7, 0]));
     renderModule(<ChordsView />);
-    expect(
-      screen.getByRole("button", {
-        name: "C/E: tocar e guardar como último acorde",
-      }),
-    ).toBeTruthy();
+    expect(result("C/E")?.textContent).toContain("1.ª inversão");
     expect(screen.getByText(/Outros nomes: C\/E/)).toBeTruthy();
   });
 
@@ -124,11 +123,7 @@ describe("Acordes (F170–F182)", () => {
   it("choosing a result plays it and sets the last chord (F179)", () => {
     act(() => setChordNotes([0, 4, 7]));
     renderModule(<ChordsView />);
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: "C: tocar e guardar como último acorde",
-      }),
-    );
+    fireEvent.click(result("C") as HTMLElement);
     expect(audioEngine.playChord).toHaveBeenCalledWith(
       [
         { pc: 0, octave: 4 },
@@ -181,10 +176,6 @@ describe("Acordes (F170–F182)", () => {
       })),
     );
     expect(getChordsState().notes).toEqual([0, 3, 7]);
-    expect(
-      screen.getByRole("button", {
-        name: "Cm: tocar e guardar como último acorde",
-      }),
-    ).toBeTruthy();
+    expect(result("Cm")).not.toBeNull();
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useAppStore } from "@/state";
 import { PITCH_CLASSES, type KeyContext, type PitchClass } from "@/theory";
 import { cn } from "@/ui/cn";
 import { NoteChip } from "@/ui/music";
@@ -32,10 +33,14 @@ export function NoteGrid({
   label: string;
 }) {
   const t = useTranslations("modules.palette");
+  // The selection and marks come from the stored data: busy until it loads.
+  const hydrated = useAppStore((s) => s.session.hydrated);
   return (
     <div
       role="toolbar"
       aria-label={label}
+      aria-busy={!hydrated}
+      data-hydrated={hydrated}
       onKeyDown={(e) => {
         const wide = window.matchMedia("(min-width: 64rem)").matches;
         const mid = window.matchMedia("(min-width: 40rem)").matches;

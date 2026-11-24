@@ -36,7 +36,7 @@ export function TonicPicker({
       onKeyDown={(e) => {
         rovingKeyDown(e);
         const focused = document.activeElement as HTMLElement | null;
-        const pc = Number(focused?.dataset.pc);
+        const pc = Number(focused?.dataset.tonic);
         if (
           [
             "ArrowLeft",
@@ -62,7 +62,7 @@ export function TonicPicker({
             aria-checked={checked}
             aria-label={name(pc, keyContext)}
             data-roving
-            data-pc={pc}
+            data-tonic={pc}
             tabIndex={checked ? 0 : -1}
             onClick={() => choose(pc)}
             style={{ "--note": `var(--note-${pc})` } as CSSProperties}
