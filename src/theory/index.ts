@@ -10,3 +10,4 @@ export * from "./detect";
 export * from "./diatonic";
 export * from "./altered";
 export * from "./scale-match";
+export * from "./guitar";
