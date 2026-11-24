@@ -5,6 +5,8 @@ import {
   OCTAVE_MIN,
   type ChordTypeId,
   type PitchClass,
+  SCALE_IDS,
+  type ScaleId,
 } from "@/theory";
 import { LOCALES, MOTION_SETTINGS, THEMES } from "./types";
 
@@ -39,7 +41,9 @@ export const settingsSchema = z.object({
   motion: z.enum(MOTION_SETTINGS),
 });
 
-const moduleSlice = z.record(z.string(), z.unknown());
+const scaleId = z.enum(SCALE_IDS as [ScaleId, ...ScaleId[]]);
+/** Module slices are loose: the shared keys are checked here, each module checks its own keys. */
+const moduleSlice = z.looseObject({});
 
 /** The schema of the persisted data, current version. */
 export const persistedSchema = z.object({
@@ -53,11 +57,11 @@ export const persistedSchema = z.object({
   timeline: z.object({ items: z.array(progressionItem) }),
   builderLine: z.object({ items: z.array(progressionItem) }),
   modules: z.object({
-    palette: moduleSlice,
-    progressions: moduleSlice,
-    endless: moduleSlice,
+    palette: z.looseObject({ tonic: pitchClass, scale: scaleId }),
+    progressions: z.looseObject({ key: pitchClass, scale: scaleId }),
+    endless: z.looseObject({ key: pitchClass, scale: scaleId }),
     chords: moduleSlice,
-    harmony: moduleSlice,
+    harmony: z.looseObject({ tonic: pitchClass }),
     analyse: moduleSlice,
   }),
 });

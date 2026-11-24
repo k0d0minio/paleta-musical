@@ -108,6 +108,54 @@ describe("persistence", () => {
   });
 });
 
+describe("module slices", () => {
+  it("start with the shared R2 keys and merge patches", () => {
+    expect(s().modules.palette).toEqual({ tonic: 0, scale: "major" });
+    expect(s().modules.endless.scale).toBe("naturalMinor");
+    s().setModuleState("harmony", { tonic: 7 });
+    s().setModuleState("palette", { mode: "chord" });
+    expect(s().modules.harmony.tonic).toBe(7);
+    expect(s().modules.palette).toEqual({
+      tonic: 0,
+      scale: "major",
+      mode: "chord",
+    });
+  });
+
+  it("migrates version 1 data: adds the shared keys, keeps module keys", () => {
+    const v1 = {
+      ...defaultData(),
+      modules: {
+        palette: { mode: "free" },
+        progressions: {},
+        endless: {},
+        chords: {},
+        harmony: {},
+        analyse: {},
+      },
+    };
+    const migrated = migrate(v1, 1);
+    expect(migrated.modules.palette).toEqual({
+      tonic: 0,
+      scale: "major",
+      mode: "free",
+    });
+    expect(migrated.modules.harmony).toEqual({ tonic: 0 });
+  });
+
+  it("rejects a bad shared key", async () => {
+    await writeRaw(
+      {
+        ...defaultData(),
+        modules: { ...defaultData().modules, harmony: { tonic: 14 } },
+      },
+      SCHEMA_VERSION,
+    );
+    await hydrateStore();
+    expect(s().session.recoveredFromBadData).toBe(true);
+  });
+});
+
 describe("backup", () => {
   it("restores what it backed up", () => {
     s().setOctave(3);

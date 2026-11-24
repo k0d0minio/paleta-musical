@@ -2,7 +2,7 @@ import { temporal } from "zundo";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { clampOctave, type ChordRef, type PitchClass } from "@/theory";
-import { defaultData, type PersistedData } from "./defaults";
+import { defaultData, type ModuleSlices, type PersistedData } from "./defaults";
 import { SCHEMA_VERSION, migrate } from "./migrations";
 import { backupSchema, persistedSchema } from "./schema";
 import { blobStorage, createSafeStorage } from "./storage";
@@ -38,6 +38,11 @@ export interface AppState extends PersistedData {
   setLastChord(pcs: readonly PitchClass[], chord?: ChordRef | null): void;
   updateSettings(patch: Partial<Settings>): void;
   setCurrentModule(id: ModuleId | null): void;
+  /** Merges a patch into one module slice. */
+  setModuleState<K extends ModuleId>(
+    id: K,
+    patch: Partial<ModuleSlices[K]>,
+  ): void;
   timelineActions: ListActions;
   builderLineActions: ListActions;
   /** Replaces all data (restore from backup). */
@@ -139,6 +144,10 @@ export const useAppStore = create<AppState>()(
             })),
           setCurrentModule: (id) =>
             set((s) => ({ session: { ...s.session, currentModule: id } })),
+          setModuleState: (id, patch) =>
+            set((s) => ({
+              modules: { ...s.modules, [id]: { ...s.modules[id], ...patch } },
+            })),
           timelineActions: listActions("timeline"),
           builderLineActions: listActions("builderLine"),
           replaceData: (data) => set(() => ({ ...pickData(data) })),
