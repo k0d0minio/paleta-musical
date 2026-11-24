@@ -49,12 +49,14 @@ export async function startCapture(
   onFrame: (loud: readonly number[], t: number) => void,
   deps: CaptureDeps = browserDeps(),
 ): Promise<Capture> {
-  const stream = await deps.getUserMedia(MIC_CONSTRAINTS);
-  let ctx: AudioContext;
+  // The context starts inside the gesture (before the permission prompt), so
+  // Safari and Chrome let it run; a refusal closes it again.
+  const ctx = deps.createContext();
+  let stream: MediaStream;
   try {
-    ctx = deps.createContext();
+    stream = await deps.getUserMedia(MIC_CONSTRAINTS);
   } catch (error) {
-    for (const track of stream.getTracks()) track.stop();
+    await ctx.close().catch(() => undefined);
     throw error;
   }
   const source = ctx.createMediaStreamSource(stream);

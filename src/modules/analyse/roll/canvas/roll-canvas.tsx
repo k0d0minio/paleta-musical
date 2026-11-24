@@ -75,7 +75,13 @@ type Gesture =
       t0: number;
       base: readonly RollNote[];
     }
-  | { kind: "draw"; id: string; base: readonly RollNote[] }
+  | {
+      kind: "draw";
+      id: string;
+      base: readonly RollNote[];
+      x0: number;
+      moved: boolean;
+    }
   | { kind: "erase"; current: readonly RollNote[]; changed: boolean }
   | {
       kind: "pan";
@@ -343,7 +349,11 @@ export function RollCanvas(props: RollCanvasProps) {
     if (session.get().capture || session.get().busy === "analysing") return;
     const { x, y } = local(e);
     pointers.current.set(e.pointerId, { x, y });
-    e.currentTarget.setPointerCapture(e.pointerId);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // A synthetic or ended pointer: the gesture still works without capture.
+    }
     e.currentTarget.focus({ preventScroll: true });
 
     if (e.pointerType === "touch" && pointers.current.size === 2) {
@@ -385,7 +395,13 @@ export function RollCanvas(props: RollCanvasProps) {
     if (tool === "draw") {
       const n = drawNote(pitch, t, p.bpm);
       preview.current = [...notes, n];
-      gesture.current = { kind: "draw", id: n.id, base: preview.current };
+      gesture.current = {
+        kind: "draw",
+        id: n.id,
+        base: preview.current,
+        x0: x,
+        moved: false,
+      };
       select(new Set([n.id]));
       playPitch(n.midi, 0.3);
       dirty.current = true;
@@ -500,6 +516,9 @@ export function RollCanvas(props: RollCanvasProps) {
         preview.current = resizeNotes(g.base, g.ids, t - g.t0);
         break;
       case "draw":
+        // A press without a drag keeps the half-beat note (F255).
+        if (!g.moved && Math.abs(x - g.x0) < DRAG_PX) return;
+        g.moved = true;
         preview.current = g.base.map((n) =>
           n.id === g.id
             ? {
