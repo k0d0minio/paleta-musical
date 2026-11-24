@@ -217,6 +217,7 @@
       "playProgression": "Tocar {name}",
       "stopProgression": "Parar {name}",
       "addToTimeline": "Adicionar à linha do tempo",
+      "addNamedToTimeline": "Adicionar {name} à linha do tempo",
       "addedToTimeline": "{count, plural, one {# acorde adicionado} other {# acordes adicionados}} à linha do tempo",
       "tension": "tensão",
       "playing": "a tocar",

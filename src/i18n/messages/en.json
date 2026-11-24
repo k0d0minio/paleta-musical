@@ -217,6 +217,7 @@
       "playProgression": "Play {name}",
       "stopProgression": "Stop {name}",
       "addToTimeline": "Add to the timeline",
+      "addNamedToTimeline": "Add {name} to the timeline",
       "addedToTimeline": "{count, plural, one {# chord added} other {# chords added}} to the timeline",
       "tension": "tension",
       "playing": "playing",

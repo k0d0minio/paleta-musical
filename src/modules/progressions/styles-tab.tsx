@@ -75,6 +75,23 @@ export function StylesTab() {
     setInv({ key: resetKey, map, bulk: k });
   };
   const inversionLabel = useInversionLabel();
+  const player = useRhythmPlayer();
+  const playingProgression = list.find(
+    (p) => player.source === `style:${p.id}`,
+  );
+  const playingChord =
+    playingProgression && player.chordIndex !== null
+      ? resolveProgression(playingProgression.numerals, s.key, s.scale).chords[
+          player.chordIndex
+        ]?.chord
+      : undefined;
+  const shownChord = playingChord
+    ? {
+        ...playingChord,
+        inversion:
+          current.map[`${playingProgression?.id}:${player.chordIndex}`] ?? 0,
+      }
+    : selected;
 
   return (
     <div className="flex flex-col gap-5">
@@ -147,7 +164,7 @@ export function StylesTab() {
             />
           </div>
         </div>
-        <ChordNotes chord={selected} />
+        <ChordNotes chord={shownChord} />
       </div>
 
       <section
@@ -222,7 +239,7 @@ function StyleCard({
           <Button
             size="icon"
             variant="ghost"
-            aria-label={t("addToTimeline")}
+            aria-label={t("addNamedToTimeline", { name })}
             onClick={() => {
               // U08: valid chord types and the chosen inversions reach the timeline.
               append(
