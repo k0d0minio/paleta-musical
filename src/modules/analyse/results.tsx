@@ -164,7 +164,6 @@ export function NotesPanel({ result }: { result: AnalysisResult }) {
       }
     >
       <ul
-        role="toolbar"
         aria-label={t("notesTitle")}
         onKeyDown={(e) => rovingKeyDown(e)}
         className="grid grid-cols-4 gap-3 sm:grid-cols-8"
@@ -346,7 +345,6 @@ export function ChordsPanel({ result }: { result: AnalysisResult }) {
         <p className="text-sm text-fg-muted">{t("noChords")}</p>
       ) : (
         <ol
-          role="toolbar"
           aria-label={t("chordsTitle")}
           onKeyDown={(e) => rovingKeyDown(e)}
           className="grid grid-cols-2 gap-2 sm:grid-cols-3"
@@ -434,7 +432,6 @@ export function SectionsPanel({
       }
     >
       <ol
-        role="toolbar"
         aria-label={t("timelineTitle")}
         onKeyDown={(e) => rovingKeyDown(e)}
         data-testid="sections"

@@ -1,3 +1,4 @@
+import { writeFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import {
@@ -17,6 +18,20 @@ function wav(name: string, events: ToneEvent[], sampleRate = 44100) {
     mimeType: "audio/wav",
     buffer: Buffer.from(encodeWav(render(events, { sampleRate }), sampleRate)),
   };
+}
+
+/**
+ * The same file on disk. With a path, Chromium sets the input through the
+ * DevTools protocol; a buffer is turned into a File by script in the page,
+ * which is itself a long task on the main thread.
+ */
+function wavFile(
+  path: string,
+  events: ToneEvent[],
+  sampleRate = 44100,
+): string {
+  writeFileSync(path, wav("x.wav", events, sampleRate).buffer);
+  return path;
 }
 
 function trackErrors(page: Page): string[] {
@@ -101,12 +116,13 @@ test("a second file works after a failed decode (U34), with a clear message", as
     mimeType: "audio/mpeg",
     buffer: Buffer.from("this is not audio at all"),
   });
-  const alert = page.getByRole("alert");
+  // Next.js has its own route announcer with role="alert": read the one in main.
+  const alert = page.locator("main").getByRole("alert");
   await expect(alert).toContainText("Erro:", { timeout: 15_000 });
   await expect(alert).toContainText("Tenta um ficheiro mp3 ou wav mais curto.");
   await input(page).setInputFiles(wav("c-major.wav", C_MAJOR));
   await expect(results(page)).toBeVisible({ timeout: 30_000 });
-  await expect(page.getByRole("alert")).toBeHidden();
+  await expect(page.locator("main").getByRole("alert")).toBeHidden();
 });
 
 test.describe("desktop only", () => {
@@ -117,7 +133,7 @@ test.describe("desktop only", () => {
 
   test("the UI stays responsive (no long task above 200 ms) and cancel stops the analysis", async ({
     page,
-  }) => {
+  }, testInfo) => {
     await open(page);
     await page.evaluate(() => {
       const w = window as unknown as { __longTasks: number[] };
@@ -136,7 +152,9 @@ test.describe("desktop only", () => {
       1,
       10,
     );
-    await input(page).setInputFiles(wav("long.wav", long, 22050));
+    await input(page).setInputFiles(
+      wavFile(testInfo.outputPath("long.wav"), long, 22050),
+    );
     await expect(results(page)).toBeVisible({ timeout: 60_000 });
     const tasks = await page.evaluate(
       () => (window as unknown as { __longTasks: number[] }).__longTasks,
@@ -145,7 +163,11 @@ test.describe("desktop only", () => {
 
     // Cancel: a longer file, then stop the worker while it runs.
     await input(page).setInputFiles(
-      wav("longer.wav", progression([[48, 60, 64, 67]], 1, 180), 22050),
+      wavFile(
+        testInfo.outputPath("longer.wav"),
+        progression([[48, 60, 64, 67]], 1, 180),
+        22050,
+      ),
     );
     const cancel = page.getByRole("button", { name: "Cancelar" });
     await expect(cancel).toBeVisible({ timeout: 30_000 });
