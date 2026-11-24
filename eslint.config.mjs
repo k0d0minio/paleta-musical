@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 
 /**
  * Architecture layers (src/<layer>). Rules:
- * - theory and midi are pure: no React, no DOM libraries, no audio.
+ * - theory, midi and analysis are pure: no React, no DOM libraries, no audio.
  * - A module imports another module only through its public index.ts.
  * - No module imports an input source directly: modules use the input registry.
  * - Routes (app) import modules; nothing imports app.
@@ -19,6 +19,7 @@ const ELEMENTS = [
   { type: "ui", pattern: "src/ui" },
   { type: "theory", pattern: "src/theory" },
   { type: "midi", pattern: "src/midi" },
+  { type: "analysis", pattern: "src/analysis" },
   { type: "audio", pattern: "src/audio" },
   { type: "input-source", pattern: "src/input/sources" },
   { type: "input", pattern: "src/input" },
@@ -31,6 +32,7 @@ const ELEMENTS = [
 const ALLOWED = {
   theory: [],
   midi: ["theory"],
+  analysis: ["theory"],
   platform: [],
   audio: ["theory", "platform"],
   input: ["input-source", "theory", "platform"],
@@ -45,6 +47,7 @@ const ALLOWED = {
     "ui",
     "theory",
     "midi",
+    "analysis",
     "audio",
     "state",
     "i18n",
@@ -68,7 +71,7 @@ const ALLOWED = {
   app: ["shell", "module", "ui", "i18n", "state", "platform"],
 };
 
-const PURE = ["theory", "midi"];
+const PURE = ["theory", "midi", "analysis"];
 const PURE_FORBIDDEN = [
   "react",
   "react-dom",
@@ -137,7 +140,7 @@ export default defineConfig([
               from: { element: { types: PURE } },
               disallow: { to: { module: { source: PURE_FORBIDDEN } } },
               message:
-                "theory and midi are pure TypeScript: no React, no DOM and no audio libraries",
+                "theory, midi and analysis are pure TypeScript: no React, no DOM and no audio libraries",
             },
           ],
         },
