@@ -154,5 +154,8 @@ export default defineConfig([
     "next-env.d.ts",
     "playwright-report/**",
     "test-results/**",
+    // BAXTER blueprint: template-owned, not app code.
+    ".icm/**",
+    ".claude/**",
   ]),
 ]);

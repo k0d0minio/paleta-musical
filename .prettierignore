@@ -7,3 +7,10 @@ coverage
 next-env.d.ts
 docs/
 AGENTS.md
+# BAXTER blueprint: template-owned or written by the pipeline
+.icm/
+.claude/
+CLAUDE.md
+.github/workflows/ci.yml
+.github/workflows/icm.yml
+.github/dependabot.yml

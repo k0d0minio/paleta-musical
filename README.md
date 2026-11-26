@@ -20,7 +20,7 @@ Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, pnpm.
 | `pnpm test:e2e`       | Playwright against the build: Chromium desktop and WebKit iPhone, axe |
 | `pnpm licenses:check` | Fails on GPL, LGPL, AGPL or SSPL in production dependencies           |
 
-CI (`.github/workflows/ci.yml`) runs all of them on each push and pull request. CI is the source of truth.
+CI (`.github/workflows/ci.yml` and `app.yml`) runs all of them on each push and pull request. CI is the source of truth.
 `/dev/design` shows the design tokens and components (not linked in the navigation).
 
 ## Architecture
